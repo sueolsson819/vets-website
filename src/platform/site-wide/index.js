@@ -2,19 +2,18 @@
 import '@department-of-veterans-affairs/formation/dist/formation';
 // Relative imports.
 import '../monitoring/sentry.js';
-import './component-library-analytics-setup';
 import './medallia-feedback-button';
 import './moment-setup';
 import './popups';
 import './wysiwyg-analytics-setup';
-import addFocusBehaviorToCrisisLineModal from './accessible-VCL-modal';
-import startAnnouncementWidget from './announcements';
+import './component-library-analytics-setup';
+import './localization';
+import startUserNavWidget from './user-nav';
+import startMegaMenuWidget from './mega-menu';
+import startSideNav from './side-nav';
 import startBanners from './banners';
 import startHeader from './header';
-import startMegaMenuWidget from './mega-menu';
 import startMobileMenuButton from './mobile-menu-button';
-import startSideNav from './side-nav';
-import startUserNavWidget from './user-nav';
 import startVAFooter from './va-footer';
 import { addOverlayTriggers } from './legacy/menu';
 
