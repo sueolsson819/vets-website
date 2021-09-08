@@ -23,6 +23,8 @@ export default function FormNav(props) {
     inProgressFormId,
   } = props;
 
+  // const { t } = useTranslation();
+
   const [index, setIndex] = useState(0);
 
   // This is converting the config into a list of pages with chapter keys,
@@ -71,7 +73,12 @@ export default function FormNav(props) {
     );
   }
 
-  const stepText = `Step ${current} of ${chapters.length}: ${chapterName}`;
+  const translatedChapterName = t(`${formConfig.namespace}:${chapterName}`);
+  const stepText = t('navFormHeader', {
+    current,
+    length: chapters.length,
+    chapterName: translatedChapterName,
+  });
   const showHeader = Math.abs(current - index) === 1;
 
   // The goal with this is to quickly "remove" the header from the DOM, and
