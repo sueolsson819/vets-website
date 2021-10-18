@@ -55,6 +55,9 @@ const WebChat = ({ token, WebChatFramework, apiSession }) => {
     bubbleNubSize: 10,
     bubbleFromUserNubSize: 10,
     timestampColor: '#000000',
+    toasterHeight: 50,
+    toasterMaxHeight: 100 * 5,
+    toasterSingularMaxHeight: 200,
   };
 
   return (

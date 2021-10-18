@@ -30,6 +30,26 @@ const GreetUser = {
         },
         type: 'DIRECT_LINE/POST_ACTIVITY',
       });
+
+      dispatch({
+        type: 'WEB_CHAT/SET_NOTIFICATION',
+        payload: {
+          id: 'first',
+          level: 'warn',
+          message:
+            'This virtual agent is still in development and cannot help with personal, medical or mental health emergencies. Thank you for understanding.',
+        },
+      });
+
+      dispatch({
+        type: 'WEB_CHAT/SET_NOTIFICATION',
+        payload: {
+          id: 'very long',
+          level: 'success',
+          message:
+            'We keep a record of all virtual agent conversations, so we ask that you do not enter personal information that can be used to identify you.',
+        },
+      });
     }
     return next(action);
   },
