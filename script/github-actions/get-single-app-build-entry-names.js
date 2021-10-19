@@ -27,15 +27,17 @@ const getEntryName = filePath => {
 const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ').filter(file =>
   file.startsWith('src/applications'),
 );
-let fullBuild = false;
+let isFullBuild = false;
 const entryNames = [];
 
 changedFiles.forEach(file => {
   if (file.startsWith('src/applications')) {
     entryNames.push(getEntryName(file));
   } else {
-    fullBuild = true; // all non-app changes require a full build
+    isFullBuild = true; // All non-app changes require a full build
   }
 });
 
-core.exportVariable('APP_ENTRY_NAMES', fullBuild ? '' : entryNames.join(','));
+// Create a string suitable for the --entry arg, with no duplicates
+const entryString = [...new Set(entryNames)].join(',');
+core.exportVariable('APP_ENTRY_NAMES', isFullBuild ? '' : entryString);
