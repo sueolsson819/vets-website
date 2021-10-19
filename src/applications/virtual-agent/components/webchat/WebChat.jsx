@@ -4,6 +4,7 @@ import GreetUser from './makeBotGreetUser';
 import environment from 'platform/utilities/environment';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
+import { Disclaimer } from './Disclaimer';
 
 const renderMarkdown = text => MarkdownRenderer.render(text);
 
@@ -60,12 +61,17 @@ const WebChat = ({ token, WebChatFramework, apiSession }) => {
     toasterSingularMaxHeight: 200,
   };
 
+  const toastMiddleware = () => next => ({ ...otherArgs }) => {
+    return <Disclaimer />;
+  };
+
   return (
     <div data-testid={'webchat'} style={{ height: '550px', width: '100%' }}>
       <ReactWebChat
         styleOptions={styleOptions}
         directLine={directLine}
         store={store}
+        toastMiddleware={toastMiddleware}
         renderMarkdown={renderMarkdown}
       />
     </div>
