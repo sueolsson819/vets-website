@@ -9,7 +9,7 @@ export default function NeedHelp() {
   return (
     <div className="vads-u-margin-top--9 vads-u-margin-bottom--3">
       <h2 className="vads-u-font-size--h3 vads-u-margin-bottom--0">
-        Need help?
+        Need help? Another change
       </h2>
       <hr
         aria-hidden="true"
