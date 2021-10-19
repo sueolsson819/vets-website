@@ -24,16 +24,18 @@ const getEntryName = filePath => {
   return manifestFile.entryName;
 };
 
+const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ').filter(file =>
+  file.startsWith('src/applications'),
+);
+let fullBuild = false;
 const entryNames = [];
-let isSingleAppBuild = true;
-const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ');
+
 changedFiles.forEach(file => {
   if (file.startsWith('src/applications')) {
     entryNames.push(getEntryName(file));
   } else {
-    isSingleAppBuild = false; // all non-app changes require a full build
+    fullBuild = true; // all non-app changes require a full build
   }
 });
 
-const entryString = isSingleAppBuild ? entryNames.join(',') : '';
-core.exportVariable('APP_ENTRY_NAMES', entryString);
+core.exportVariable('APP_ENTRY_NAMES', fullBuild ? '' : entryNames.join(','));

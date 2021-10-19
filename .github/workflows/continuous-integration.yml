@@ -55,11 +55,6 @@ jobs:
 
       - name: Build
         run: yarn build --verbose --buildtype=${{ matrix.buildtype }} --entry=${{ env.APP_ENTRY_NAMES }}
-          # if [[ "${{ env.IS_SINGLE_APP_BUILD }}" == "true" ]]; then
-          #     yarn build --verbose --buildtype=${{ matrix.buildtype }} --entry=${{ env.APP_ENTRY_NAMES }}
-          # else
-          #     yarn build --verbose --buildtype=${{ matrix.buildtype }}
-          # fi
         timeout-minutes: 30
 
       # ----------------------------
