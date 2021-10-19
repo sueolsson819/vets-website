@@ -24,9 +24,7 @@ const getEntryName = filePath => {
   return manifestFile.entryName;
 };
 
-const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ').filter(file =>
-  file.startsWith('src/applications'),
-);
+const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ');
 let isFullBuild = false;
 const entryNames = [];
 
