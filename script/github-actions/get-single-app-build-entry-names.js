@@ -5,7 +5,9 @@ const core = require('@actions/core');
 
 const config = require('../../config/single-app-build.json');
 
-const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ');
+const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ').filter(file =>
+  file.startsWith('src/applications'),
+);
 
 /**
  * Takes a relative path and returns the entryName of
