@@ -5,9 +5,7 @@ const core = require('@actions/core');
 
 const config = require('../../config/single-app-build.json');
 
-const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ').filter(file =>
-  file.startsWith('src/applications'),
-);
+const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ');
 
 /**
  * Takes a relative path and returns the entryName of
@@ -19,11 +17,9 @@ const changedFiles = process.env.CHANGED_FILE_PATHS.split(' ').filter(file =>
 const getEntryName = filePath => {
   const root = path.join(__dirname, '../..');
   const appDirectory = filePath.split('/')[2];
+  const fullPath = path.join(root, `./src/applications/${appDirectory}`);
   const manifestFile = find
-    .fileSync(
-      /manifest\.(json|js)$/,
-      path.join(root, `./src/applications/${appDirectory}`),
-    )
+    .fileSync(/manifest\.(json|js)$/, fullPath)
     // eslint-disable-next-line import/no-dynamic-require
     .map(file => require(file))[0];
 
@@ -60,7 +56,6 @@ const getAllowedEntryName = (file, allowList) => {
  */
 const makeEntryString = (files, allowList) => {
   const allowedEntries = [];
-
   for (const file of files) {
     const entryName = getAllowedEntryName(file, allowList);
     if (entryName) {
@@ -70,9 +65,7 @@ const makeEntryString = (files, allowList) => {
     }
   }
 
-  // Remove dupes and stringify for use by the --entry argument
   return [...new Set(allowedEntries)].join(',');
 };
 
-const entryString = makeEntryString(changedFiles, config.allow);
-core.exportVariable('APP_ENTRY_NAMES', entryString);
+core.exportVariable('ENTRY_NAMES', makeEntryString(changedFiles, config.allow));

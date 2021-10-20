@@ -53,7 +53,7 @@ jobs:
           CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Build
-        run: yarn build --verbose --buildtype=${{ matrix.buildtype }} --entry=${{ env.APP_ENTRY_NAMES }}
+        run: yarn build --verbose --buildtype=${{ matrix.buildtype }} --entry=${{ env.ENTRY_NAMES }}
         timeout-minutes: 30
 
       # ----------------------------
