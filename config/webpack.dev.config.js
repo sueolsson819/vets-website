@@ -1,6 +1,6 @@
 const path = require('path');
 const setupLocalProxyRewrite = require('../src/applications/proxy-rewrite/local-proxy-rewrite');
-const manifestHelpers = require('./manifest-helpers');
+const manifestHelpers = require('../script/manifest-helpers');
 
 function generateWebpackDevConfig(buildOptions) {
   const routes = manifestHelpers.getAppRoutes();

@@ -11,7 +11,7 @@ const fallback = require('express-history-api-fallback');
 const morgan = require('morgan');
 const path = require('path');
 
-const manifestHelpers = require('../../../../config/manifest-helpers');
+const manifestHelpers = require('../../../../script/manifest-helpers');
 const ENVIRONMENTS = require('../../../site/constants/environments');
 
 const optionDefinitions = [

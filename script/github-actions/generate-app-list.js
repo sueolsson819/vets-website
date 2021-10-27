@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 
-const { getAppManifests } = require('../../config/manifest-helpers');
+const { getAppManifests } = require('../../script/manifest-helpers');
 
 function exportAppList() {
   const applicationList = getAppManifests().map(app => {
