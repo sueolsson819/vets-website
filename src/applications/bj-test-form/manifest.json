@@ -1,0 +1,6 @@
+{
+  "appName": "bj-test-form",
+  "entryFile": "./app-entry.jsx",
+  "entryName": "bj-test-form",
+  "rootUrl": "/bj-test-form"
+}
