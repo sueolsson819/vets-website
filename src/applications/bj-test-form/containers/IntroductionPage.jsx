@@ -14,14 +14,14 @@ class IntroductionPage extends React.Component {
     return (
       <div className="schemaform-intro">
         <FormTitle title="bj-test-form" />
-        <p>Equal to VA Form 22-BJTEST (bj-test-form).</p>
+        <p>Equal to VA Form BJ-230 (bj-test-form).</p>
         <SaveInProgressIntro
           prefillEnabled={this.props.route.formConfig.prefillEnabled}
           messages={this.props.route.formConfig.savedFormMessages}
           pageList={this.props.route.pageList}
           startText="Start the Application"
         >
-          Please complete the 22-BJTEST form to apply for new form benefits.
+          Please complete the BJ-230 form to apply for new form benefits.
         </SaveInProgressIntro>
         <h4>Follow the steps below to apply for new form benefits.</h4>
         <div className="process schemaform-process">

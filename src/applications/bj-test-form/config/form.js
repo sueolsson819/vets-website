@@ -1,4 +1,4 @@
-// import fullSchema from 'vets-json-schema/dist/22-BJTEST-schema.json';
+// import fullSchema from 'vets-json-schema/dist/BJ-230-schema.json';
 
 import manifest from '../manifest.json';
 
@@ -16,11 +16,11 @@ const formConfig = {
   trackingPrefix: 'new-form-bj-test-form',
   introduction: IntroductionPage,
   confirmation: ConfirmationPage,
-  formId: '22-BJTEST',
+  formId: 'BJ-230',
   saveInProgress: {
     // messages: {
-    //   inProgress: 'Your new form benefits application (22-BJTEST) is in progress.',
-    //   expired: 'Your saved new form benefits application (22-BJTEST) has expired. If you want to apply for new form benefits, please start a new application.',
+    //   inProgress: 'Your new form benefits application (BJ-230) is in progress.',
+    //   expired: 'Your saved new form benefits application (BJ-230) has expired. If you want to apply for new form benefits, please start a new application.',
     //   saved: 'Your new form benefits application has been saved.',
     // },
   },

@@ -38,8 +38,7 @@ export class ConfirmationPage extends React.Component {
         </p>
         <div className="inset">
           <h4>
-            bj-test-form Claim{' '}
-            <span className="additional">(Form 22-BJTEST)</span>
+            bj-test-form Claim <span className="additional">(Form BJ-230)</span>
           </h4>
           {name ? (
             <span>
