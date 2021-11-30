@@ -14,6 +14,7 @@ import { WIZARD_STATUS } from '../constants';
 import manifest from '../manifest.json';
 
 const formConfig = {
+  showFormI18n: true,
   rootUrl: manifest.rootUrl,
   urlPrefix: '/',
   submitUrl: `${environment.API_URL}/v0/veteran_readiness_employment_claims`,

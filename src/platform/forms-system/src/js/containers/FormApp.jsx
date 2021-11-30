@@ -8,6 +8,8 @@ import FormNav from '../components/FormNav';
 import FormTitle from '../components/FormTitle';
 import { isInProgress } from '../helpers';
 import { setGlobalScroll } from '../utilities/ui';
+import LanguageSelector from '../components/LanguageSelector';
+import { startI18n } from 'platform/site-wide/i18n';
 
 const Element = Scroll.Element;
 
@@ -18,6 +20,7 @@ class FormApp extends React.Component {
   /* eslint-disable-next-line camelcase */
   UNSAFE_componentWillMount() {
     const { additionalRoutes } = this.props.formConfig;
+
     this.nonFormPages = [];
     if (additionalRoutes) {
       this.nonFormPages = additionalRoutes.map(route => route.path);
@@ -28,10 +31,20 @@ class FormApp extends React.Component {
     if (window.History) {
       window.History.scrollRestoration = 'manual';
     }
+
+    if (this.props.formConfig.showFormI18n) {
+      startI18n();
+    }
   }
 
   render() {
-    const { currentLocation, formConfig, children, formData } = this.props;
+    const {
+      currentLocation,
+      formConfig,
+      children,
+      formData,
+      showFormI18nToggle,
+    } = this.props;
     const trimmedPathname = currentLocation.pathname.replace(/\/$/, '');
     const lastPathComponent = currentLocation.pathname.split('/').pop();
     const isIntroductionPage = trimmedPathname.endsWith('introduction');
@@ -79,11 +92,17 @@ class FormApp extends React.Component {
       );
     }
 
+    let languageSelector;
+    if (formConfig?.showFormI18n && showFormI18nToggle) {
+      languageSelector = <LanguageSelector />;
+    }
+
     return (
       <div>
         <div className="row">
           <div className="usa-width-two-thirds medium-8 columns">
             <Element name="topScrollElement" />
+            {languageSelector}
             {formTitle}
             {formNav}
             {renderedChildren}
@@ -104,6 +123,7 @@ const mapStateToProps = state => ({
   formData: state.form.data,
   isLoggedIn: isLoggedIn(state),
   inProgressFormId: state.form.loadedData?.metadata?.inProgressFormId,
+  showFormI18nToggle: state?.featureToggles?.showFormI18n,
 });
 
 export default connect(mapStateToProps)(FormApp);
