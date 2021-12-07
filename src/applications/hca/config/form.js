@@ -23,6 +23,7 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 import { createDependentSchema } from '../definitions/dependent';
 
 // chapter 1 Veteran Information
+import SchemalessVetInfo from '../components/SchemalessVetInfo';
 import birthInformation from './chapters/veteranInformation/birthInformation';
 import americanIndian from './chapters/veteranInformation/americanIndian';
 import birthSex from './chapters/veteranInformation/birthSex';
@@ -128,6 +129,15 @@ const formConfig = {
     veteranInformation: {
       title: 'Veteran Information',
       pages: {
+        mySchemalessPage: {
+          title: 'Bypassing the SchemaForm',
+          path: 'my-schemaless-page',
+          CustomPage: SchemalessVetInfo,
+          CustomPageReview: SchemalessVetInfo,
+          depends: () => false,
+          schema: { type: 'object', properties: {} },
+          uiSchema: {},
+        },
         veteranInformation: {
           path: 'veteran-information/personal-information',
           title: 'Veteran information',
