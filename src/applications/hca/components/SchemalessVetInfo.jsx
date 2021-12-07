@@ -10,6 +10,8 @@ const buildPage = ({ title }) => (
   </div>
 );
 
-export const SchemalessVetInfo = () => {
-  buildPage({ title: 'SchemalessVetInfo' });
+const SchemalessVetInfo = () => {
+  buildPage({ title: 'this here schemaless thing' });
 };
+
+export default SchemalessVetInfo;
