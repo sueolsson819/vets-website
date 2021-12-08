@@ -22,3 +22,5 @@ fi
 # git clone git@github.com:department-of-veterans-affairs/veteran-facing-services-tools.git
 # git clone git@github.com:department-of-veterans-affairs/vets-api.git
 # git clone git@github.com:department-of-veterans-affairs/vets-api-mockdata.git
+
+# Test change for CI
