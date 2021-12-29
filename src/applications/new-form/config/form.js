@@ -117,6 +117,7 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 //                     errors.addError(
 //                       "Sorry, you can't start this field with 'bad'",
 //                     );
+//                     console.log('errors', errors);
 //                   }
 //                 },
 //               ],
@@ -173,7 +174,6 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 //             email: {
 //               'ui:title': 'Email',
 //             },
-//             'ui:description': 'OR',
 //             confirmEmail: {
 //               'ui:title': 'Confirm email',
 //             },
@@ -204,7 +204,7 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 //   },
 // };
 
-// **** form validation, pattern matching | Doesn't seem to work ****
+// **** form validation, pattern matching  ****
 // const formConfig = {
 //   rootUrl: manifest.rootUrl,
 //   urlPrefix: '/',
@@ -249,7 +249,7 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 //             properties: {
 //               myField: {
 //                 type: 'string',
-//                 pattern: '^d+$',
+//                 pattern: '^[0-9]*$',
 //               },
 //             },
 //           },
@@ -396,82 +396,83 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 // };
 
 // **** Conditionally hidden fields
-// const formConfig = {
-//   rootUrl: manifest.rootUrl,
-//   urlPrefix: '/',
-//   submitUrl: '/v0/api',
-//   trackingPrefix: 'new-form-',
-//   introduction: IntroductionPage,
-//   confirmation: ConfirmationPage,
-//   formId: 'XX-230',
-//   saveInProgress: {
-//     // messages: {
-//     //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
-//     //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
-//     //   saved: 'Your new form benefits application has been saved.',
-//     // },
-//   },
-//   version: 0,
-//   prefillEnabled: true,
-//   savedFormMessages: {
-//     notFound: 'Please start over to apply for new form benefits.',
-//     noAuth:
-//       'Please sign in again to continue your application for new form benefits.',
-//   },
-//   title: 'My new form',
-//   defaultDefinitions: {},
-//   chapters: {
-//     chapter1: {
-//       title: 'Chapter 1',
-//       pages: {
-//         page1: {
-//           path: 'first-page',
-//           title: 'First Page',
-//           uiSchema: {
-//             myField: {
-//               'ui:title': 'My field',
-//               'ui:widget': 'yesNo',
-//               'ui:options': {
-//                 labels: {
-//                   Y: 'Yes, this is what I want',
-//                   N: 'No, I do not want this',
-//                 },
-//                 widgetProps: {
-//                   Y: { 'data-info': 'yes' },
-//                   N: { 'data-info': 'no' },
-//                 },
-//                 // Only added to the radio when it is selected
-//                 // a11y requirement: aria-describedby ID's *must* exist on the page;
-//                 // and we conditionally add content based on the selection
-//                 selectedProps: {
-//                   Y: { 'aria-describedby': 'some_id' },
-//                   N: { 'aria-describedby': 'different_id' },
-//                 },
-//               },
-//             },
-//             myConditionalField: {
-//               'ui:title': 'My conditional field',
-//               'ui:options': {
-//                 hideIf: formData => formData.myField !== true,
-//               },
-//             },
-//           },
-//           schema: {
-//             type: 'object',
-//             properties: {
-//               myField: {
-//                 type: 'boolean',
-//               },
-//               myConditionalField: {
-//                 type: 'string',
-//               },
-//             },
-//           },
-//         },
-//       },
-//     },
-//   },
-// };
+const formConfig = {
+  rootUrl: manifest.rootUrl,
+  urlPrefix: '/',
+  submitUrl: '/v0/api',
+  trackingPrefix: 'new-form-',
+  introduction: IntroductionPage,
+  confirmation: ConfirmationPage,
+  formId: 'XX-230',
+  saveInProgress: {
+    // messages: {
+    //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
+    //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
+    //   saved: 'Your new form benefits application has been saved.',
+    // },
+  },
+  version: 0,
+  prefillEnabled: true,
+  savedFormMessages: {
+    notFound: 'Please start over to apply for new form benefits.',
+    noAuth:
+      'Please sign in again to continue your application for new form benefits.',
+  },
+  title: 'My new form',
+  defaultDefinitions: {},
+  chapters: {
+    chapter1: {
+      title: 'Chapter 1',
+      pages: {
+        page1: {
+          path: 'first-page',
+          title: 'First Page',
+          uiSchema: {
+            myField: {
+              'ui:title': 'My field',
+              'ui:widget': 'yesNo',
+              'ui:options': {
+                labels: {
+                  Y: 'Yes, this is what I want',
+                  N: 'No, I do not want this',
+                },
+                widgetProps: {
+                  Y: { 'data-info': 'yes' },
+                  N: { 'data-info': 'no' },
+                },
+                // Only added to the radio when it is selected
+                // a11y requirement: aria-describedby ID's *must* exist on the page;
+                // and we conditionally add content based on the selection
+                selectedProps: {
+                  Y: { 'aria-describedby': 'some_id' },
+                  N: { 'aria-describedby': 'different_id' },
+                },
+              },
+            },
+            myConditionalField: {
+              'ui:title': 'My conditional field',
+              'ui:options': {
+                // hideIf: formData => formData.myField !== true,
+                hideIf: () => true,
+              },
+            },
+          },
+          schema: {
+            type: 'object',
+            properties: {
+              myField: {
+                type: 'boolean',
+              },
+              myConditionalField: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 // **** Conditional pages | Doesn't seem to work ****
 // const formConfig = {
@@ -874,52 +875,52 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 // };
 
 // **** How to bypass SchemaForm
-import CustomPage from '../components/CustomPage';
-import CustomPageReview from '../components/CustomReviewPage';
+// import CustomPage from '../components/CustomPage';
+// import CustomPageReview from '../components/CustomReviewPage';
 
-const formConfig = {
-  rootUrl: manifest.rootUrl,
-  urlPrefix: '/',
-  submitUrl: '/v0/api',
-  trackingPrefix: 'new-form-',
-  introduction: IntroductionPage,
-  confirmation: ConfirmationPage,
-  formId: 'XX-230',
-  saveInProgress: {
-    // messages: {
-    //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
-    //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
-    //   saved: 'Your new form benefits application has been saved.',
-    // },
-  },
-  version: 0,
-  prefillEnabled: true,
-  savedFormMessages: {
-    notFound: 'Please start over to apply for new form benefits.',
-    noAuth:
-      'Please sign in again to continue your application for new form benefits.',
-  },
-  title: 'My new form',
-  defaultDefinitions: {},
-  chapters: {
-    chapterOneName: {
-      // Chapter config here...
-      pages: {
-        mySchemalessPage: {
-          path: 'my-schemaless-page',
-          title: 'Bypassing the SchemaForm',
-          CustomPage,
-          CustomPageReview,
-          schema: {
-            // This does still need to be here or it'll throw an error
-            type: 'object',
-            properties: {}, // But the properties can be empty
-          },
-          uiSchema: {},
-        },
-      },
-    },
-  },
-};
+// const formConfig = {
+//   rootUrl: manifest.rootUrl,
+//   urlPrefix: '/',
+//   submitUrl: '/v0/api',
+//   trackingPrefix: 'new-form-',
+//   introduction: IntroductionPage,
+//   confirmation: ConfirmationPage,
+//   formId: 'XX-230',
+//   saveInProgress: {
+//     // messages: {
+//     //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
+//     //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
+//     //   saved: 'Your new form benefits application has been saved.',
+//     // },
+//   },
+//   version: 0,
+//   prefillEnabled: true,
+//   savedFormMessages: {
+//     notFound: 'Please start over to apply for new form benefits.',
+//     noAuth:
+//       'Please sign in again to continue your application for new form benefits.',
+//   },
+//   title: 'My new form',
+//   defaultDefinitions: {},
+//   chapters: {
+//     chapterOneName: {
+//       // Chapter config here...
+//       pages: {
+//         mySchemalessPage: {
+//           path: 'my-schemaless-page',
+//           title: 'Bypassing the SchemaForm',
+//           CustomPage,
+//           CustomPageReview,
+//           schema: {
+//             // This does still need to be here or it'll throw an error
+//             type: 'object',
+//             properties: {}, // But the properties can be empty
+//           },
+//           uiSchema: {},
+//         },
+//       },
+//     },
+//   },
+// };
 
 export default formConfig;
