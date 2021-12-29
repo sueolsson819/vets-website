@@ -1,5 +1,7 @@
 import { getData } from '../util';
 
+// import mockPersonalInformationSuccessEnhanced from '@@profile/tests/fixtures/personal-information-success-enhanced.json';
+
 export const FETCH_HERO = 'FETCH_HERO';
 export const FETCH_HERO_SUCCESS = 'FETCH_HERO_SUCCESS';
 export const FETCH_HERO_FAILED = 'FETCH_HERO_FAILED';
@@ -38,6 +40,9 @@ export function fetchPersonalInformation() {
     dispatch({ type: FETCH_PERSONAL_INFORMATION });
 
     const response = await getData('/profile/personal_information');
+
+    // TODO: only use this when running locally or in E2E tests
+    // const response = mockPersonalInformationSuccessEnhanced.data.attributes;
 
     if (response.errors || response.error) {
       dispatch({

@@ -48,6 +48,16 @@ const pronounsLabels = {
   pronounsNotListed: 'Pronouns not listed here',
 };
 
+const validateSexualOrientation = (errors, pageData) => {
+  // TODO: fix ui issue
+  // we are setting the value here, which isn't ideal and introduces a UI issue
+  // if the text field is typed into before the radio button is selected, then the text field just keeps getting cleared out on any keypress
+  if (pageData?.sexualOrientation !== 'sexualOrientationNotListed') {
+    // eslint-disable-next-line no-param-reassign
+    pageData.sexualOrientationNotListedText = '';
+  }
+};
+
 export const personalInformationFormSchemas = {
   preferredName: {
     type: 'object',
@@ -59,7 +69,7 @@ export const personalInformationFormSchemas = {
         maxLength: 25,
       },
     },
-    required: [],
+    required: ['preferredName'],
   },
   pronouns: {
     type: 'object',
@@ -129,6 +139,9 @@ export const personalInformationUiSchemas = {
     pronounsNotListedText: {
       'ui:title':
         'If not listed, please provide your preferred pronouns (255 characters maximum)',
+      'ui:required': function(formData) {
+        return formData?.pronounsNotListed;
+      },
     },
   },
   genderIdentity: {
@@ -141,6 +154,7 @@ export const personalInformationUiSchemas = {
     },
   },
   sexualOrientation: {
+    'ui:validations': [validateSexualOrientation],
     sexualOrientation: {
       'ui:widget': RadioWidget,
       'ui:title': `Select your sexual orientation`,
@@ -151,6 +165,9 @@ export const personalInformationUiSchemas = {
     sexualOrientationNotListedText: {
       'ui:title':
         'If not listed, please provide your sexual orientation (255 characters maximum)',
+      'ui:required': function(formData) {
+        return formData?.sexualOrientation === 'sexualOrientationNotListed';
+      },
     },
   },
 };

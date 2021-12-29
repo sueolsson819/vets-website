@@ -4,7 +4,11 @@ import {
   FIELD_NAMES,
   USA,
 } from '@@vap-svc/constants';
-import { addresses, phoneNumbers } from '../getProfileInfoFieldAttributes';
+import {
+  addresses,
+  phoneNumbers,
+  personalInformation,
+} from '../getProfileInfoFieldAttributes';
 import pickBy from 'lodash/pickBy';
 
 const isOverseasMilitaryMailingAddress = data =>
@@ -71,6 +75,22 @@ export const getInitialFormValues = options => {
         countryCodeIso3: USA.COUNTRY_ISO3_CODE,
       }
     );
+  }
+
+  if (personalInformation.includes(fieldName)) {
+    if (fieldName !== 'pronouns') return transformInitialFormValues(data);
+
+    // format pronounsAsObject so that it can be read correctly by form schema
+    const pronounsAsObject = data.pronouns?.reduce((previous, current) => {
+      const result = { ...previous };
+      result[current] = true;
+      return result;
+    }, {});
+
+    return transformInitialFormValues({
+      ...pronounsAsObject,
+      pronounsNotListedText: data?.pronounsNotListedText,
+    });
   }
 
   return null;
