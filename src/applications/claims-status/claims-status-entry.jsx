@@ -3,8 +3,8 @@ import 'platform/polyfills';
 import './sass/claims-status.scss';
 
 import React from 'react';
-import { createHistory } from 'history';
-import { IndexRedirect, Route, Router, useRouterHistory } from 'react-router';
+import { createBrowserHistory } from 'history';
+import { IndexRedirect, Route, Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import startReactApp from 'platform/startup/react';
@@ -21,11 +21,7 @@ import { setLastPage } from './actions/index.jsx';
 window.appName = manifest.entryName;
 
 const store = createCommonStore(reducer);
-
-/* eslint-disable react-hooks/rules-of-hooks */
-const history = useRouterHistory(createHistory)({
-  basename: manifest.rootUrl,
-});
+const history = createBrowserHistory({ basename: manifest.rootUrl });
 
 history.listen(location => {
   store.dispatch(setLastPage(location.pathname));

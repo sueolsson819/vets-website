@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Breadcrumbs from '@department-of-veterans-affairs/component-library/Breadcrumbs';
 
 class ClaimsBreadcrumbs extends React.Component {

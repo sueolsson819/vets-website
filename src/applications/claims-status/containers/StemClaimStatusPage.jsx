@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setUpPage } from '../utils/page';
 
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
 import StemAskVAQuestions from '../components/StemAskVAQuestions';
 import ClaimsBreadcrumbs from '../components/ClaimsBreadcrumbs';

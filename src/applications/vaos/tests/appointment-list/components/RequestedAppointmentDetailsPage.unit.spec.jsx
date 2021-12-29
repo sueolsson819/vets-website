@@ -263,6 +263,8 @@ describe('VAOS <RequestedAppointmentDetailsPage>', () => {
 
     fireEvent.click(detailLinks[0]);
 
+    screen.debug();
+
     // Verify page content...
     await waitFor(() => {
       expect(document.activeElement).to.have.tagName('h1');

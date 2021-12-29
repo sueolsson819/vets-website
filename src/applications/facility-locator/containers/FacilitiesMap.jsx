@@ -27,7 +27,7 @@ import ResultsList from '../components/ResultsList';
 import PaginationWrapper from '../components/PaginationWrapper';
 import SearchControls from '../components/SearchControls';
 import SearchResultsHeader from '../components/SearchResultsHeader';
-import { browserHistory } from 'react-router';
+import { browserHistory } from 'history';
 import vaDebounce from 'platform/utilities/data/debounce';
 
 import { setFocus, buildMarker, resetMapElements } from '../utils/helpers';

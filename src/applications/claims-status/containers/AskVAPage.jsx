@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { submitRequest, getClaimDetail } from '../actions/index.jsx';
 import { setUpPage } from '../utils/page';
 

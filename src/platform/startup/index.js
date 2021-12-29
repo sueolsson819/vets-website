@@ -4,8 +4,8 @@
  */
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router, useRouterHistory, browserHistory } from 'react-router';
-import { createHistory } from 'history';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import startReactApp from './react';
 import setUpCommonFunctionality from './setup';
 
@@ -41,13 +41,7 @@ export default function startApp({
     analyticsEvents,
   });
 
-  let history = browserHistory;
-  if (url) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    history = useRouterHistory(createHistory)({
-      basename: url,
-    });
-  }
+  const history = createBrowserHistory({ basename: url });
   let content = component;
   if (createRoutesWithStore) {
     content = <Router history={history}>{createRoutesWithStore(store)}</Router>;

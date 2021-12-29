@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { LocationType, OperatingStatus } from '../../../constants';
 import LocationAddress from './LocationAddress';
 import { isVADomain } from '../../../utils/helpers';

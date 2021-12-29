@@ -1,6 +1,6 @@
 // Dependencies
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 // Relative imports
 import recordEvent from 'platform/monitoring/record-event';

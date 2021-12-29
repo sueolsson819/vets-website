@@ -1,7 +1,8 @@
 import React from 'react';
 import Scroll from 'react-scroll';
 import _ from 'lodash';
-import { withRouter, Link } from 'react-router';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import DueDate from '../components/DueDate';
 import AskVAQuestions from '../components/AskVAQuestions';

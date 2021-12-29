@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import Introduction from './components/Introduction';
@@ -10,7 +10,7 @@ import Unsubscribe from './components/Unsubscribe';
 const routes = (
   <Route path="/">
     <Route component={Layout} key="/main">
-      <IndexRoute component={Introduction} key="/intro" />
+      <Route exact path="/" component={Introduction} key="/intro" />
       <Route component={Form} key="/apply" path="/form" />
       <Route
         component={Confirmation}

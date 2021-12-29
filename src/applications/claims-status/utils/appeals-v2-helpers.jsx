@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import * as Sentry from '@sentry/browser';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Decision from '../components/appeals-v2/Decision';
 
 // This literally determines how many rows are displayed per page on the v2 index page

@@ -4,7 +4,7 @@ import LocationPhoneLink from './common/LocationPhoneLink';
 import LocationDirectionsLink from './common/LocationDirectionsLink';
 import { isVADomain } from '../../utils/helpers';
 import { recordResultClickEvents } from '../../utils/analytics';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { LocationType, OperatingStatus, Covid19Vaccine } from '../../constants';
 import LocationAddress from './common/LocationAddress';
 import LocationOperationStatus from './common/LocationOperationStatus';

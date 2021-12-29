@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRedirect, Redirect } from 'react-router';
+import { Route, IndexRedirect, Redirect } from 'react-router-dom';
 
 import YourClaimsPageV2 from './containers/YourClaimsPageV2';
 import ClaimPage from './containers/ClaimPage';

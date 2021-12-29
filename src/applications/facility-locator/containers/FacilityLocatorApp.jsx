@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import appendQuery from 'append-query';
 import DowntimeNotification, {

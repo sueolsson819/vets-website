@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LocationDirectionsLink from './common/LocationDirectionsLink';
 import { isVADomain } from '../../utils/helpers';
 import { recordResultClickEvents } from '../../utils/analytics';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { OperatingStatus } from '../../constants';
 import LocationAddress from './common/LocationAddress';
 import LocationOperationStatus from './common/LocationOperationStatus';

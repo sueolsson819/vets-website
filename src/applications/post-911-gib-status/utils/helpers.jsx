@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';

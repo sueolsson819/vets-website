@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';

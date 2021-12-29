@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route, IndexRedirect } from 'react-router-dom';
 
 import DownloadLetters from './containers/DownloadLetters.jsx';
 import AddressSection from './containers/AddressSection.jsx';

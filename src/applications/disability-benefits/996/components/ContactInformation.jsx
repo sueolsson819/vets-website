@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Telephone from '@department-of-veterans-affairs/component-library/Telephone';
 import AddressView from '@@vap-svc/components/AddressField/AddressView';

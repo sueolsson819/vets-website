@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 // Relative imports
 import FormQuestions from '../../components/FormQuestions';
