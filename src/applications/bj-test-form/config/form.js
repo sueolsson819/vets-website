@@ -5,6 +5,12 @@ import manifest from '../manifest.json';
 import IntroductionPage from '../containers/IntroductionPage';
 import ConfirmationPage from '../containers/ConfirmationPage';
 
+import CurrencyWidget from 'platform/forms-system/src/js/widgets/CurrencyWidget';
+import PhoneNumberWidget from 'platform/forms-system/src/js/widgets/PhoneNumberWidget';
+
+// import CustomPage from '../containers/CustomPage'; // React component
+// import CustomPageReview from '../containers/CustomPageReview'; // React component
+
 // const { } = fullSchema.properties;
 
 // const { } = fullSchema.definitions;
@@ -49,9 +55,6 @@ const formConfig = {
                   'First option': { 'data-info': 'first_1' },
                   'Second option': { 'data-info': 'second_2' },
                 },
-                // Only added to the radio when it is selected
-                // a11y requirement: aria-describedby ID's *must* exist on the page;
-                // and we conditionally add content based on the selection
                 selectedProps: {
                   'First option': { 'aria-describedby': 'some_id_1' },
                   'Second option': { 'aria-describedby': 'some_id_2' },
@@ -66,6 +69,74 @@ const formConfig = {
               myField: {
                 type: 'string',
                 enum: ['First option', 'Second option'],
+              },
+            },
+          },
+        },
+        page2: {
+          path: 'second-page',
+          title: 'Second Page',
+          uiSchema: {
+            moneyField: {
+              'ui:title': 'Give Me The Money',
+              'ui:widget': CurrencyWidget,
+            },
+          },
+          schema: {
+            type: 'object',
+            required: ['moneyField'],
+            properties: {
+              moneyField: {
+                type: 'number',
+              },
+            },
+          },
+        },
+        page3: {
+          path: 'third-page',
+          title: 'Third Page',
+          uiSchema: {
+            emailField: {
+              'ui:title': 'Provide your email please.',
+              'ui:widget': 'email',
+              'ui:errorMessages': {
+                required:
+                  'Please enter your email address, using this format: X@X.com',
+                pattern:
+                  'Please enter your email address again, using this format: X@X.com',
+              },
+            },
+          },
+          schema: {
+            type: 'object',
+            required: ['emailField'],
+            properties: {
+              emailField: {
+                type: 'string',
+                format: 'email',
+              },
+            },
+          },
+        },
+        page4: {
+          path: 'fourth-page',
+          title: 'Fourth Page',
+          uiSchema: {
+            phoneNumber: {
+              'ui:title': 'Please enter proper phone number.',
+              'ui:widget': PhoneNumberWidget,
+              'ui:errorMessages': {
+                required: 'Please enter valid phone number without -"s',
+                pattern: 'Please enter valid phone number without -"s',
+              },
+            },
+          },
+          schema: {
+            type: 'object',
+            required: ['phoneNumber'],
+            properties: {
+              phoneNumber: {
+                type: 'number',
               },
             },
           },
