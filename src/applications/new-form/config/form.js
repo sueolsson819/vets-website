@@ -396,83 +396,83 @@ import ConfirmationPage from '../containers/ConfirmationPage';
 // };
 
 // **** Conditionally hidden fields
-const formConfig = {
-  rootUrl: manifest.rootUrl,
-  urlPrefix: '/',
-  submitUrl: '/v0/api',
-  trackingPrefix: 'new-form-',
-  introduction: IntroductionPage,
-  confirmation: ConfirmationPage,
-  formId: 'XX-230',
-  saveInProgress: {
-    // messages: {
-    //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
-    //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
-    //   saved: 'Your new form benefits application has been saved.',
-    // },
-  },
-  version: 0,
-  prefillEnabled: true,
-  savedFormMessages: {
-    notFound: 'Please start over to apply for new form benefits.',
-    noAuth:
-      'Please sign in again to continue your application for new form benefits.',
-  },
-  title: 'My new form',
-  defaultDefinitions: {},
-  chapters: {
-    chapter1: {
-      title: 'Chapter 1',
-      pages: {
-        page1: {
-          path: 'first-page',
-          title: 'First Page',
-          uiSchema: {
-            myField: {
-              'ui:title': 'My field',
-              'ui:widget': 'yesNo',
-              'ui:options': {
-                labels: {
-                  Y: 'Yes, this is what I want',
-                  N: 'No, I do not want this',
-                },
-                widgetProps: {
-                  Y: { 'data-info': 'yes' },
-                  N: { 'data-info': 'no' },
-                },
-                // Only added to the radio when it is selected
-                // a11y requirement: aria-describedby ID's *must* exist on the page;
-                // and we conditionally add content based on the selection
-                selectedProps: {
-                  Y: { 'aria-describedby': 'some_id' },
-                  N: { 'aria-describedby': 'different_id' },
-                },
-              },
-            },
-            myConditionalField: {
-              'ui:title': 'My conditional field',
-              'ui:options': {
-                // hideIf: formData => formData.myField !== true,
-                hideIf: () => true,
-              },
-            },
-          },
-          schema: {
-            type: 'object',
-            properties: {
-              myField: {
-                type: 'boolean',
-              },
-              myConditionalField: {
-                type: 'string',
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-};
+// const formConfig = {
+//   rootUrl: manifest.rootUrl,
+//   urlPrefix: '/',
+//   submitUrl: '/v0/api',
+//   trackingPrefix: 'new-form-',
+//   introduction: IntroductionPage,
+//   confirmation: ConfirmationPage,
+//   formId: 'XX-230',
+//   saveInProgress: {
+//     // messages: {
+//     //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
+//     //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
+//     //   saved: 'Your new form benefits application has been saved.',
+//     // },
+//   },
+//   version: 0,
+//   prefillEnabled: true,
+//   savedFormMessages: {
+//     notFound: 'Please start over to apply for new form benefits.',
+//     noAuth:
+//       'Please sign in again to continue your application for new form benefits.',
+//   },
+//   title: 'My new form',
+//   defaultDefinitions: {},
+//   chapters: {
+//     chapter1: {
+//       title: 'Chapter 1',
+//       pages: {
+//         page1: {
+//           path: 'first-page',
+//           title: 'First Page',
+//           uiSchema: {
+//             myField: {
+//               'ui:title': 'My field',
+//               'ui:widget': 'yesNo',
+//               'ui:options': {
+//                 labels: {
+//                   Y: 'Yes, this is what I want',
+//                   N: 'No, I do not want this',
+//                 },
+//                 widgetProps: {
+//                   Y: { 'data-info': 'yes' },
+//                   N: { 'data-info': 'no' },
+//                 },
+//                 // Only added to the radio when it is selected
+//                 // a11y requirement: aria-describedby ID's *must* exist on the page;
+//                 // and we conditionally add content based on the selection
+//                 selectedProps: {
+//                   Y: { 'aria-describedby': 'some_id' },
+//                   N: { 'aria-describedby': 'different_id' },
+//                 },
+//               },
+//             },
+//             myConditionalField: {
+//               'ui:title': 'My conditional field',
+//               'ui:options': {
+//                 // hideIf: formData => formData.myField !== true,
+//                 hideIf: () => true,
+//               },
+//             },
+//           },
+//           schema: {
+//             type: 'object',
+//             properties: {
+//               myField: {
+//                 type: 'boolean',
+//               },
+//               myConditionalField: {
+//                 type: 'string',
+//               },
+//             },
+//           },
+//         },
+//       },
+//     },
+//   },
+// };
 
 // **** Conditional pages | Doesn't seem to work ****
 // const formConfig = {
@@ -729,63 +729,63 @@ const formConfig = {
 // };
 
 // **** Advanced - Using a common front-end definition
-// import fullSchema from 'vets-json-schema/dist/10-10CG-schema.json';
-// import { VetInfo } from 'applications/caregivers/components/AdditionalInfo';
-// import { veteranFields } from 'applications/caregivers/definitions/constants';
-// import { vetInputLabel } from 'applications/caregivers/definitions/UIDefinitions/veteranUI';
-// import { fullNameUI } from 'applications/caregivers/definitions/UIDefinitions/sharedUI';
+import fullSchema from 'vets-json-schema/dist/10-10CG-schema.json';
+import { VetInfo } from 'applications/caregivers/components/AdditionalInfo';
+import { veteranFields } from 'applications/caregivers/definitions/constants';
+import { vetInputLabel } from 'applications/caregivers/definitions/UIDefinitions/veteranUI';
+import { fullNameUI } from 'applications/caregivers/definitions/UIDefinitions/sharedUI';
 
-// const { veteran } = fullSchema.properties;
-// const veteranProps = veteran.properties;
+const { veteran } = fullSchema.properties;
+const veteranProps = veteran.properties;
 
-// const { fullName } = fullSchema.definitions;
+const { fullName } = fullSchema.definitions;
 
-// const formConfig = {
-//   rootUrl: manifest.rootUrl,
-//   urlPrefix: '/',
-//   submitUrl: '/v0/api',
-//   trackingPrefix: 'new-form-',
-//   introduction: IntroductionPage,
-//   confirmation: ConfirmationPage,
-//   formId: 'XX-230',
-//   saveInProgress: {
-//     // messages: {
-//     //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
-//     //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
-//     //   saved: 'Your new form benefits application has been saved.',
-//     // },
-//   },
-//   version: 0,
-//   prefillEnabled: true,
-//   savedFormMessages: {
-//     notFound: 'Please start over to apply for new form benefits.',
-//     noAuth:
-//       'Please sign in again to continue your application for new form benefits.',
-//   },
-//   title: 'My new form',
-//   defaultDefinitions: { fullName },
-//   chapters: {
-//     chapter1: {
-//       title: 'Chapter 1',
-//       pages: {
-//         page1: {
-//           path: 'first-page',
-//           title: 'First Page',
-//           uiSchema: {
-//             'ui:description': VetInfo({ headerInfo: true }),
-//             [veteranFields.fullName]: fullNameUI(vetInputLabel),
-//           },
-//           schema: {
-//             type: 'object',
-//             properties: {
-//               [veteranFields.fullName]: veteranProps.fullName,
-//             },
-//           },
-//         },
-//       },
-//     },
-//   },
-// };
+const formConfig = {
+  rootUrl: manifest.rootUrl,
+  urlPrefix: '/',
+  submitUrl: '/v0/api',
+  trackingPrefix: 'new-form-',
+  introduction: IntroductionPage,
+  confirmation: ConfirmationPage,
+  formId: 'XX-230',
+  saveInProgress: {
+    // messages: {
+    //   inProgress: 'Your new form benefits application (XX-230) is in progress.',
+    //   expired: 'Your saved new form benefits application (XX-230) has expired. If you want to apply for new form benefits, please start a new application.',
+    //   saved: 'Your new form benefits application has been saved.',
+    // },
+  },
+  version: 0,
+  prefillEnabled: true,
+  savedFormMessages: {
+    notFound: 'Please start over to apply for new form benefits.',
+    noAuth:
+      'Please sign in again to continue your application for new form benefits.',
+  },
+  title: 'My new form',
+  defaultDefinitions: { fullName },
+  chapters: {
+    chapter1: {
+      title: 'Chapter 1',
+      pages: {
+        page1: {
+          path: 'first-page',
+          title: 'First Page',
+          uiSchema: {
+            'ui:description': VetInfo({ headerInfo: false }),
+            [veteranFields.fullName]: fullNameUI(vetInputLabel),
+          },
+          schema: {
+            type: 'object',
+            properties: {
+              [veteranFields.fullName]: veteranProps.fullName,
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 // **** Advanced - Modifying common definitions
 // import set from 'platform/utilities/data/set';
