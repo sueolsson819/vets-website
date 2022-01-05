@@ -62,11 +62,10 @@ const poll = ({
     const response = await apiRequest(endpoint);
 
     if (validate(response)) {
-      return resolve(response.data);
+      return resolve(response.data.attributes);
     } else if (new Date() >= endTime) {
       return resolve(timeoutResponse);
     }
-
     setTimeout(executePoll, interval, resolve, reject);
   };
 
@@ -94,10 +93,11 @@ export function fetchClaimStatus() {
     };
 
     poll({
-      endpoint: CLAIM_STATUS_ENDPOINT,
+      endpoint: `${CLAIM_STATUS_ENDPOINT}?claimant_id=99900000200000000`,
       validate: response =>
-        response.data &&
-        response.data.claimStatus !== CLAIM_STATUS_RESPONSE_IN_PROGRESS,
+        response.data.attributes &&
+        response.data.attributes.claimStatus !==
+          CLAIM_STATUS_RESPONSE_IN_PROGRESS,
       dispatch,
       timeoutResponse,
     });

@@ -6,6 +6,7 @@ import AdditionalInfo from '@department-of-veterans-affairs/component-library/Ad
 import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
 import FormFooter from '../components/FormFooter';
 import {
+  // fetchClaimLetter,
   fetchClaimStatus,
   CLAIM_STATUS_RESPONSE_ELIGIBLE,
   CLAIM_STATUS_RESPONSE_DENIED,
@@ -14,8 +15,11 @@ import {
 } from '../actions';
 
 import environment from 'platform/utilities/environment';
+// import { get } from 'core-js/core/dict';
 
-const LETTER_URL = `${environment.API_URL}/meb_api/v0/claim_letter`;
+const LETTER_URL = `${
+  environment.API_URL
+}/meb_api/v0/claim_letter?claimant_id=99900000200000000`;
 
 const approvedPage = confirmationDate => (
   <div className="meb-confirmation-page meb-confirmation-page_approved">
@@ -284,12 +288,20 @@ const loadingPage = (
   </div>
 );
 
-export const ConfirmationPage = ({ claimStatus, getClaimStatus }) => {
+export const ConfirmationPage = ({
+  claimStatus,
+  getClaimStatus,
+  // claimLetter,
+  // getClaimLetter,
+}) => {
   useEffect(
     () => {
       if (!claimStatus) {
         getClaimStatus();
       }
+      // if (!claimLetter) {
+      //   getClaimLetter();
+      // }
     },
     [getClaimStatus, claimStatus],
   );
@@ -318,11 +330,14 @@ export const ConfirmationPage = ({ claimStatus, getClaimStatus }) => {
 
 const mapStateToProps = state => {
   const claimStatus = state.data?.claimStatus;
+  // const claimLetter = state.data?.claimLetter;
+
   return { claimStatus };
 };
 
 const mapDispatchToProps = {
   getClaimStatus: fetchClaimStatus,
+  // getClaimLetter: fetchClaimLetter,
 };
 
 export default connect(
