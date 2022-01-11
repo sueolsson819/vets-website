@@ -29,7 +29,11 @@ export default function TextWidget(props) {
     disabled: props.disabled,
     maxLength: props.schema.maxLength,
     className: props.options.widgetClassNames,
-    value: typeof props.value === 'undefined' ? '' : props.value,
+    value:
+      typeof props.value === 'undefined' || props.value === null
+        ? ''
+        : props.value,
+    // value: typeof props.value === 'undefined' ? '' : props.value,
     onBlur: () => props.onBlur(props.id),
     onChange: event =>
       props.onChange(event.target.value ? event.target.value : undefined),

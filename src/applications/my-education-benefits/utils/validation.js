@@ -3,13 +3,14 @@ import moment from 'moment';
 import { formatReadableDate } from '../helpers';
 
 export const isValidPhone = value => {
-  let stripped;
-  try {
-    stripped = value.replace(/[^\d]/g, '');
-  } catch (err) {
-    stripped = value;
-  }
-  return /^\d{10}$/.test(stripped);
+  return !!value;
+  // let stripped;
+  // try {
+  //   stripped = value.replace(/[^\d]/g, '');
+  // } catch (err) {
+  //   stripped = value;
+  // }
+  // return /^\d{10}$/.test(stripped);
 };
 
 export const validatePhone = (errors, phone) => {
