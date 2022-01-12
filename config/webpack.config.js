@@ -61,6 +61,7 @@ const globalEntryFiles = {
   // This is to solve the issue of the vendor file being cached
   'shared-modules': sharedModules,
   'web-components': getAbsolutePath('src/platform/site-wide/wc-loader.js'),
+  service: getAbsolutePath('src/platform/site-wide/service.js'),
 };
 
 function getEntryManifests(entry) {
