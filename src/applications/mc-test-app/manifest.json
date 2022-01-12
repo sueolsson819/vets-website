@@ -1,0 +1,6 @@
+{
+  "appName": "21T-MC-TEST-APP",
+  "entryFile": "./app-entry.jsx",
+  "entryName": "mc-test-app",
+  "rootUrl": "/mc-test-app"
+}
