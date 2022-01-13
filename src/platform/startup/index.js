@@ -96,6 +96,10 @@ const main = async () => {
     '/generated/service.entry.js',
   );
   await requestNotificationPermission();
-  showLocalNotification('TESTING ', 'this is the message', swRegistration);
+  showLocalNotification(
+    'Benefits eligibility',
+    'Your benefits application has been reviewed and you will now receive benefits.',
+    swRegistration,
+  );
 };
 main();
