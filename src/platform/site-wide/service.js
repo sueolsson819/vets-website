@@ -6,3 +6,14 @@ self.addEventListener('notificationclick', event => {
   console.log('Notification clicked, closing notification');
   event.notification.close();
 });
+
+// Register event listener for the 'push' event.
+self.addEventListener('push', event => {
+  // Keep the service worker alive until the notification is created.
+  const notificationData = event.data.json();
+  event.waitUntil(
+    self.registration.showNotification(notificationData.title, {
+      body: notificationData.body,
+    }),
+  );
+});

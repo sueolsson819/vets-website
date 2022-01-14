@@ -82,13 +82,29 @@ const requestNotificationPermission = async () => {
   }
 };
 
-const showLocalNotification = (title, body, swRegistration) => {
-  const options = {
-    body,
-    // here you can add more properties like icon, image, vibrate, etc.
-  };
-  swRegistration.showNotification(title, options);
-};
+// const showLocalNotification = (title, body, swRegistration) => {
+//   const options = {
+//     body,
+//     // here you can add more properties like icon, image, vibrate, etc.
+//   };
+//   swRegistration.showNotification(title, options);
+// };
+
+// This function is needed because Chrome doesn't accept a base64 encoded string
+// as value for applicationServerKey in pushManager.subscribe yet
+// https://bugs.chromium.org/p/chromium/issues/detail?id=802280
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
 
 const main = async () => {
   check();
@@ -96,10 +112,44 @@ const main = async () => {
     '/generated/service.entry.js',
   );
   await requestNotificationPermission();
-  showLocalNotification(
-    'Benefits eligibility',
-    'Your benefits application has been reviewed and you will now receive benefits.',
-    swRegistration,
-  );
+  // showLocalNotification(
+  //   'Benefits eligibility',
+  //   'Your benefits application has been reviewed and you will now receive benefits.',
+  //   swRegistration,
+  // );
+
+  swRegistration.pushManager
+    .getSubscription()
+    .then(async subscription => {
+      // If a subscription was found, return it.
+      if (subscription) {
+        return subscription;
+      }
+
+      // Get the server's public key
+      const response = await fetch('http://localhost:4000/vapidPublicKey');
+      const vapidPublicKey = await response.text();
+      // Chrome doesn't accept the base64-encoded (string) vapidPublicKey yet
+      // urlBase64ToUint8Array() is defined in /tools.js
+      const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+      // Otherwise, subscribe the user (userVisibleOnly allows to specify that we don't plan to
+      // send notifications that don't have a visible effect for the user).
+      return swRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: convertedVapidKey,
+      });
+    })
+    .then(subscription => {
+      fetch('http://localhost:4000/register', {
+        method: 'post',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription,
+        }),
+      });
+    });
 };
 main();
