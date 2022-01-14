@@ -82,13 +82,13 @@ const requestNotificationPermission = async () => {
   }
 };
 
-// const showLocalNotification = (title, body, swRegistration) => {
-//   const options = {
-//     body,
-//     // here you can add more properties like icon, image, vibrate, etc.
-//   };
-//   swRegistration.showNotification(title, options);
-// };
+const showLocalNotification = (title, body, swRegistration) => {
+  const options = {
+    body,
+    // here you can add more properties like icon, image, vibrate, etc.
+  };
+  swRegistration.showNotification(title, options);
+};
 
 // This function is needed because Chrome doesn't accept a base64 encoded string
 // as value for applicationServerKey in pushManager.subscribe yet
@@ -112,11 +112,11 @@ const main = async () => {
     '/generated/service.entry.js',
   );
   await requestNotificationPermission();
-  // showLocalNotification(
-  //   'Benefits eligibility',
-  //   'Your benefits application has been reviewed and you will now receive benefits.',
-  //   swRegistration,
-  // );
+  showLocalNotification(
+    'Benefits eligibility',
+    'Your benefits application has been reviewed and you will now receive benefits.',
+    swRegistration,
+  );
 
   swRegistration.pushManager
     .getSubscription()
