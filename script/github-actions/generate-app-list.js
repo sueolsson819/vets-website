@@ -9,7 +9,7 @@ function exportAppList() {
       slug: app.entryName,
     };
   });
-  core.exportVariable('APPLICATION_LIST', applicationList);
+  core.exportVariable('APPLICATION_LIST', JSON.stringify(applicationList));
 }
 
 exportAppList();
