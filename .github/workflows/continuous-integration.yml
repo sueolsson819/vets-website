@@ -496,9 +496,9 @@ jobs:
       APPLICATION_LIST: ${{ needs.testing-reports-prep.outputs.app_list }}
     steps:
       - name: Echo all_list (output)
-        run: echo {{ needs.testing-reports-prep.outputs.app_list }}
+        run: echo ${{ needs.testing-reports-prep.outputs.app_list }}
       - name: Echo APPLICATION_LIST (env var)
-        run: echo {{ env.APPLICATION_LIST }}
+        run: echo ${{ env.APPLICATION_LIST }}
       - name: Set IS_MASTER_BUILD
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
