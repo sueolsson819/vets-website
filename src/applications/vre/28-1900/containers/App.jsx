@@ -15,6 +15,7 @@ function App() {
 
   return (
     <>
+      <p>Hey hey we're the monkeys!</p>
       {content}
       <FormFooter formConfig={formConfig} />
     </>

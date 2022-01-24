@@ -1,6 +1,10 @@
 import fullSchema from 'vets-json-schema/dist/28-1900-schema.json';
 import currentOrPastDateUI from 'platform/forms-system/src/js/definitions/currentOrPastDate';
 
+import FieldsetTitle from 'applications/vre/28-1900/components/i18n/FieldsetTitle';
+import TextField from 'applications/vre/28-1900/components/i18n/TextField';
+import FieldTemplate from 'applications/vre/28-1900/components/i18n/FieldTemplate';
+
 const { veteranInformation } = fullSchema.properties;
 
 export const schema = {
@@ -11,12 +15,19 @@ export const schema = {
 };
 
 export const uiSchema = {
+  'ui:FieldTemplate': FieldTemplate,
+  'ui:ObjectFieldTemplate': FieldTemplate,
   veteranInformation: {
-    'ui:title': 'Veteran Information',
+    'ui:FieldTemplate': FieldTemplate,
+    'ui:ObjectFieldTemplate': FieldTemplate,
+    'ui:title': FieldsetTitle,
     fullName: {
+      'ui:FieldTemplate': FieldTemplate,
+      'ui:ObjectFieldTemplate': FieldTemplate,
       first: {
-        'ui:title': 'Your first name',
+        'ui:FieldTemplate': FieldTemplate,
         'ui:required': () => true,
+        'ui:field': TextField,
       },
       middle: {
         'ui:title': 'Your middle name',

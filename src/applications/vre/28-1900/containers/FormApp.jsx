@@ -10,6 +10,8 @@ import formConfig from '../config/form';
 import { WIZARD_STATUS, VRE_FORM_NUMBER } from '../constants';
 import IdentityNotVerified from '../components/IdentityNotVerified';
 
+import LanguageSelector from '../components/i18n/LanguageSelector';
+
 const CHAPTER_NAMES = [
   'veteran-information-review',
   'veteran-contact-information',
@@ -37,8 +39,9 @@ function FormApp(props) {
 
   const content = (
     <>
+      <LanguageSelector />
       <RoutedSavableApp formConfig={formConfig} currentLocation={location}>
-        {children}
+        <>{children}</>
       </RoutedSavableApp>
       <FormFooter formConfig={formConfig} />
     </>
