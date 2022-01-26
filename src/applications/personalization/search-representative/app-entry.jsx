@@ -7,8 +7,12 @@ import routes from './routes';
 import reducer from './reducers';
 import manifest from './manifest.json';
 
-startApp({
+import { loginChecker } from './helpers';
+
+const store = startApp({
   url: manifest.rootUrl,
   reducer,
   routes,
 });
+
+store.dispatch(loginChecker.thunk);

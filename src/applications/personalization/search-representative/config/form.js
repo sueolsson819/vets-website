@@ -1,4 +1,5 @@
 import manifest from '../manifest.json';
+import { loginChecker } from '../helpers';
 
 import GetFormHelp from '../components/GetFormHelp';
 import IntroductionPage from '../containers/IntroductionPage';
@@ -80,7 +81,7 @@ const formConfig = {
           path: 'personal-information-auth',
           title: personalInformation.title,
           ...personalInformation.authenticated,
-          depends: () => false,
+          depends: () => loginChecker.isLoggedIn(),
         },
         personalInformationNoAuth: {
           path: 'personal-information',
