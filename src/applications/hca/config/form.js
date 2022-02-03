@@ -24,9 +24,13 @@ import { createDependentSchema } from '../definitions/dependent';
 
 // chapter 1 Veteran Information
 import birthInformation from './chapters/veteranInformation/birthInformation';
+import americanIndian from './chapters/veteranInformation/americanIndian';
+import birthSex from './chapters/veteranInformation/birthSex';
 import veteranInformation from './chapters/veteranInformation/personalnformation';
 import demographicInformation from './chapters/veteranInformation/demographicInformation';
+import maritalStatus from './chapters/veteranInformation/maritalStatus';
 import veteranAddress from './chapters/veteranInformation/veteranAddress';
+import veteranGender from './chapters/veteranInformation/veteranGender';
 import veteranHomeAddress from './chapters/veteranInformation/veteranHomeAddress';
 import contactInformation from './chapters/veteranInformation/contactInformation';
 
@@ -50,8 +54,8 @@ import deductibleExpenses from './chapters/householdInformation/deductibleExpens
 import medicaid from './chapters/insuranceInformation/medicaid';
 import medicare from './chapters/insuranceInformation/medicare';
 import medicarePartAEffectiveDate from './chapters/insuranceInformation/medicarePartAEffectiveDate';
-import general from './chapters/insuranceInformation/general';
 import vaFacility from './chapters/insuranceInformation/vaFacility';
+import general from './chapters/insuranceInformation/general';
 
 const dependentSchema = createDependentSchema(fullSchemaHca);
 
@@ -138,6 +142,28 @@ const formConfig = {
           uiSchema: birthInformation.uiSchema,
           schema: birthInformation.schema,
         },
+        birthSex: {
+          path: 'veteran-information/birth-sex',
+          title: 'Veteran information',
+          initialData: {},
+          uiSchema: birthSex.uiSchema,
+          schema: birthSex.schema,
+        },
+        veteranGender: {
+          path: 'veteran-information/veteran-gender',
+          title: 'Veteran information',
+          initialData: {},
+          depends: formData => formData['view:caregiverSIGIEnabled'],
+          uiSchema: veteranGender.uiSchema,
+          schema: veteranGender.schema,
+        },
+        maritalStatus: {
+          path: 'veteran-information/marital-status',
+          title: 'Veteran information',
+          initialData: {},
+          uiSchema: maritalStatus.uiSchema,
+          schema: maritalStatus.schema,
+        },
         demographicInformation: {
           path: 'veteran-information/demographic-information',
           title: 'Veteran information',
@@ -148,6 +174,14 @@ const formConfig = {
           },
           uiSchema: demographicInformation.uiSchema,
           schema: demographicInformation.schema,
+        },
+        americanIndian: {
+          path: 'veteran-information/american-indian',
+          title: 'Veteran information',
+          initialData: {},
+          depends: formData => formData['view:hcaAmericanIndianEnabled'],
+          uiSchema: americanIndian.uiSchema,
+          schema: americanIndian.schema,
         },
         veteranAddress: {
           path: 'veteran-information/veteran-address',

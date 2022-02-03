@@ -1,0 +1,6 @@
+{
+  "allow": {
+    "entryNames": ["vaos", "medical-copays"],
+    "rootAppFolders": ["check-in"]
+  }
+}

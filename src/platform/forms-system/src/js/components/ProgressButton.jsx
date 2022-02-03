@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import uniqueId from 'lodash/uniqueId';
-import environment from 'platform/utilities/environment';
 
 /**
  * A component for the continue button to navigate through panels of questions.
@@ -42,10 +41,9 @@ class ProgressButton extends React.Component {
         }`}
         id={`${this.id}-continueButton`}
         onClick={this.props.onButtonClick}
+        onMouseDown={this.props.preventOnBlur}
         aria-label={this.props.ariaLabel || null}
-        aria-describedby={
-          !environment.isProduction() && this.props.ariaDescribedBy
-        }
+        aria-describedby={this.props.ariaDescribedBy}
       >
         {beforeText}
         {this.props.buttonText}
@@ -55,9 +53,18 @@ class ProgressButton extends React.Component {
   }
 }
 
+ProgressButton.defaultProps = {
+  preventOnBlur: e => {
+    e.preventDefault();
+  },
+};
+
 ProgressButton.propTypes = {
   // function that changes the path to the next panel or submit.
   onButtonClick: PropTypes.func,
+
+  // function that bypasses onBlur when clicking
+  preventOnBlur: PropTypes.func,
 
   // what is the button's label
   buttonText: PropTypes.string.isRequired,

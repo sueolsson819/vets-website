@@ -1,12 +1,111 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import recordEvent from 'platform/monitoring/record-event';
+
+import { api } from '../../../api';
+
+import { createInitFormAction } from '../../../actions/navigation';
+import { createSetSession } from '../../../actions/authentication';
+
+import { useSessionStorage } from '../../../hooks/useSessionStorage';
+import { useFormRouting } from '../../../hooks/useFormRouting';
+
+import { createAnalyticsSlug } from '../../../utils/analytics';
+import {
+  createForm,
+  getTokenFromLocation,
+} from '../../../utils/navigation/pre-check-in';
+
+import { URLS } from '../../../utils/navigation';
+import { isUUID, SCOPES } from '../../../utils/token-format-validator';
+import { setApp } from '../../../actions/universal';
+import { APP_NAMES } from '../../../utils/appConstants';
 
 export default function Index(props) {
+  const [loadMessage] = useState('Finding your appointment information');
+
+  const dispatch = useDispatch();
+  const initForm = useCallback(
+    (pages, firstPage) => {
+      dispatch(createInitFormAction({ pages, firstPage }));
+    },
+    [dispatch],
+  );
+
+  const setSession = useCallback(
+    (token, permissions) => {
+      dispatch(createSetSession({ token, permissions }));
+    },
+    [dispatch],
+  );
+
+  const { router } = props;
+  const { goToErrorPage, jumpToPage } = useFormRouting(router);
+  const { clearCurrentSession, setCurrentToken } = useSessionStorage();
+  useEffect(() => {
+    dispatch(setApp(APP_NAMES.PRE_CHECK_IN));
+  }, []);
   useEffect(
     () => {
-      const { router } = props;
-      router.push('verify');
+      const token = getTokenFromLocation(router.location);
+      if (!token) {
+        recordEvent({
+          event: createAnalyticsSlug('landing-page-launched-no-token'),
+        });
+        goToErrorPage();
+      }
+
+      if (!isUUID(token)) {
+        recordEvent({
+          event: createAnalyticsSlug('malformed-token'),
+        });
+        goToErrorPage();
+      }
+      if (token && isUUID(token)) {
+        // call the sessions api
+        api.v2
+          .getSession(token)
+          .then(session => {
+            // if successful, dispatch session data  into redux and current window
+
+            if (session.error || session.errors) {
+              clearCurrentSession(window);
+              goToErrorPage();
+            } else {
+              setCurrentToken(window, token);
+              const pages = createForm();
+              const firstPage = pages[0];
+              initForm(pages, firstPage);
+              setSession(token, session.permissions);
+              if (session.permissions === SCOPES.READ_FULL) {
+                // redirect if already full access
+                jumpToPage(URLS.INTRODUCTION);
+              } else {
+                // TODO: dispatch to redux
+                jumpToPage(URLS.VERIFY);
+              }
+            }
+          })
+          .catch(() => {
+            clearCurrentSession(window);
+            goToErrorPage();
+          });
+      }
     },
-    [props],
+    [
+      clearCurrentSession,
+      goToErrorPage,
+      initForm,
+      jumpToPage,
+      router,
+      setCurrentToken,
+      setSession,
+    ],
   );
-  return <></>;
+  return (
+    <>
+      <va-loading-indicator message={loadMessage} />
+    </>
+  );
 }

@@ -45,6 +45,7 @@ export default {
   SIDE_NAV: 'side-nav',
   THIRD_PARTY_APP_DIRECTORY: 'third-party-app-directory',
   VET_CENTER_HOURS: 'vet-center-hours',
+  VET_CENTER_HOURS_SATELLITE_LOCATIONS: 'vet-center-hours-satellite-locations',
   VET_CENTER_NEARBY: 'vet-center-nearby',
   VIEW_DEPENDENTS_CTA: 'view-dependents-CTA',
   VIEW_PAYMENT_HISTORY: 'view-payment-history',

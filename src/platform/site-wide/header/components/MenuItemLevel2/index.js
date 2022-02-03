@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // Relative imports.
+import recordEvent from 'platform/monitoring/record-event';
 import { deriveMenuItemID, formatMenuItems } from '../../helpers';
 import { updateSubMenuAction } from '../../containers/Menu/actions';
 
@@ -28,20 +29,18 @@ export const MenuItemLevel2 = ({ item, lastClickedMenuID, updateSubMenu }) => {
     return null;
   }
 
-  const toggleShowItems = () => {
+  const toggleShowItems = title => () => {
+    // Record event.
+    recordEvent({
+      event: 'nav-header-second-level',
+      'nav-header-action': `Navigation - Header - Open Second Level - ${title}`,
+    });
+
+    // Update the sub menu.
     updateSubMenu({
       id: menuItemID,
       menuSections: formatMenuItems(item?.links),
     });
-  };
-
-  const onButtonKeyDown = event => {
-    const isEnterKey = event.keyCode === 13;
-    const isSpaceKey = event.keyCode === 32;
-
-    if (isEnterKey || isSpaceKey) {
-      toggleShowItems();
-    }
   };
 
   return (
@@ -70,8 +69,7 @@ export const MenuItemLevel2 = ({ item, lastClickedMenuID, updateSubMenu }) => {
         <button
           className="header-menu-item-button vads-u-background-color--gray-lightest vads-u-display--flex vads-u-justify-content--space-between vads-u-width--full vads-u-text-decoration--none vads-u-margin--0 vads-u-padding--2 vads-u-color--link-default"
           id={menuItemID}
-          onKeyDown={onButtonKeyDown}
-          onMouseUp={toggleShowItems}
+          onClick={toggleShowItems(item?.title)}
           type="button"
         >
           {item?.title}

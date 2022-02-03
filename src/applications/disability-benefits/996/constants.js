@@ -19,9 +19,9 @@ export const GET_HELP_REVIEW_REQUEST_URL =
 export const PROFILE_URL = '/profile';
 export const LEGACY_APPEALS_URL = '/decision-reviews/legacy-appeals/';
 
-// 8622 is the ID of the <li> wrapping the "Find addresses for other benefit
-// types" accordion
-export const BENEFIT_OFFICES_URL = `${HLR_INFO_URL}#find-addresses`;
+// 8622 is the ID of the <va-accordion-item> with a header of the "Find
+// addresses for other benefit types"
+export const BENEFIT_OFFICES_URL = `${HLR_INFO_URL}#find-addresses-for-other-benef-8622`;
 
 export const CONTESTABLE_ISSUES_API =
   '/higher_level_reviews/contestable_issues/';
@@ -65,6 +65,7 @@ export const FORMAT_READABLE = 'LL';
 // session storage keys
 export const SAVED_CLAIM_TYPE = 'hlrClaimType';
 export const WIZARD_STATUS = 'wizardStatus996';
+export const LAST_HLR_ITEM = 'lastHlrItem'; // focus management across pages
 
 export const MAX_SELECTIONS = 100;
 
@@ -80,6 +81,8 @@ const supportedBenefitTypes = [
   // 'insurance',
   // 'nca',
 ];
+
+export const LEGACY_TYPE = 'legacyAppeal';
 
 export const SUPPORTED_BENEFIT_TYPES = constants.benefitTypes.map(type => ({
   ...type,
