@@ -36,6 +36,11 @@ export const ELIGIBILITY = {
   CHAPTER1606: 'Chapter1606',
 };
 
+const ENROLLMENT_ENDPOINT = `${environment.API_URL}/meb_api/v0/enrollment`;
+export const FETCH_ENROLLMENT = 'FETCH_ENROLLMENT';
+export const FETCH_ENROLLMENT_SUCCESS = 'FETCH_ENROLLMENT_SUCCESS';
+export const FETCH_ENROLLMENT_FAILURE = 'FETCH_ENROLLMENT_FAILURE';
+
 const ONE_MINUTE_IN_THE_FUTURE = new Date(new Date().getTime() + 60000);
 const FIVE_SECONDS = 5000;
 
@@ -75,7 +80,8 @@ const poll = ({
 
     if (validate(response)) {
       return resolve(response.data);
-    } else if (new Date() >= endTime) {
+    }
+    if (new Date() >= endTime) {
       return resolve(timeoutResponse);
     }
 
@@ -133,6 +139,24 @@ export function fetchEligibility() {
       timeoutResponse,
       successDispatchType: FETCH_ELIGIBILITY_SUCCESS,
       failureDispatchType: FETCH_ELIGIBILITY_FAILURE,
+    });
+  };
+}
+
+export function fetchEnrollment() {
+  return async dispatch => {
+    dispatch({ type: FETCH_ENROLLMENT });
+    const timeoutResponse = {
+      veteranIsEligible: false,
+      chapter: [],
+    };
+
+    poll({
+      endpoint: ENROLLMENT_ENDPOINT,
+      dispatch,
+      timeoutResponse,
+      successDispatchType: FETCH_ENROLLMENT_SUCCESS,
+      failureDispatchType: FETCH_ENROLLMENT_FAILURE,
     });
   };
 }

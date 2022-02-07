@@ -1,5 +1,5 @@
-import formConfig from '../config/form';
 import { createSaveInProgressFormReducer } from 'platform/forms/save-in-progress/reducers';
+import formConfig from '../config/form';
 // import set from 'platform/utilities/data/set';
 
 import {
@@ -8,6 +8,8 @@ import {
   FETCH_CLAIM_STATUS_SUCCESS,
   FETCH_CLAIM_STATUS_FAILURE,
   FETCH_ELIGIBILITY_SUCCESS,
+  FETCH_ENROLLMENT_SUCCESS,
+  FETCH_ENROLLMENT_FAILURE,
 } from '../actions';
 
 const initialState = {
@@ -38,6 +40,12 @@ export default {
         return {
           ...state,
           eligibility: action?.response || {},
+        };
+      case FETCH_ENROLLMENT_SUCCESS:
+      case FETCH_ENROLLMENT_FAILURE:
+        return {
+          ...state,
+          enrollment: action.response || {},
         };
       default:
         return state;

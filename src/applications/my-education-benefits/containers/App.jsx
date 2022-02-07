@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setData } from 'platform/forms-system/src/js/actions';
@@ -6,7 +8,11 @@ import Breadcrumbs from '@department-of-veterans-affairs/component-library/Bread
 import RoutedSavableApp from 'platform/forms/save-in-progress/RoutedSavableApp';
 import formConfig from '../config/form';
 
-import { fetchPersonalInformation, fetchEligibility } from '../actions';
+import {
+  fetchPersonalInformation,
+  fetchEligibility,
+  fetchEnrollment,
+} from '../actions';
 
 export const App = ({
   // loggedIn,
@@ -20,6 +26,8 @@ export const App = ({
   firstName,
   getEligibility,
   eligibility,
+  enrollment,
+  getEnrollment,
 }) => {
   useEffect(
     () => {
@@ -39,6 +47,9 @@ export const App = ({
           ...formData,
           eligibility,
         });
+      }
+      if (!enrollment) {
+        getEnrollment();
       }
       // The following works and sets data after the initial form load.
       // However, we have to be careful to not wipe out manual from a saved form.
@@ -65,6 +76,8 @@ export const App = ({
       getPersonalInfo,
       getEligibility,
       eligibility,
+      enrollment,
+      getEnrollment,
     ],
   );
 
@@ -86,16 +99,18 @@ const mapStateToProps = state => {
   const formData = state.form?.data || {};
   const firstName = state.data?.formData?.data?.claimant?.firstName;
   const eligibility = state.data?.eligibility;
+  const enrollment = state.data?.enrollment;
   // const showNod = noticeOfDisagreementFeature(state);
   // const loggedIn = isLoggedIn(state);
   // const { toursOfDuty } = state;
-  return { formData, firstName, eligibility };
+  return { formData, firstName, eligibility, enrollment };
 };
 
 const mapDispatchToProps = {
   setFormData: setData,
   getPersonalInfo: fetchPersonalInformation,
   getEligibility: fetchEligibility,
+  getEnrollment: fetchEnrollment,
 };
 
 export default connect(
