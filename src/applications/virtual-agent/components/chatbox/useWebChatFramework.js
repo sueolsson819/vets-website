@@ -21,8 +21,7 @@ function checkForWebchat(setLoadingStatus, MAX_INTERVAL_CALL_COUNT, timeout) {
 const loadWebChat = () => {
   const script = document.createElement('script');
 
-  script.src =
-    'https://cdn.botframework.com/botframework-webchat/4.12.0/webchat-es5.js';
+  script.src = './2022-02-10_CdnFilesUpload/webchat-es5.js';
   script.crossOrigin = 'anonymous';
   script.dataset.testid = 'webchat-framework-script';
 
