@@ -15,6 +15,7 @@ import {
 import { toggleValues } from 'platform/site-wide/feature-toggles/selectors';
 import FEATURE_FLAG_NAMES from 'platform/utilities/feature-toggles/featureFlagNames';
 import PropTypes from 'prop-types';
+import { getAllPayments } from 'applications/disability-benefits/view-payments/actions';
 import recordEvent from '~/platform/monitoring/record-event';
 import { focusElement } from '~/platform/utilities/ui';
 import {
@@ -51,6 +52,7 @@ import HealthCare from './health-care/HealthCare';
 import CTALink from './CTALink';
 import BenefitPaymentsAndDebt from './benefit-payments-and-debts/BenefitPaymentsAndDebt';
 import DebtNotification from './notifications/DebtNotification';
+import DashboardWidgetWrapper from './DashboardWidgetWrapper';
 
 const renderWidgetDowntimeNotification = (downtime, children) => {
   if (downtime.status === externalServiceStatus.down) {
@@ -73,7 +75,12 @@ const renderWidgetDowntimeNotification = (downtime, children) => {
   return children;
 };
 
-const DashboardHeader = ({ showNotifications, debts, debtsError }) => {
+const DashboardHeader = ({
+  showNotifications,
+  debts,
+  debtsError,
+  paymentsError,
+}) => {
   return (
     <div>
       <h1
@@ -96,6 +103,17 @@ const DashboardHeader = ({ showNotifications, debts, debtsError }) => {
           });
         }}
       />
+      {paymentsError && (
+        <DashboardWidgetWrapper>
+          <div className="vads-u-display--flex vads-u-flex-direction--column large-screen:vads-u-flex--1 vads-u-margin-bottom--2p5">
+            <va-alert status="error" show-icon className="vads-u-margin-top--0">
+              We’re sorry. We can’t access some of your financial information
+              right now. We’re working to fix this problem. Please check back
+              later.
+            </va-alert>
+          </div>
+        </DashboardWidgetWrapper>
+      )}
       {showNotifications && (
         <div data-testid="dashboard-notifications">
           <DebtNotification debts={debts} hasError={debtsError} />
@@ -105,7 +123,7 @@ const DashboardHeader = ({ showNotifications, debts, debtsError }) => {
   );
 };
 
-BenefitPaymentsAndDebt.propTypes = {
+DashboardHeader.propTypes = {
   showNotifications: PropTypes.bool,
   debts: PropTypes.arrayOf(
     PropTypes.shape({
@@ -130,6 +148,7 @@ BenefitPaymentsAndDebt.propTypes = {
     }),
   ),
   debtsError: PropTypes.bool,
+  paymentsError: PropTypes.bool,
 };
 
 const Dashboard = ({
@@ -137,9 +156,12 @@ const Dashboard = ({
   fetchMilitaryInformation,
   fetchTotalDisabilityRating,
   getDebts,
+  getPayments,
   isLOA3,
   debts,
   debtsError,
+  payments,
+  paymentsError,
   showLoader,
   showMPIConnectionError,
   showNameTag,
@@ -181,6 +203,7 @@ const Dashboard = ({
         fetchMilitaryInformation();
         fetchTotalDisabilityRating();
         getDebts();
+        getPayments();
       }
     },
     [
@@ -189,6 +212,7 @@ const Dashboard = ({
       fetchMilitaryInformation,
       fetchTotalDisabilityRating,
       getDebts,
+      getPayments,
     ],
   );
 
@@ -224,6 +248,7 @@ const Dashboard = ({
               <DashboardHeader
                 debts={debts}
                 debtsError={debtsError}
+                paymentsError={paymentsError}
                 showNotifications={showNotifications}
               />
 
@@ -271,7 +296,11 @@ const Dashboard = ({
               {props.showHealthCare ? <HealthCare /> : null}
 
               {showBenefitPaymentsAndDebt ? (
-                <BenefitPaymentsAndDebt debts={debts} debtsError={debtsError} />
+                <BenefitPaymentsAndDebt
+                  debts={debts}
+                  debtsError={debtsError}
+                  payments={payments}
+                />
               ) : null}
 
               <ApplyForBenefits />
@@ -345,8 +374,10 @@ const mapStateToProps = state => {
     showNotInMPIError,
     showBenefitPaymentsAndDebt,
     showNotifications,
-    debts: state.fsr.debts || [],
-    debtsError: state.fsr.isError || false,
+    debts: state.allDebts.debts || [],
+    debtsError: state.allDebts.isError || false,
+    payments: state.allPayments.payments?.payments || [],
+    paymentsError: state.allPayments.error,
   };
 };
 
@@ -355,6 +386,7 @@ Dashboard.propTypes = {
   fetchMilitaryInformation: PropTypes.func,
   fetchTotalDisabilityRating: PropTypes.func,
   getDebts: PropTypes.func,
+  getPayments: PropTypes.func,
   isLOA3: PropTypes.bool,
   showLoader: PropTypes.bool,
   showMPIConnectionError: PropTypes.bool,
@@ -385,6 +417,19 @@ Dashboard.propTypes = {
       ),
     }),
   ),
+  paymentsError: PropTypes.bool,
+  payments: PropTypes.arrayOf(
+    PropTypes.shape({
+      payCheckAmount: PropTypes.string.isRequired,
+      payCheckDt: PropTypes.string.isRequired,
+      payCheckId: PropTypes.string.isRequired,
+      payCheckReturnFiche: PropTypes.string.isRequired,
+      payCheckType: PropTypes.string.isRequired,
+      paymentMethod: PropTypes.string.isRequired,
+      bankName: PropTypes.string.isRequired,
+      accountNumber: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 const mapDispatchToProps = {
@@ -392,6 +437,7 @@ const mapDispatchToProps = {
   fetchMilitaryInformation: fetchMilitaryInformationAction,
   fetchTotalDisabilityRating: fetchTotalDisabilityRatingAction,
   getDebts: fetchDebts,
+  getPayments: getAllPayments,
 };
 
 export default connect(

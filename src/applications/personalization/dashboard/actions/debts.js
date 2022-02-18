@@ -1,8 +1,10 @@
 import { apiRequest } from '~/platform/utilities/api';
 import environment from '~/platform/utilities/environment';
 import { deductionCodes } from '~/applications/debt-letters/const/deduction-codes';
-import { DEBTS_FETCH_SUCCESS } from '~/applications/debt-letters/actions';
-import { FSR_API_ERROR } from '~/applications/financial-status-report/constants/actionTypes';
+import {
+  DEBTS_FETCH_SUCCESS,
+  DEBTS_FETCH_FAILURE,
+} from '~/applications/debt-letters/actions';
 
 export const fetchDebts = () => async dispatch => {
   const getDebts = () => {
@@ -21,6 +23,12 @@ export const fetchDebts = () => async dispatch => {
 
   try {
     const response = await getDebts();
+    if (response.errors) {
+      return dispatch({
+        type: DEBTS_FETCH_FAILURE,
+        error: response,
+      });
+    }
     const approvedDeductionCodes = Object.keys(deductionCodes);
     // filter approved deductionCodes &&
     // remove debts that have a current amount owed of 0
@@ -35,7 +43,7 @@ export const fetchDebts = () => async dispatch => {
     });
   } catch (error) {
     dispatch({
-      type: FSR_API_ERROR,
+      type: DEBTS_FETCH_FAILURE,
       error,
     });
     throw new Error(error);

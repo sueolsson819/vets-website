@@ -4,28 +4,26 @@ import CTALink from '../CTALink';
 import recordEvent from '~/platform/monitoring/record-event';
 
 export const Debts = ({ debts, hasError }) => {
-  const debtsCount = debts?.length || 0;
-  if (debtsCount < 1) {
-    return (
-      <p className="vads-u-margin-bottom--3 vads-u-margin-top--0">
-        Your total VA debt balance is $0.
-      </p>
-    );
-  }
   if (hasError) {
     return (
       <div className="vads-u-display--flex vads-u-flex-direction--column large-screen:vads-u-flex--1 vads-u-margin-bottom--2p5">
-        <va-alert
-          status="error"
-          background-only
-          show-icon
-          className="vads-u-margin-top--0"
-          closeable
-        >
+        <va-alert status="error" show-icon className="vads-u-margin-top--0">
           We’re sorry. We can’t access some of your financial information right
           now. We’re working to fix this problem. Please check back later.
         </va-alert>
       </div>
+    );
+  }
+
+  const debtsCount = debts?.length || 0;
+  if (debtsCount < 1) {
+    return (
+      <p
+        className="vads-u-margin-bottom--3 vads-u-margin-top--0"
+        data-testid="no-debts-text"
+      >
+        Your total VA debt balance is $0.
+      </p>
     );
   }
 

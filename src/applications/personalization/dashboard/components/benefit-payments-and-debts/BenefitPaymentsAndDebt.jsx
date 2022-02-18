@@ -1,28 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAllPayments } from 'applications/disability-benefits/view-payments/actions';
 import moment from 'moment';
 import { Payments } from './Payments';
 import DashboardWidgetWrapper from '../DashboardWidgetWrapper';
 import IconCTALink from '../IconCTALink';
 import recordEvent from '~/platform/monitoring/record-event';
-
 import Debts from './Debts';
 
-const BenefitPaymentsAndDebt = ({
-  payments,
-  debts,
-  debtsError,
-  paymentsError,
-  getPayments,
-}) => {
-  useEffect(
-    () => {
-      getPayments();
-    },
-    [getPayments],
-  );
+const BenefitPaymentsAndDebt = ({ payments, debts, debtsError }) => {
   const lastPayment = payments
     ?.filter(p => moment(p.payCheckDt) > moment().subtract(31, 'days'))
     .sort((a, b) => moment(b.payCheckDt) - moment(a.payCheckDt))[0];
@@ -42,19 +28,17 @@ const BenefitPaymentsAndDebt = ({
             (payments || debts) && (
               <DashboardWidgetWrapper>
                 {debts && <Debts debts={debts} hasError={debtsError} />}
-                {payments && (
-                  <Payments
-                    lastPayment={lastPayment}
-                    hasError={paymentsError}
-                  />
-                )}
+                {payments && <Payments lastPayment={lastPayment} />}
               </DashboardWidgetWrapper>
             )}
           <DashboardWidgetWrapper>
             {!lastPayment && (
               <>
                 {debts && <Debts debts={debts} hasError={debtsError} />}
-                <p className="vads-u-margin-bottom--3 vads-u-margin-top--0">
+                <p
+                  className="vads-u-margin-bottom--3 vads-u-margin-top--0"
+                  data-testid="dashboard-no-payments-text"
+                >
                   You haven’t received any payments in the past 30 days.
                 </p>
               </>
@@ -113,21 +97,7 @@ const BenefitPaymentsAndDebt = ({
   );
 };
 
-// eslint-disable-next-line no-unused-vars
-const mapStateToProps = state => {
-  return {
-    payments: state.allPayments.payments?.payments || [],
-    paymentsError: state.allPayments.error,
-  };
-};
-
-const mapDispatchToProps = {
-  // todo: not being used yet as this is a mockup
-  getPayments: getAllPayments,
-};
-
 BenefitPaymentsAndDebt.propTypes = {
-  paymentsError: PropTypes.bool,
   debtsError: PropTypes.bool,
   payments: PropTypes.arrayOf(
     PropTypes.shape({
@@ -165,7 +135,4 @@ BenefitPaymentsAndDebt.propTypes = {
   ),
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(BenefitPaymentsAndDebt);
+export default connect(null)(BenefitPaymentsAndDebt);
