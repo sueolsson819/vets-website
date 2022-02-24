@@ -36,13 +36,19 @@ export const IntroductionPage = ({ user, route }) => {
     return response;
   };
 
+  const handleClaimantLoadError = async err => {
+    if (err) {
+      window.location.href =
+        '/education/apply-for-education-benefits/application/1990/';
+    }
+  };
+
   useEffect(
     () => {
       const checkIfClaimantExists = async () =>
         apiRequest(CLAIMANT_INFO_ENDPOINT)
           .then(response => handleRedirect(response))
-          .catch(err => err);
-
+          .catch(err => handleClaimantLoadError(err));
       focusElement('.va-nav-breadcrumbs-list');
       if (user.login.currentlyLoggedIn) {
         checkIfClaimantExists().then(res => res);
