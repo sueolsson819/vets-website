@@ -554,6 +554,10 @@ $medium-phone-screen: 375px;
   clear: both;
 }
 
+._acs._acsbadge--default {
+  background-color: $color-black !important;
+}
+
 .media-list-images {
   @media (min-width: $small-screen) {
     max-width: 50%;

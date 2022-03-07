@@ -30,6 +30,12 @@ ruleTester.run('prefer-web-component-library', rule, {
     //     const phone = () => (<Telephone contact={phoneContact} />)
     //   `,
     // },
+    {
+      code: `
+        import Breadcrumbs from '../../components/Breadcrumbs';
+        const breadcrumbs = () => (<Breadcrumbs><a href="#home">Home</a></Breadcrumbs>)
+      `,
+    },
   ],
   invalid: [
     {
@@ -93,6 +99,26 @@ ruleTester.run('prefer-web-component-library', rule, {
     {
       code: mockFile(
         'Telephone',
+        'const phone = () => (<Telephone pattern="###" contact={phoneContact} />)',
+      ),
+      errors: [
+        {
+          suggestions: [
+            {
+              desc: 'Migrate component',
+              output: mockFile(
+                'Telephone',
+                'const phone = () => (<va-telephone  contact={phoneContact} />)',
+              ),
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: mockFile(
+        'Telephone',
         'const phone = () => (<Telephone contact={"800-456-5432"} />)',
       ),
       errors: [
@@ -141,6 +167,45 @@ ruleTester.run('prefer-web-component-library', rule, {
               output: mockFile(
                 'Telephone',
                 'const phone = () => (<va-telephone not-clickable contact={myContact} />)',
+              ),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: mockFile(
+        'Breadcrumbs',
+        'const breadcrumb = () => (<Breadcrumbs><a href="/">Home</a></Breadcrumbs>)',
+      ),
+      errors: [
+        {
+          suggestions: [
+            {
+              desc: 'Migrate component',
+              output: mockFile(
+                'Breadcrumbs',
+                'const breadcrumb = () => (<va-breadcrumbs><a href="/">Home</a></va-breadcrumbs>)',
+              ),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: mockFile(
+        'Breadcrumbs',
+        'const breadcrumb = () => (<Breadcrumbs selectedFacility={selectedResult}><a href="/">Home</a></Breadcrumbs>)',
+      ),
+      errors: [
+        {
+          suggestions: [
+            {
+              desc: 'Migrate component',
+              // There is an extra space which would get removed on an autosave format
+              output: mockFile(
+                'Breadcrumbs',
+                'const breadcrumb = () => (<va-breadcrumbs ><a href="/">Home</a></va-breadcrumbs>)',
               ),
             },
           ],

@@ -1,14 +1,16 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
 import { focusElement, getScrollOptions } from 'platform/utilities/ui';
-import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
-
 import { connect } from 'react-redux';
+import environment from 'platform/utilities/environment';
 import classNames from 'classnames';
 import scrollTo from 'platform/utilities/ui/scrollTo';
 import recordEvent from 'platform/monitoring/record-event';
-import environment from 'platform/utilities/environment';
 import ResultCard from './ResultCard';
 import { mapboxToken } from '../../utils/mapboxToken';
 import { MapboxInit, MAX_SEARCH_AREA_DISTANCE, TABS } from '../../constants';
@@ -35,13 +37,13 @@ function LocationSearchResults({
   dispatchFetchSearchByLocationCoords,
   filtersChanged,
   smallScreen,
+  landscape,
   dispatchMapChanged,
 }) {
   const { inProgress } = search;
   const { count, results } = search.location;
   const { location, streetAddress } = search.query;
   const map = useRef(null);
-  // const mapContainer = useRef(null);
   const [markers, setMarkers] = useState([]);
   const [mapState, setMapState] = useState({ changed: false, distance: null });
   const [usedFilters, setUsedFilters] = useState(filtersChanged);
@@ -51,8 +53,6 @@ function LocationSearchResults({
   const [activeMarker, setActiveMarker] = useState(null);
   const [myLocation, setMyLocation] = useState(null);
   const usingUserLocation = () => {
-    if (environment.isProduction()) return true;
-
     const currentPositions = document.getElementsByClassName(
       'current-position',
     );
@@ -151,9 +151,7 @@ function LocationSearchResults({
    */
   useEffect(
     () => {
-      // if (mapContainer.current) {
       setupMap();
-      // }
     },
     [mobileTab],
   );
@@ -167,9 +165,16 @@ function LocationSearchResults({
   const markerIsVisible = institution => {
     const { latitude, longitude } = institution;
     const lngLat = new mapboxgl.LngLat(longitude, latitude);
-
+    if (environment.isProduction()) {
+      return (
+        smallScreen ||
+        !mapState.changed ||
+        map.current.getBounds().contains(lngLat)
+      );
+    }
     return (
       smallScreen ||
+      landscape ||
       !mapState.changed ||
       map.current.getBounds().contains(lngLat)
     );
@@ -235,12 +240,21 @@ function LocationSearchResults({
     markerElement.innerText = index + 1;
 
     const popup = new mapboxgl.Popup();
-    popup.on('open', () => {
-      if (smallScreen) {
-        setMobileTab(LIST_TAB);
-      }
-      setMarkerClicked(name);
-    });
+    if (environment.isProduction()) {
+      popup.on('open', () => {
+        if (smallScreen) {
+          setMobileTab(LIST_TAB);
+        }
+        setMarkerClicked(name);
+      });
+    } else {
+      popup.on('open', () => {
+        if (smallScreen || landscape) {
+          setMobileTab(LIST_TAB);
+        }
+        setMarkerClicked(name);
+      });
+    }
 
     if (locationBounds) {
       locationBounds.extend(lngLat);
@@ -283,16 +297,17 @@ function LocationSearchResults({
    */
   useEffect(
     () => {
-      map.current = null;
+      if (smallScreen || landscape) {
+        map.current = null;
+      }
       setupMap();
-
       markers.forEach(marker => marker.remove());
       setActiveMarker(null);
 
       let visibleResults = [];
       const mapMarkers = [];
 
-      if (smallScreen) {
+      if (smallScreen || landscape) {
         visibleResults = results;
       }
 
@@ -341,7 +356,7 @@ function LocationSearchResults({
       setUsedFilters(getFiltersChanged(filters));
       setMarkers(mapMarkers);
     },
-    [results, smallScreen, mobileTab],
+    [results, smallScreen, landscape, mobileTab],
   );
 
   /**
@@ -456,7 +471,7 @@ function LocationSearchResults({
               <FilterYourResults />
             </>
           )}
-          {smallScreen && (
+          {(smallScreen || landscape) && (
             <MobileFilterControls className="vads-u-margin-top--2" />
           )}
         </>
@@ -605,10 +620,10 @@ function LocationSearchResults({
     const containerClassNames = classNames({
       'vads-u-display--none': !visible,
     });
+    const isMobileDevice = smallScreen || landscape;
     return (
       <div className={containerClassNames}>
         <map
-          // ref={mapContainer}
           id="mapbox-gl-container"
           aria-label="Find VA locations on an interactive map"
           aria-describedby="map-instructions"
@@ -616,12 +631,13 @@ function LocationSearchResults({
           role="region"
         >
           {mapState.changed &&
-            !smallScreen && (
+            !isMobileDevice && (
               <div
                 id="search-area-control-container"
                 className="mapboxgl-ctrl-top-center"
               >
                 <button
+                  type="button"
                   id="search-area-control"
                   className="usa-button"
                   onClick={searchArea}
@@ -642,10 +658,12 @@ function LocationSearchResults({
   const smallScreenCount = search.location.count;
 
   // returns content ordered and setup for smallScreens
-  if (smallScreen) {
+  if (smallScreen || landscape) {
     return (
       <div className="location-search vads-u-padding--1">
-        {inProgress && <LoadingIndicator message="Loading search results..." />}
+        {inProgress && (
+          <va-loading-indicator message="Loading search results..." />
+        )}
         {!inProgress && (
           <>
             <div>
@@ -680,7 +698,9 @@ function LocationSearchResults({
   return (
     <div className="location-search vads-u-padding-top--1">
       <div className="usa-width-one-third">
-        {inProgress && <LoadingIndicator message="Loading search results..." />}
+        {inProgress && (
+          <va-loading-indicator message="Loading search results..." />
+        )}
         {!inProgress && (
           <>
             {!hasSearchLatLong && (
@@ -717,6 +737,17 @@ const mapDispatchToProps = {
   dispatchUpdateEligibilityAndFilters: updateEligibilityAndFilters,
   dispatchFetchSearchByLocationCoords: fetchSearchByLocationCoords,
   dispatchMapChanged: mapChanged,
+};
+
+LocationSearchResults.propTypes = {
+  dispatchFetchSearchByLocationCoords: PropTypes.func,
+  dispatchMapChanged: PropTypes.func,
+  dispatchUpdateEligibilityAndFilters: PropTypes.func,
+  filters: PropTypes.object,
+  filtersChanged: PropTypes.bool,
+  preview: PropTypes.object,
+  search: PropTypes.object,
+  smallScreen: PropTypes.bool,
 };
 
 export default connect(

@@ -785,6 +785,12 @@ describe('VAOS Appointment service', () => {
             createMockAppointmentByVersion({
               version: 2,
               ...data,
+              requestedPeriods: [
+                {
+                  start: `${moment().format('YYYY-MM-DD')}T00:00:00Z`,
+                  end: `${moment().format('YYYY-MM-DD')}T11:59:59Z`,
+                },
+              ],
             }),
           ],
         },
@@ -831,11 +837,6 @@ describe('VAOS Appointment service', () => {
         [
           { op: 'remove', path: ['description'] },
           { op: 'remove', path: ['practitioners'] },
-          {
-            op: 'replace',
-            path: ['created'],
-            value: moment().format('YYYY-MM-DD'),
-          },
           { op: 'remove', path: ['vaos', 'facilityData'] },
         ],
         'Transformers for v0 and v2 appointment request data are out of sync',
@@ -846,6 +847,7 @@ describe('VAOS Appointment service', () => {
       // Given CC appointment request
       const data = {
         id: '1234',
+        cancellable: true,
         email: 'test@va.gov',
         phone: '2125551212',
         kind: 'cc',
@@ -880,6 +882,12 @@ describe('VAOS Appointment service', () => {
             createMockAppointmentByVersion({
               version: 2,
               ...data,
+              requestedPeriods: [
+                {
+                  start: `${moment().format('YYYY-MM-DD')}T00:00:00Z`,
+                  end: `${moment().format('YYYY-MM-DD')}T11:59:59Z`,
+                },
+              ],
             }),
           ],
         },
@@ -926,11 +934,6 @@ describe('VAOS Appointment service', () => {
         [
           { op: 'remove', path: ['description'] },
           { op: 'remove', path: ['practitioners'] },
-          {
-            op: 'replace',
-            path: ['created'],
-            value: moment().format('YYYY-MM-DD'),
-          },
           {
             op: 'replace',
             path: ['type', 'coding', 0, 'code'],
@@ -1035,11 +1038,6 @@ describe('VAOS Appointment service', () => {
         [
           { op: 'remove', path: ['description'] },
           { op: 'remove', path: ['practitioners'] },
-          {
-            op: 'replace',
-            path: ['created'],
-            value: moment().format('YYYY-MM-DD'),
-          },
           { op: 'remove', path: ['vaos', 'facilityData'] },
         ],
         'Transformers for v0 and v2 appointment request data are out of sync',
