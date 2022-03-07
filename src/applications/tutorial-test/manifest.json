@@ -1,0 +1,6 @@
+{
+  "appName": "tutorial-test",
+  "entryFile": "./app-entry.jsx",
+  "entryName": "tutorial-test",
+  "rootUrl": "/tutorial-test"
+}
