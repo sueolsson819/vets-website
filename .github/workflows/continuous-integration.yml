@@ -124,6 +124,9 @@ jobs:
         env:
           MOCHA_FILE: test-results/unit-tests.xml
           APP_FOLDERS: ${{ steps.get-changed-apps.outputs.app_folders }}
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
 
       - name: Archive unit test results
         if: ${{ always() }}
