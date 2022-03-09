@@ -1,8 +1,8 @@
 const fs = require('fs');
 const webpackPreprocessor = require('@cypress/webpack-preprocessor');
-const { table } = require('table');
-const { DefinePlugin } = require('webpack');
-const { ProvidePlugin } = require('webpack');
+const table = require('table').table;
+const DefinePlugin = require('webpack').DefinePlugin;
+const ProvidePlugin = require('webpack').ProvidePlugin;
 
 const tableConfig = {
   columns: {
