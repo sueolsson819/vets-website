@@ -379,7 +379,7 @@ jobs:
             node_modules
 
       - name: Instrument code
-        run: npm cy:run:report
+        run: npm run cy:run:report
 
       - name: List changed files
         id: changed-files
