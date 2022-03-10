@@ -82,8 +82,9 @@
   // Share polyfills between files.
   "env": {
     "test": {
-      "presets": ["@babel/env"],
+      "presets": ["@babel/preset-react", "@babel/env"],
       "plugins": [
+        "transform-class-properties",
         "istanbul",
         "dynamic-import-node",
         "transform-react-remove-prop-types",
