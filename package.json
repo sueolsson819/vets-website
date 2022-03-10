@@ -18,7 +18,7 @@
     "cy:my-testrail-helper": "node ./script/cypress-testrail-helper",
     "cy:my-testrail-run": "cypress run --config-file config/my-cypress-testrail.json",
     "cy:open": "cypress open --config-file config/cypress.json",
-    "cy:run": "cypress run --config-file config/cypress.json",
+    "cy:run": "nyc cypress run --config-file config/cypress.json",
     "cy:run:report": "nyc --reporter=html cypress run",
     "cy:test:docker": "node script/run-cypress-tests-docker.js",
     "cy:test:gha": "node script/run-cypress-tests-gha.js",
