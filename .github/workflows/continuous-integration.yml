@@ -116,17 +116,11 @@ jobs:
         env:
           CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.all_changed_files }}
 
-      - name: Instrument code
-        run: npx nyc instrument --compact=false src instrumented
-
       - name: Run unit tests
         run: yarn test:unit ${APP_FOLDERS:+"{script,$APP_FOLDERS}/**/*.unit.spec.js?(x)"} --coverage
         env:
           MOCHA_FILE: test-results/unit-tests.xml
           APP_FOLDERS: ${{ steps.get-changed-apps.outputs.app_folders }}
-      
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
 
       - name: Archive unit test results
         if: ${{ always() }}
@@ -384,6 +378,12 @@ jobs:
             .cache/yarn
             node_modules
 
+      - name: Instrument code
+        run: npx nyc instrument --compact=false src instrumented
+
+      - name: View instrumented code summary
+        run: nyc --reporter=text-summary cypress run --headless
+
       - name: List changed files
         id: changed-files
         run: |
@@ -480,6 +480,9 @@ jobs:
           STEP: ${{ matrix.ci_node_index }}
           TESTS: ${{ needs.cypress-tests-prep.outputs.tests }}
           APP_URLS: ${{ needs.cypress-tests-prep.outputs.app_urls }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
 
       - name: Archive test videos
         uses: actions/upload-artifact@v2
