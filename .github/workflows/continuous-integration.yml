@@ -381,9 +381,6 @@ jobs:
       - name: Instrument code
         run: npx nyc instrument --compact=false src instrumented
 
-      - name: View instrumented code summary
-        run: nyc --reporter=text-summary cypress run --headless
-
       - name: List changed files
         id: changed-files
         run: |
