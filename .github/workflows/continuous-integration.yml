@@ -378,9 +378,6 @@ jobs:
             .cache/yarn
             node_modules
 
-      - name: Instrument code
-        run: npx nyc instrument --compact=false src .nyc_output
-
       - name: List changed files
         id: changed-files
         run: |
