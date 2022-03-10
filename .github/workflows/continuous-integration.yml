@@ -379,7 +379,7 @@ jobs:
             node_modules
 
       - name: Instrument code
-        run: npm run cy:run:report
+        run: npx nyc instrument --compact=false src .nyc_output
 
       - name: List changed files
         id: changed-files
