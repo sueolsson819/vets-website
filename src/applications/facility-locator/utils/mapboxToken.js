@@ -1,2 +1,5 @@
-export const mapboxToken =
-  'pk.eyJ1IjoiYWRob2MiLCJhIjoiY2l2Y3VlNWp5MDBoNjJvbHZ2a3R4bnN2cyJ9.2LoUhwRmz2OiCtRirnc6Pw';
+import environment from 'platform/utilities/environment';
+
+export const mapboxToken = environment.isProduction()
+  ? process.env.REACT_APP_VALocatorProd
+  : process.env.REACT_APP_VALocatorDev;
