@@ -39,51 +39,28 @@ const formConfig = {
           path: 'first-page',
           title: 'First Page',
           uiSchema: {
-            fieldOnAnotherPage: {
-              'ui:title': 'Field on Another Page',
+            email: {
+              'ui:title': 'Email',
             },
+            confirmEmail: {
+              'ui:title': 'Confirm email',
+            },
+            'ui:validations': [
+              (errors, field) => {
+                if (field.email !== field.confirmEmail) {
+                  errors.confirmEmail.addError('Sorry, your emails must match');
+                }
+              },
+            ],
           },
           schema: {
             type: 'object',
             properties: {
-              fieldOnAnotherPage: {
+              email: {
                 type: 'string',
               },
-            },
-          },
-        },
-        page2: {
-          path: 'second-page',
-          title: 'Second Page',
-          depends: form => form.fieldOnAnotherPage !== 'test',
-          uiSchema: {
-            myField: {
-              'ui:title': 'My field',
-              'ui:widget': 'yesNo',
-              'ui:options': {
-                labels: {
-                  Y: 'Yes, this is what I want',
-                  N: 'No, I do not want this',
-                },
-                widgetProps: {
-                  Y: { 'data-info': 'yes' },
-                  N: { 'data-info': 'no' },
-                },
-                // Only added to the radio when it is selected
-                // a11y requirement: aria-describedby ID's *must* exist on the page;
-                // and we conditionally add content based on the selection
-                selectedProps: {
-                  Y: { 'aria-describedby': 'some_id' },
-                  N: { 'aria-describedby': 'different_id' },
-                },
-              },
-            },
-          },
-          schema: {
-            type: 'object',
-            properties: {
-              myField: {
-                type: 'boolean',
+              confirmEmail: {
+                type: 'string',
               },
             },
           },
