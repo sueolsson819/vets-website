@@ -1,5 +1,3 @@
-import environment from 'platform/utilities/environment';
+import { mapboxTokenPlatform } from 'platform/utilities/mapboxTokenPlatform';
 
-export const mapboxToken = environment.isProduction()
-  ? process.env.REACT_APP_VALocatorProd
-  : process.env.REACT_APP_VALocatorDev;
+export const mapboxToken = mapboxTokenPlatform;
