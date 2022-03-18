@@ -15,7 +15,8 @@ const parameterStore = new AWS.SSM();
 const tokenFail = err => {
   // eslint-disable-next-line no-console
   console.log(err);
-  return () => process.env.MAPBOX_FALLBACK;
+  return () =>
+    process.env.MAPBOX_FALLBACK || 'Utilizing Fallback; Fallback not found';
 };
 
 const tokenSuccess = data => {
@@ -23,6 +24,8 @@ const tokenSuccess = data => {
     if (params.length < 1 || params[0]?.Value) {
       return tokenFail('Param doesnt exist!!');
     }
+    // eslint-disable-next-line no-console
+    console.log(`AWS TOKEN SUCCESS!! ${mapboxParam}:${params[0].Value}`); // for testing
     return () => params[0].Value;
   });
 };
@@ -37,15 +40,6 @@ const getParam = param => {
     });
   });
 };
-
-/*
-  export const mapboxTokenPlatform = async () => {
-    const awaited = await getParam(mapboxParam)
-      .then(data => tokenSuccess(data))
-      .catch(err => tokenFail(err));
-    console.log(awaited);
-    return awaited;
-}; */
 
 export const mapboxTokenPlatform = getParam(mapboxParam)
   .then(data => tokenSuccess(data))
