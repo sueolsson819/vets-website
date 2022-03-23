@@ -36,37 +36,60 @@ const formConfig = {
       title: 'Chapter 1',
       pages: {
         page1: {
-          path: 'first-page',
-          title: 'First Page',
+          path: 'chapter-1-page-1',
+          title: 'Chapter 1 First Page',
           uiSchema: {
-            email: {
-              'ui:title': 'Email',
+            passPhrase: {
+              'ui:title': 'Pass Phrase',
             },
-            confirmEmail: {
-              'ui:title': 'Confirm email',
-            },
-            'ui:validations': [
-              (errors, field) => {
-                if (field.email !== field.confirmEmail) {
-                  errors.confirmEmail.addError('Sorry, your emails must match');
-                }
-              },
-            ],
           },
           schema: {
             type: 'object',
             properties: {
-              email: {
-                type: 'string',
-              },
-              confirmEmail: {
-                type: 'string',
-              },
+              passPhrase: { type: 'string' },
+            },
+          },
+        },
+        page2: {
+          path: 'chapter-1-page-2',
+          title: 'Chapter 1 Second Page',
+          depends: formData => {
+            return formData.passPhrase === 'open sesame';
+          },
+          uiSchema: {
+            coolField: {
+              'ui:title': 'Cool Conditional Page',
+            },
+          },
+          schema: {
+            type: 'object',
+            properties: {
+              coolField: { type: 'string' },
             },
           },
         },
       },
     },
+    // chapter2: {
+    //   title: 'Chapter 2',
+    //   pages: {
+    //     page1: {
+    //       path: 'chapter-2-first-page',
+    //       title: 'Chapter 2 First Page',
+    //       uiSchema: {
+    //         awesomeField: {
+    //           'ui:title': 'Awesome Field',
+    //         },
+    //       },
+    //       schema: {
+    //         type: 'object',
+    //         properties: {
+    //           awesomeField: { type: 'string' },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
 };
 
