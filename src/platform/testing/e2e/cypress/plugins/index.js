@@ -16,6 +16,7 @@ module.exports = async (on, config) => {
     require('@cypress/code-coverage/task')(on, config);
     on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'));
   }
+  require('dd-trace/ci/cypress/plugin')(on, config);
 
   let appRegistry;
   if (fs.existsSync('../content-build/src/applications/registry.json')) {

@@ -16,6 +16,15 @@ env:
   BUILDTYPE: vagovprod
 
 jobs:
+  datadog-integration-test:
+    name: datadog-integration-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Datadog Agent
+        uses: DataDog/agent-github-action@v1
+        with:
+          api_key: ${{ secrets.DD_API_KEY }}
+
   set-commit-sha:
     name: Set commit sha
     runs-on: ubuntu-latest
@@ -210,6 +219,8 @@ jobs:
           STEP: ${{ matrix.ci_node_index }}
           TESTS: ${{ needs.cypress-tests-prep.outputs.tests }}
           APP_URLS: ''
+          DD_ENV: ci
+          DD_SERVICE: vets-website
 
       - name: View code coverage summary
         run: npx nyc report --reporter=text-summary
