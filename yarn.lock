@@ -2692,6 +2692,13 @@
     element-closest "^3.0.1"
     foundation-sites "5"
 
+"@department-of-veterans-affairs/formulate@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/formulate/-/formulate-0.0.1.tgz#527e88a20db707088b50a81ed3047778e68cc18f"
+  integrity sha512-FuWxwRTjuJdbpNm5KlhwJzB8/HuzwxeV6kkCJwGf3NCbkfOXXF6L+Glx8kWFMmrIuPUPjwYV2N5+/QZGWk8N9Q==
+  dependencies:
+    lodash "^4.17.21"
+
 "@department-of-veterans-affairs/generator-vets-website@^3.5.4":
   version "3.5.4"
   resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/generator-vets-website/-/generator-vets-website-3.5.4.tgz#503dd6c0e1affb00a30a685b906ae571f0d1c431"
@@ -2725,10 +2732,8 @@
     react-is "^17.0.1"
     setimmediate "^1.0.5"
 
-"@department-of-veterans-affairs/va-forms-system-core@0.0.1":
+"@department-of-veterans-affairs/va-forms-system-core@file:../va-forms-system-core":
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/va-forms-system-core/-/va-forms-system-core-0.0.1.tgz#b6e6014559f14909f60d5168d7960d5a79c7e80c"
-  integrity sha512-/ClrjMJKy7uTo667y0TxWHjBZg161tmJUM2m2U32vHEwyGC/EdAZN/4wGRBOTMGtMgaH9UCgA2Da7j4ppcktwA==
   dependencies:
     lodash "^4.17.21"
     react-router-dom "^5.3.0"
@@ -8815,7 +8820,8 @@ eslint-plugin-unicorn@^35.0.0:
     semver "^7.3.5"
 
 "eslint-plugin-va@link:./script/eslint-plugin-va":
-  version "1.1.0"
+  version "0.0.0"
+  uid ""
 
 eslint-scope@5.1.1, eslint-scope@^5.1.1:
   version "5.1.1"
