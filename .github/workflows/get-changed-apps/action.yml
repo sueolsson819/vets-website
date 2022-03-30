@@ -25,9 +25,9 @@ runs:
       shell: bash
       run: |
         if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-          echo "CHANGED_FILE_PATHS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})" >> $GITHUB_ENV
+          echo "CHANGED_FILE_PATHS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})<<EOF" >> $GITHUB_ENV
         else
-          echo "CHANGED_FILE_PATHS=$(git diff --name-only origin/master...)" >> $GITHUB_ENV
+          echo "CHANGED_FILE_PATHS=$(git diff --name-only origin/master...)<<EOF" >> $GITHUB_ENV
         fi
 
     - name: Get entry names
