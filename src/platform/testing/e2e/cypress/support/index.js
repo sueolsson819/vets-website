@@ -5,6 +5,7 @@ import 'cypress-real-events/support';
 import '@cypress/code-coverage/support';
 import addContext from 'mochawesome/addContext';
 import './commands';
+import 'dd-trace/ci/cypress/support';
 
 Cypress.on('window:before:load', window => {
   // Workaround to allow Cypress to intercept requests made with the Fetch API.
