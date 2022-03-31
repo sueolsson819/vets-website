@@ -35,19 +35,19 @@ runs:
     - name: Get entry names
       id: get-entry-names
       shell: bash
-      run: echo ::set-output name=entry-names::$(node script/github-actions/get-changed-apps.js --output-type entry)
+      run: echo ::set-output name=entry-names::$(node ../../../script/github-actions/get-changed-apps.js --output-type entry)
 
     - name: Get folders
       id: get-folders
       shell: bash
-      run: echo ::set-output name=folders::$(node script/github-actions/get-changed-apps.js --output-type folder)
+      run: echo ::set-output name=folders::$(node ../../../script/github-actions/get-changed-apps.js --output-type folder)
 
     - name: Get Slack groups
       id: get-slack-groups
       shell: bash
-      run: echo ::set-output name=slack-groups::$(node script/github-actions/get-changed-apps.js --output-type slack-group)
+      run: echo ::set-output name=slack-groups::$(node ../../../script/github-actions/get-changed-apps.js --output-type slack-group)
 
     - name: Get URLs
       id: get-urls
       shell: bash
-      run: echo ::set-output name=urls::$(node script/github-actions/get-changed-apps.js --output-type url)
+      run: echo ::set-output name=urls::$(node ../../../script/github-actions/get-changed-apps.js --output-type url)
