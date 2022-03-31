@@ -2,6 +2,7 @@ import { expect } from 'chai';
 
 import { SET_SESSION, createSetSession } from './index';
 
+// Test grouped app build
 describe('check-in', () => {
   describe('actions', () => {
     describe('createSetSession', () => {
