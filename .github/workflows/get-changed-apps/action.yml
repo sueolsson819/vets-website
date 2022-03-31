@@ -40,7 +40,7 @@ runs:
     - name: Get folders
       id: get-folders
       shell: bash
-      run: echo ::set-output name=folders::$(node script/github-actions/get-changed-apps.js --output-type folders)
+      run: echo ::set-output name=folders::$(node script/github-actions/get-changed-apps.js --output-type folder)
 
     - name: Get Slack groups
       id: get-slack-groups
