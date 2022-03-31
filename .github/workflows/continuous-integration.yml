@@ -45,7 +45,7 @@ jobs:
             .cache/yarn
             node_modules
 
-      - name: Get app entry names of changed files
+      - name: Get allowed applications data
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
         if: ${{ github.ref != 'refs/heads/master' || matrix.buildtype != 'vagovprod' }}
@@ -83,7 +83,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     outputs:
-      app_folders: ${{ steps.get-changed-apps.outputs.app_folders }}
+      app_folders: ${{ steps.get-changed-apps.outputs.folders }}
 
     steps:
       - name: Checkout
@@ -104,26 +104,15 @@ jobs:
       - name: Create test results folder
         run: mkdir -p test-results
 
-      - name: List changed files
-        id: changed-files
-        run: |
-          if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-            echo ::set-output name=all_changed_files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
-          else
-            echo ::set-output name=all_changed_files::$(git diff --name-only origin/master...)
-          fi
-
-      - name: Get app folders for changed files
+      - name: Get allowed applications data
+        uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
-        run: echo ::set-output name=app_folders::$(node script/github-actions/get-changed-apps.js --output-type folder)
-        env:
-          CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Run unit tests
         run: yarn test:unit ${APP_FOLDERS:+"{script,$APP_FOLDERS}/**/*.unit.spec.js?(x)"} --coverage
         env:
           MOCHA_FILE: test-results/unit-tests.xml
-          APP_FOLDERS: ${{ steps.get-changed-apps.outputs.app_folders }}
+          APP_FOLDERS: ${{ steps.get-changed-apps.outputs.folders }}
 
       - name: Archive unit test results
         if: ${{ always() }}
