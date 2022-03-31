@@ -1,7 +1,17 @@
 name: Get changed applications
 description: Get information on changed applications
 
+inputs:
+  delimiter:
+    description: 'Delimiter to use for string output'
+    required: false
+    default: ','
+
 outputs:
+  file-paths:
+    description: 'Path of changed files'
+    value: ${{ steps.get-changed-files.outputs.changed-files }}
+
   entry-names:
     description: 'Entry names of changed applications'
     value: ${{ steps.get-entry-names.outputs.entry-names }}
@@ -21,17 +31,8 @@ outputs:
 runs:
   using: composite
   steps:
-    # - name: Get changed file paths
-    #   shell: bash
-    #   run: |
-    #     if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-    #       echo "CHANGED_FILE_PATHS=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | tr '\n' ' ')" >> $GITHUB_ENV
-    #     else
-    #       echo "CHANGED_FILE_PATHS=$(git diff --name-only origin/master... | tr '\n' ' ')" >> $GITHUB_ENV
-    #     fi
-
     - name: Get changed file paths
-      id: changed-files
+      id: get-changed-files
       shell: bash
       run: |
         if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
@@ -43,27 +44,27 @@ runs:
     - name: Get entry names
       id: get-entry-names
       shell: bash
-      run: echo ::set-output name=entry-names::$(node script/github-actions/get-changed-apps.js --output-type entry)
+      run: echo ::set-output name=entry-names::$(node script/github-actions/get-changed-apps.js --output-type entry -d ${{ inputs.delimiter }})
       env:
-          CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.changed-files }}
+          CHANGED_FILE_PATHS: ${{ steps.get-changed-files.outputs.changed-files }}
 
     - name: Get folders
       id: get-folders
       shell: bash
-      run: echo ::set-output name=folders::$(node script/github-actions/get-changed-apps.js --output-type folder)
+      run: echo ::set-output name=folders::$(node script/github-actions/get-changed-apps.js --output-type folder -d ${{ inputs.delimiter }})
       env:
-          CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.changed-files }}
+          CHANGED_FILE_PATHS: ${{ steps.get-changed-files.outputs.changed-files }}
 
     - name: Get Slack groups
       id: get-slack-groups
       shell: bash
-      run: echo ::set-output name=slack-groups::$(node script/github-actions/get-changed-apps.js --output-type slack-group)
+      run: echo ::set-output name=slack-groups::$(node script/github-actions/get-changed-apps.js --output-type slack-group -d ${{ inputs.delimiter }})
       env:
-          CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.changed-files }}
+          CHANGED_FILE_PATHS: ${{ steps.get-changed-files.outputs.changed-files }}
 
     - name: Get URLs
       id: get-urls
       shell: bash
-      run: echo ::set-output name=urls::$(node script/github-actions/get-changed-apps.js --output-type url)
+      run: echo ::set-output name=urls::$(node script/github-actions/get-changed-apps.js --output-type url -d ${{ inputs.delimiter }})
       env:
-          CHANGED_FILE_PATHS: ${{ steps.changed-files.outputs.changed-files }}
+          CHANGED_FILE_PATHS: ${{ steps.get-changed-files.outputs.changed-files }}
