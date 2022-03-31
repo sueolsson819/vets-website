@@ -2694,18 +2694,6 @@
     react-scroll "^1.7.16"
     react-transition-group "^1.0.0"
 
-"@department-of-veterans-affairs/component-library@^3.3.4":
-  version "3.11.4"
-  resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/component-library/-/component-library-3.11.4.tgz#21152d67a1b9234736a449beaa424ceb17aa056e"
-  integrity sha512-ZUEyUqRoLxc3c79DRyhE0Pn0Zy0mdYdpdrMAEDRd94UXTN1HDhni273o3tVLT/+8R7WbRTQd6S3f1f4FG9SI6g==
-  dependencies:
-    "@department-of-veterans-affairs/react-components" "3.3.3"
-    "@department-of-veterans-affairs/web-components" "0.20.1"
-    date-fns-tz "^1.1.1"
-    react-focus-on "^3.5.1"
-    react-scroll "^1.7.16"
-    react-transition-group "^1.0.0"
-
 "@department-of-veterans-affairs/formation@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/formation/-/formation-7.0.0.tgz#02246372198dcf50ffd98e7dcf075e6a0ebe0db3"
@@ -2725,10 +2713,10 @@
     yeoman-generator "^5.6.1"
     yosay "^2.0.2"
 
-"@department-of-veterans-affairs/react-components@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/react-components/-/react-components-5.0.0.tgz#e6acbe585aff5c04335756d18ce4567844d76d1a"
-  integrity sha512-WnKN1MrdDRsxMwUA/G0xhe+J7yoF9H1hS/lnOKr1SPi6pxmxWBsYLtjMETeT68dbE/otvBs6HgZIIsK5GlmHGA==
+"@department-of-veterans-affairs/react-components@3.3.3":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@department-of-veterans-affairs/react-components/-/react-components-3.3.3.tgz#7830f316a1854338a48a985394e938224453515d"
+  integrity sha512-KBwiMLIZsfdU02wtdWUXgbNwofnkv7Jbc7V/bk8shOmNDBeAu5FtHGKnxxBXqBHxHfQAghRTWDCC7FN1JDef5g==
   dependencies:
     classnames "^2.2.6"
     lodash "^4.17.15"
