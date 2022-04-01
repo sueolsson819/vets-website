@@ -18,7 +18,7 @@ env:
 jobs:
   datadog-integration-test:
     name: datadog-integration-test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Datadog Agent
         uses: datadog/agent-github-action@v1
