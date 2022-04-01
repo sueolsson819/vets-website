@@ -1,0 +1,6 @@
+{
+  "appName": "Site Status Page",
+  "entryFile": "./status-entry.jsx",
+  "entryName": "status",
+  "rootUrl": "/status"
+}
