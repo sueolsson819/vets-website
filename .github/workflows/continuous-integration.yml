@@ -19,7 +19,7 @@ jobs:
     name: Build
     runs-on: self-hosted
     outputs:
-      app_entries: ${{ steps.get-changed-apps.outputs.entry-names }}
+      app_entries: ${{ steps.get-changed-apps.outputs.entry_names }}
 
     env:
       NODE_EXTRA_CA_CERTS: /etc/ssl/certs/VA-Internal-S2-RCA1-v1.cer.pem
@@ -45,7 +45,7 @@ jobs:
             .cache/yarn
             node_modules
 
-      - name: Get allowed applications data
+      - name: Get changed applications
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
         if: ${{ github.ref != 'refs/heads/master' || matrix.buildtype != 'vagovprod' }}
@@ -54,7 +54,7 @@ jobs:
         run: yarn build --verbose --buildtype=${{ matrix.buildtype }} ${ENTRY:+"--entry=$ENTRY"}
         timeout-minutes: 30
         env:
-          ENTRY: ${{ steps.get-changed-apps.outputs.entry-names }}
+          ENTRY: ${{ steps.get-changed-apps.outputs.entry_names }}
 
       - name: Generate build details
         run: |
@@ -104,7 +104,7 @@ jobs:
       - name: Create test results folder
         run: mkdir -p test-results
 
-      - name: Get allowed applications data
+      - name: Get changed applications
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
 
@@ -221,7 +221,7 @@ jobs:
       - name: Create test results folder
         run: mkdir -p test-results
 
-      - name: Get allowed applications data
+      - name: Get changed applications
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
         with: 
@@ -296,12 +296,12 @@ jobs:
             .cache/yarn
             node_modules
 
-      - name: Get allowed applications data
+      - name: Get changed applications
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
 
       - name: Audit dependencies
-        if: steps.get-changed-apps.outputs.entry-names == ''
+        if: steps.get-changed-apps.outputs.entry_names == ''
         run: yarn security-check
 
   linting:
@@ -324,7 +324,7 @@ jobs:
             .cache/yarn
             node_modules
 
-      - name: Get allowed applications data
+      - name: Get changed applications
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
         with: 
@@ -977,7 +977,7 @@ jobs:
       ]
 
     env:
-      IS_SINGLE_APP_BUILD: ${{ matrix.buildtype != 'vagovprod' && needs.build.outputs.entry-names != '' }}
+      IS_SINGLE_APP_BUILD: ${{ matrix.buildtype != 'vagovprod' && needs.build.outputs.entry_names != '' }}
 
     # Archive should still run even when linting is skipped (as in PRs).
     # This if overrides the dependency on linting success to include skipped.
@@ -1120,7 +1120,7 @@ jobs:
 
       - name: Deploy
         run: |
-          if [[ -n "${{ needs.build.outputs.entry-names }}" ]]; then
+          if [[ -n "${{ needs.build.outputs.entry_names }}" ]]; then
             ./script/github-actions/partial-deploy.sh -s $SRC -d $DEST -a $ASSET_DEST -v
           else
             ./script/github-actions/deploy.sh -s $SRC -d $DEST -a $ASSET_DEST -v
@@ -1157,7 +1157,7 @@ jobs:
             .cache/yarn
             node_modules
 
-      - name: Get allowed applications data
+      - name: Get changed applications
         uses: ./.github/workflows/get-changed-apps
         id: get-changed-apps
         with: 
@@ -1167,7 +1167,7 @@ jobs:
         uses: ./.github/workflows/slack-notify
         continue-on-error: true
         with:
-          payload: '{"attachments": [{"color": "#FF0800","blocks": [{"type": "section","text": {"type": "mrkdwn","text": "${{steps.get-changed-apps.outputs.slack-groups}} vets-website master branch CI failed!: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}>"}}]}]}'
+          payload: '{"attachments": [{"color": "#FF0800","blocks": [{"type": "section","text": {"type": "mrkdwn","text": "${{steps.get-changed-apps.outputs.slack_groups}} vets-website master branch CI failed!: <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}>"}}]}]}'
           channel_id: ${{ env.VETS_WEBSITE_CHANNEL_ID }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
