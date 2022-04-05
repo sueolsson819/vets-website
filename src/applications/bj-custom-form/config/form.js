@@ -6,7 +6,7 @@ import IntroductionPage from '../containers/IntroductionPage';
 import ConfirmationPage from '../containers/ConfirmationPage';
 
 import CustomPage from '../containers/CustomPage';
-// import CustomPageReview from '../containers/CustomPageReview';
+import CustomPageReview from '../containers/CustomPageReview';
 
 // const { } = fullSchema.properties;
 
@@ -67,7 +67,7 @@ const formConfig = {
           path: 'my-schemaless-page',
           title: 'Bypassing the SchemaForm',
           CustomPage,
-          // CustomPageReview,
+          CustomPageReview,
           schema: {
             type: 'object',
             properties: {
