@@ -126,7 +126,12 @@ if (process.env.CHANGED_FILE_PATHS) {
   );
 
   Object.keys(appOutputs).forEach(output =>
-    core.setOutput(output, appOutputs[output].join(core.getInput('delimiter'))),
+    core.setOutput(
+      output,
+      appOutputs[output].join(
+        core.getInput('delimiter', { trimWhitespace: false }),
+      ),
+    ),
   );
 
   // const options = commandLineArgs([
