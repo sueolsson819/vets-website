@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-console */
 const fs = require('fs');
 const find = require('find');
 const path = require('path');
-const commandLineArgs = require('command-line-args');
+const core = require('@actions/core');
+// const commandLineArgs = require('command-line-args');
 
 const changedAppsConfig = require('../../config/changed-apps-build.json');
 
@@ -71,17 +73,13 @@ const getAllowedApps = (filePath, allow) => {
  * files are from apps on an allow list. If so, returns a comma-delimited string
  * of app entry names, relative paths, or URLs; otherwise returns an empty string.
  *
- * @param {string[]} filePaths - An array of relative file paths.
  * @param {Object} config - The changed apps build config.
+ * @param {string[]} filePaths - An array of relative file paths.
  * @param {string} outputType - Determines what app information should be returned.
  * @returns {string} A comma-delimited string of app entry names, relative paths or URLs.
  */
-const getChangedAppsString = (
-  filePaths,
-  config,
-  outputType = 'entry',
-  delimiter = ',',
-) => {
+const getChangedAppsString = (config, filePaths, outputType) => {
+  const apps = [];
   const appStrings = [];
 
   for (const filePath of filePaths) {
@@ -89,7 +87,9 @@ const getChangedAppsString = (
 
     if (allowedApps) {
       allowedApps.forEach(app => {
-        if (outputType === 'entry') {
+        if (!outputType) {
+          if (!apps.find(a => a.entryName === app.entryName)) apps.push(app);
+        } else if (outputType === 'entry') {
           appStrings.push(app.entryName);
         } else if (outputType === 'folder') {
           appStrings.push(app.rootPath);
@@ -102,7 +102,9 @@ const getChangedAppsString = (
     } else return '';
   }
 
-  return [...new Set(appStrings)].join(delimiter);
+  if (!outputType) return apps;
+
+  return [...new Set(appStrings)].join(',');
 };
 
 if (process.env.CHANGED_FILE_PATHS) {
@@ -110,24 +112,41 @@ if (process.env.CHANGED_FILE_PATHS) {
     filePath => filePath.startsWith('src/applications'),
   );
 
-  const options = commandLineArgs([
-    // Use the --output-type option to specify one of the following outputs:
-    // 'entry': The entry names of the changed apps.
-    // 'folder': The relative path of the changed apps root folders.
-    // 'url': The root URLs of the changed apps.
-    // 'slack-group': The Slack group of the app's team, specified in the config.
-    { name: 'output-type', type: String, defaultValue: 'entry' },
-    { name: 'delimiter', alias: 'd', type: String, defaultValue: ',' },
-  ]);
+  const changedApps = getChangedAppsString(changedAppsConfig, changedFilePaths);
 
-  const changedAppsString = getChangedAppsString(
-    changedFilePaths,
-    changedAppsConfig,
-    options['output-type'],
-    options.delimiter,
+  const appOutputs = changedApps.reduce(
+    (obj, app) => {
+      obj.entry_names.push(app.rootPath);
+      obj.folders.push(app.rootPath);
+      if (app.slackGroup) obj.slack_groups.push(app.slackGroup);
+      if (app.rootUrl) obj.urls.push(app.rootUrl);
+      return obj;
+    },
+    { entry_names: [], folders: [], slack_groups: [], urls: [] },
   );
 
-  console.log(changedAppsString);
+  Object.keys(appOutputs).forEach(output =>
+    core.setOutput(output, appOutputs[output].join(core.getInput('delimiter'))),
+  );
+
+  // const options = commandLineArgs([
+  //   // Use the --output-type option to specify one of the following outputs:
+  //   // 'entry': The entry names of the changed apps.
+  //   // 'folder': The relative path of the changed apps root folders.
+  //   // 'url': The root URLs of the changed apps.
+  //   // 'slack-group': The Slack group of the app's team, specified in the config.
+  //   { name: 'output-type', type: String },
+  //   { name: 'delimiter', alias: 'd', type: String, defaultValue: ',' },
+  // ]);
+
+  // const changedAppsString = getChangedAppsString(
+  //   changedFilePaths,
+  //   changedAppsConfig,
+  //   options['output-type'],
+  //   options.delimiter,
+  // );
+
+  // console.log(changedAppsString);
 }
 
 module.exports = {
