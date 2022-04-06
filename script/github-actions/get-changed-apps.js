@@ -107,13 +107,12 @@ const getChangedAppsString = (config, filePaths, outputType) => {
   return [...new Set(appStrings)].join(',');
 };
 
-core.setOutput('name', 'hello');
+const run = () => {
+  core.setOutput('namssse', 'hello');
 
-if (process.env.CHANGED_FILE_PATHS) {
   const changedFilePaths = process.env.CHANGED_FILE_PATHS.split(' ').filter(
     filePath => filePath.startsWith('src/applications'),
   );
-
   const changedApps = getChangedAppsString(changedAppsConfig, changedFilePaths);
 
   const appOutputs = changedApps.reduce(
@@ -135,7 +134,10 @@ if (process.env.CHANGED_FILE_PATHS) {
       ),
     ),
   );
+};
 
+if (process.env.CHANGED_FILE_PATHS) {
+  run();
   // const options = commandLineArgs([
   //   // Use the --output-type option to specify one of the following outputs:
   //   // 'entry': The entry names of the changed apps.
