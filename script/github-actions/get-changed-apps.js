@@ -125,6 +125,8 @@ if (process.env.CHANGED_FILE_PATHS) {
     { entry_names: [], folders: [], slack_groups: [], urls: [] },
   );
 
+  core.setOutput('name', 'hello');
+
   Object.keys(appOutputs).forEach(output =>
     core.setOutput(
       output,
