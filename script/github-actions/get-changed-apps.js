@@ -127,6 +127,7 @@ const run = () => {
   );
 
   console.log('App Outputs:', appOutputs);
+  core.setOutput('namssse', 'hello');
 
   Object.keys(appOutputs).forEach(output =>
     core.setOutput(
