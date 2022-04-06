@@ -126,6 +126,8 @@ const run = () => {
     { entry_names: [], folders: [], slack_groups: [], urls: [] },
   );
 
+  console.log('App Outputs:', appOutputs);
+
   Object.keys(appOutputs).forEach(output =>
     core.setOutput(
       output,
