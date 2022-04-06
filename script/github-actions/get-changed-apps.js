@@ -129,7 +129,7 @@ if (process.env.CHANGED_FILE_PATHS) {
     core.setOutput(
       output,
       appOutputs[output].join(
-        core.getInput('delimiter', { trimWhitespace: false }),
+        core.getInput('delimiter', { trimWhitespace: false } || ','),
       ),
     ),
   );
