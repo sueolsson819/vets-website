@@ -12,21 +12,21 @@ outputs:
     description: 'Path of changed files'
     value: ${{ steps.get-changed-files.outputs.changed_files }}
 
-  entry_names:
-    description: 'Entry names of changed applications'
-    # value: ${{ steps.get-entry-names.outputs.entry_names }}
+  # entry_names:
+  #   description: 'Entry names of changed applications'
+  #   # value: ${{ steps.get-entry-names.outputs.entry_names }}
 
-  folders:
-    description: 'Root folder paths of changed applications'
-    # value: ${{ steps.get-folders.outputs.folders }}
+  # folders:
+  #   description: 'Root folder paths of changed applications'
+  #   # value: ${{ steps.get-folders.outputs.folders }}
 
-  slack_groups:
-    description: 'Slack groups of changed applications'
-    # value: ${{ steps.get-slack-groups.outputs.slack_groups }}
+  # slack_groups:
+  #   description: 'Slack groups of changed applications'
+  #   # value: ${{ steps.get-slack-groups.outputs.slack_groups }}
 
-  urls:
-    description: 'Root URLs of changed applications'
-    # value: ${{ steps.get-urls.outputs.urls }}
+  # urls:
+  #   description: 'Root URLs of changed applications'
+  #   # value: ${{ steps.get-urls.outputs.urls }}
 
 runs:
   using: composite
