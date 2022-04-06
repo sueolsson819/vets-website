@@ -107,6 +107,8 @@ const getChangedAppsString = (config, filePaths, outputType) => {
   return [...new Set(appStrings)].join(',');
 };
 
+core.setOutput('name', 'hello');
+
 if (process.env.CHANGED_FILE_PATHS) {
   const changedFilePaths = process.env.CHANGED_FILE_PATHS.split(' ').filter(
     filePath => filePath.startsWith('src/applications'),
@@ -124,8 +126,6 @@ if (process.env.CHANGED_FILE_PATHS) {
     },
     { entry_names: [], folders: [], slack_groups: [], urls: [] },
   );
-
-  core.setOutput('name', 'hello');
 
   Object.keys(appOutputs).forEach(output =>
     core.setOutput(
