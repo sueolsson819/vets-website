@@ -137,28 +137,30 @@ const run = () => {
   });
 };
 
-if (process.env.CHANGED_FILE_PATHS) {
-  run();
-  // const options = commandLineArgs([
-  //   // Use the --output-type option to specify one of the following outputs:
-  //   // 'entry': The entry names of the changed apps.
-  //   // 'folder': The relative path of the changed apps root folders.
-  //   // 'url': The root URLs of the changed apps.
-  //   // 'slack-group': The Slack group of the app's team, specified in the config.
-  //   { name: 'output-type', type: String },
-  //   { name: 'delimiter', alias: 'd', type: String, defaultValue: ',' },
-  // ]);
+run();
 
-  // const changedAppsString = getChangedAppsString(
-  //   changedFilePaths,
-  //   changedAppsConfig,
-  //   options['output-type'],
-  //   options.delimiter,
-  // );
+// if (process.env.CHANGED_FILE_PATHS) {
+//   run();
+//   // const options = commandLineArgs([
+//   //   // Use the --output-type option to specify one of the following outputs:
+//   //   // 'entry': The entry names of the changed apps.
+//   //   // 'folder': The relative path of the changed apps root folders.
+//   //   // 'url': The root URLs of the changed apps.
+//   //   // 'slack-group': The Slack group of the app's team, specified in the config.
+//   //   { name: 'output-type', type: String },
+//   //   { name: 'delimiter', alias: 'd', type: String, defaultValue: ',' },
+//   // ]);
 
-  // console.log(changedAppsString);
-}
+//   // const changedAppsString = getChangedAppsString(
+//   //   changedFilePaths,
+//   //   changedAppsConfig,
+//   //   options['output-type'],
+//   //   options.delimiter,
+//   // );
 
-module.exports = {
-  getChangedAppsString,
-};
+//   // console.log(changedAppsString);
+// }
+
+// module.exports = {
+//   getChangedAppsString,
+// };
