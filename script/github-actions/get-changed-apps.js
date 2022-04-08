@@ -108,8 +108,6 @@ const getChangedAppsString = (config, filePaths, outputType) => {
 };
 
 const run = () => {
-  core.setOutput('namssse', 'hello');
-
   const changedFilePaths = process.env.CHANGED_FILE_PATHS.split(' ').filter(
     filePath => filePath.startsWith('src/applications'),
   );
@@ -117,7 +115,7 @@ const run = () => {
 
   const appOutputs = changedApps.reduce(
     (obj, app) => {
-      obj.entry_names.push(app.rootPath);
+      obj.entry_names.push(app.entryName);
       obj.folders.push(app.rootPath);
       if (app.slackGroup) obj.slack_groups.push(app.slackGroup);
       if (app.rootUrl) obj.urls.push(app.rootUrl);
@@ -126,17 +124,17 @@ const run = () => {
     { entry_names: [], folders: [], slack_groups: [], urls: [] },
   );
 
-  console.log('App Outputs:', appOutputs);
-  core.setOutput('namssse', 'hello');
+  // console.log('App Outputs:', appOutputs);
 
-  Object.keys(appOutputs).forEach(output =>
+  Object.keys(appOutputs).forEach(output => {
+    const outputs = [...new Set(appOutputs[output])];
     core.setOutput(
       output,
-      appOutputs[output].join(
-        core.getInput('delimiter', { trimWhitespace: false } || ','),
+      outputs.join(
+        core.getInput('delimiter', { trimWhitespace: false }) || ' ',
       ),
-    ),
-  );
+    );
+  });
 };
 
 if (process.env.CHANGED_FILE_PATHS) {
