@@ -108,60 +108,63 @@ const getChangedAppsString = (config, filePaths, outputType) => {
 };
 
 const run = () => {
-  const changedFilePaths = process.env.CHANGED_FILE_PATHS.split(' ').filter(
-    filePath => filePath.startsWith('src/applications'),
-  );
-  const changedApps = getChangedAppsString(changedAppsConfig, changedFilePaths);
+  core.setOutput('app_entries', 'vaos');
+  // const changedFilePaths = process.env.CHANGED_FILE_PATHS.split(' ').filter(
+  //   filePath => filePath.startsWith('src/applications'),
+  // );
+  // const changedApps = getChangedAppsString(changedAppsConfig, changedFilePaths);
 
-  const appOutputs = changedApps.reduce(
-    (obj, app) => {
-      obj.entry_names.push(app.entryName);
-      obj.folders.push(app.rootPath);
-      if (app.slackGroup) obj.slack_groups.push(app.slackGroup);
-      if (app.rootUrl) obj.urls.push(app.rootUrl);
-      return obj;
-    },
-    { entry_names: [], folders: [], slack_groups: [], urls: [] },
-  );
-
-  // console.log('App Outputs:', appOutputs);
-  const delimiter =
-    core.getInput('delimiter', { trimWhitespace: false }) || ' ';
-
-  Object.keys(appOutputs).forEach(output => {
-    const outputs = [...new Set(appOutputs[output])];
-    // core.setOutput(
-    //   output,
-    //   outputs.join(
-    //     core.getInput('delimiter', { trimWhitespace: false }) || ' ',
-    //   ),
-    // );
-    console.log(`::set-output name=${output}::${outputs.join(delimiter)}`);
-  });
-};
-
-if (process.env.CHANGED_FILE_PATHS) {
-  run();
-  // const options = commandLineArgs([
-  //   // Use the --output-type option to specify one of the following outputs:
-  //   // 'entry': The entry names of the changed apps.
-  //   // 'folder': The relative path of the changed apps root folders.
-  //   // 'url': The root URLs of the changed apps.
-  //   // 'slack-group': The Slack group of the app's team, specified in the config.
-  //   { name: 'output-type', type: String },
-  //   { name: 'delimiter', alias: 'd', type: String, defaultValue: ',' },
-  // ]);
-
-  // const changedAppsString = getChangedAppsString(
-  //   changedFilePaths,
-  //   changedAppsConfig,
-  //   options['output-type'],
-  //   options.delimiter,
+  // const appOutputs = changedApps.reduce(
+  //   (obj, app) => {
+  //     obj.entry_names.push(app.entryName);
+  //     obj.folders.push(app.rootPath);
+  //     if (app.slackGroup) obj.slack_groups.push(app.slackGroup);
+  //     if (app.rootUrl) obj.urls.push(app.rootUrl);
+  //     return obj;
+  //   },
+  //   { entry_names: [], folders: [], slack_groups: [], urls: [] },
   // );
 
-  // console.log(changedAppsString);
-}
+  // // console.log('App Outputs:', appOutputs);
+  // const delimiter =
+  //   core.getInput('delimiter', { trimWhitespace: false }) || ' ';
 
-module.exports = {
-  getChangedAppsString,
+  // Object.keys(appOutputs).forEach(output => {
+  //   const outputs = [...new Set(appOutputs[output])];
+  //   // core.setOutput(
+  //   //   output,
+  //   //   outputs.join(
+  //   //     core.getInput('delimiter', { trimWhitespace: false }) || ' ',
+  //   //   ),
+  //   // );
+  //   console.log(`::set-output name=${output}::${outputs.join(delimiter)}`);
+  // });
 };
+
+run();
+
+// if (process.env.CHANGED_FILE_PATHS) {
+//   run();
+//   // const options = commandLineArgs([
+//   //   // Use the --output-type option to specify one of the following outputs:
+//   //   // 'entry': The entry names of the changed apps.
+//   //   // 'folder': The relative path of the changed apps root folders.
+//   //   // 'url': The root URLs of the changed apps.
+//   //   // 'slack-group': The Slack group of the app's team, specified in the config.
+//   //   { name: 'output-type', type: String },
+//   //   { name: 'delimiter', alias: 'd', type: String, defaultValue: ',' },
+//   // ]);
+
+//   // const changedAppsString = getChangedAppsString(
+//   //   changedFilePaths,
+//   //   changedAppsConfig,
+//   //   options['output-type'],
+//   //   options.delimiter,
+//   // );
+
+//   // console.log(changedAppsString);
+// }
+
+// module.exports = {
+//   getChangedAppsString,
+// };
