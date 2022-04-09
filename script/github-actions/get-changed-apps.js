@@ -141,7 +141,13 @@ const run = () => {
   // });
 };
 
-run();
+try {
+  console.log(`::set-output name=app_entries::vaos`);
+  core.setOutput('app_entries', 'check-in');
+} catch (error) {
+  core.setFailed(error.message);
+}
+// run();
 
 // if (process.env.CHANGED_FILE_PATHS) {
 //   run();
