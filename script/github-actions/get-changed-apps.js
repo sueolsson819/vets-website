@@ -108,7 +108,7 @@ const getChangedAppsString = (config, filePaths, outputType) => {
 };
 
 const run = () => {
-  core.setOutput('app_entries', 'vaos');
+  console.log(`::set-output name=app_entries::vaos`);
   // const changedFilePaths = process.env.CHANGED_FILE_PATHS.split(' ').filter(
   //   filePath => filePath.startsWith('src/applications'),
   // );
