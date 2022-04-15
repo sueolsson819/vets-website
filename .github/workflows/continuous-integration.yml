@@ -568,7 +568,7 @@ jobs:
           yarn_cache_folder: .cache/yarn
           path: |
             .cache/yarn
-            /github/home/.cache/Cypress
+            /home/runner/.cache/Cypress
             node_modules
 
       - name: Generate random port
