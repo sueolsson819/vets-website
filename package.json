@@ -373,5 +373,6 @@
     "punycode": "1.4.1",
     "**/cached-path-relative": "1.1.0",
     "**/moment": "^2.29.2"
-  }
+  },
+  "workspaces": ["platform/*", "site/*"]
 }
