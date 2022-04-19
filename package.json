@@ -242,6 +242,7 @@
     "svg-url-loader": "^7.1.1",
     "table": "^6.7.1",
     "terser-webpack-plugin": "^5.3.1",
+    "turbo": "^1.2.4",
     "url-loader": "^4.1.1",
     "webpack": "^5.70.0",
     "webpack-bundle-analyzer": "^4.5.0",
@@ -374,5 +375,9 @@
     "punycode": "1.4.1",
     "**/cached-path-relative": "1.1.0",
     "**/moment": "^2.29.2"
-  }
+  },
+  "workspaces": [
+      "src/platform/*",
+      "src/site/*"
+  ]
 }
