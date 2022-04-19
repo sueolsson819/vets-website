@@ -1,6 +1,12 @@
 {
   "packages": [
-    "packages/*"
+    "packages/*",
+    "src/platform/*",
+    "src/site/*"  
   ],
-  "version": "0.0.0"
+  "useWorkspaces":true,
+  "npmClient":"yarn",
+  "command":{
+  },
+  "version": "independent"
 }
