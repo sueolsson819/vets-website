@@ -377,7 +377,8 @@
     "**/moment": "^2.29.2"
   },
   "workspaces": [
-      "src/platform/*",
-      "src/site/*"
+    "src/platform/*",
+    "src/site/*",
+    "src/applications/*"
   ]
 }
