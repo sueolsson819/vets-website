@@ -2,11 +2,11 @@
   "packages": [
     "packages/*",
     "src/platform/*",
-    "src/site/*"  
+    "src/site/*",
+    "src/applications/*"
   ],
-  "useWorkspaces":true,
-  "npmClient":"yarn",
-  "command":{
-  },
+  "useWorkspaces": true,
+  "npmClient": "yarn",
+  "command": {},
   "version": "independent"
 }

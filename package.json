@@ -374,9 +374,10 @@
     "**/cached-path-relative": "1.1.0",
     "**/moment": "^2.29.2"
   },
-  "workspaces":[
+  "workspaces": [
     "packages/*",
     "src/platform/*",
-    "src/site/*"  
+    "src/site/*",
+    "src/applications/*"
   ]
 }
