@@ -382,6 +382,7 @@
   "workspaces": [
     "src/platform/*",
     "src/site/*",
+    "src/applications/*",
     "packages/*"
   ]
 }
