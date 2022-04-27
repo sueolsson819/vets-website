@@ -375,7 +375,9 @@
     "**/moment": "^2.29.2"
   },
   "workspaces": [
-    "src/platform/*",
-    "src/applications/*"
+    "src/applications/vaos",
+    "src/applications/burials",
+    "src/applications/lgy",
+    "src/applications/terms-and-conditions"
   ]
 }

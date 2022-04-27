@@ -1,0 +1,13 @@
+{
+    "name": "@vets-website-applications/burials",
+    "version": "0.0.1",
+    "scripts": {
+      "build":"echo Build script goes here...(pending)",
+      "test": "echo Test script goes here... (pending)"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3"
+    }
+}
