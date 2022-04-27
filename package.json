@@ -374,10 +374,16 @@
     "**/cached-path-relative": "1.1.0",
     "**/moment": "^2.29.2"
   },
-  "workspaces": [
+  "workspaces": {
+    "packages":[
     "src/applications/vaos",
     "src/applications/burials",
-    "src/applications/lgy",
-    "src/applications/terms-and-conditions"
-  ]
+    "src/applications/lgy/coe"
+    ],
+    "nohoist": [
+      "**/vaos/docdash", 
+      "**/vaos/@barebones/keycodes" 
+    ]
+  }
+
 }

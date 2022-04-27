@@ -1,4 +1,4 @@
-# Directories to ignore
+to# Directories to ignore
 node_modules/
 /build/
 logs/
