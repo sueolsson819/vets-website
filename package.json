@@ -241,6 +241,7 @@
     "svg-url-loader": "^7.1.1",
     "table": "^6.7.1",
     "terser-webpack-plugin": "^5.3.1",
+    "turbo": "^1.2.6",
     "url-loader": "^4.1.1",
     "webpack": "^5.70.0",
     "webpack-bundle-analyzer": "^4.5.0",
@@ -375,15 +376,14 @@
     "**/moment": "^2.29.2"
   },
   "workspaces": {
-    "packages":[
-    "src/applications/vaos",
-    "src/applications/burials",
-    "src/applications/lgy/coe"
+    "packages": [
+      "src/applications/vaos",
+      "src/applications/burials",
+      "src/applications/lgy/coe"
     ],
     "nohoist": [
-      "**/vaos/docdash", 
-      "**/vaos/@barebones/keycodes" 
+      "**/vaos/docdash",
+      "**/vaos/@barebones/keycodes"
     ]
   }
-
 }
