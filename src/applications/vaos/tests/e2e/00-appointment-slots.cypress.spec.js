@@ -29,7 +29,7 @@ describe('Direct schedule appointment slots', () => {
     cy.login(mockUser);
   });
 
-  it('should display open slots for the correct date for mountain timezone conversions', () => {
+  it.skip('should display open slots for the correct date for mountain timezone conversions', () => {
     const today = moment();
     const start = moment(today)
       // Set moment to 'utc' mode so formatting will contain 'Z' like api call
@@ -82,7 +82,7 @@ describe('Direct schedule appointment slots', () => {
     );
   });
 
-  it('should display open slots for the correct date for eastern timezone conversions', () => {
+  it.skip('should display open slots for the correct date for eastern timezone conversions', () => {
     const today = moment();
     const start = moment(today)
       // Set moment to 'utc' mode so formatting will contain 'Z' like api call
