@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "build": "echo Build script goes here...(pending)",
-    "test": "echo Test script goes here... (pending)"
+    "test": "echo Test script goes here... (pending)",
+    "demo":"echo DEMOING  $npm_package_name v $npm_package_version with TURBO and WORKSPACES"
   },
   "dependencies": {
     "@barebones/keycodes": "^1.0.1",

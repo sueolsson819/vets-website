@@ -64,3 +64,9 @@ script/cypress-testrail-helper/my-config.json
 
 # Ignore mochawesome report directory
 mochawesome-report/
+
+# for TurboRepo config
+ .turbo
+ build/**
+ dist/**
+ .next/**

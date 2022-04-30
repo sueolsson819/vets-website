@@ -61,7 +61,8 @@
     "update:schema": "./script/update-json-schema.sh",
     "watch": "node ./script/watch.js",
     "watch:no-server": "yarn build:webpack --watch --stats=minimal",
-    "watch:review": "node ./script/run-review-instance-api.js"
+    "watch:review": "node ./script/run-review-instance-api.js",
+    "demo":"echo DEMOING  $npm_package_name v $npm_package_version with TURBO and WORKSPACES"
   },
   "repository": {
     "type": "git",
