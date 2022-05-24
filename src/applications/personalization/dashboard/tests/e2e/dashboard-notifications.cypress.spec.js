@@ -107,10 +107,9 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.visit('my-va/');
       cy.wait([...beforeEachAliases, '@notifications2']);
       // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        1,
-      );
+      cy.findAllByTestId('dashboard-notification-alert')
+        .its('length')
+        .should('eq', 1);
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
     });
@@ -123,10 +122,9 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.visit('my-va/');
       cy.wait([...beforeEachAliases, '@notifications3']);
       // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        2,
-      );
+      cy.findAllByTestId('dashboard-notification-alert')
+        .its('length')
+        .should('eq', 2);
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root'); // First AXE-check already checked the whole
     });
@@ -174,10 +172,9 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.visit('my-va/');
       cy.wait([...beforeEachAliases, '@notifications6']);
       // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        1,
-      );
+      cy.findAllByTestId('dashboard-notification-alert')
+        .its('length')
+        .should('eq', 1);
       cy.get('va-alert')
         .shadow()
         .find('button.va-alert-close')
