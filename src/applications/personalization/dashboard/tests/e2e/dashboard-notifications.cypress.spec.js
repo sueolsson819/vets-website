@@ -37,7 +37,6 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.wait(['@featuresA', '@nameA', '@serviceA']);
     });
     it('the notifications does not show up - C13978', () => {
-      // make sure that the Notification section is not shown
       cy.findByTestId('dashboard-notifications').should('not.exist');
 
       // make the a11y check
@@ -87,7 +86,6 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications2']);
-      // cy.findByTestId('dashboard-notifications').should('exist');
       cy.findAllByTestId('dashboard-notification-alert').should(
         'have.length',
         1,
@@ -103,7 +101,6 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications3']);
-      // cy.findByTestId('dashboard-notifications').should('exist');
       cy.findAllByTestId('dashboard-notification-alert').should(
         'have.length',
         2,
@@ -154,7 +151,6 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
-      // cy.findByTestId('dashboard-notifications').should('exist');
       cy.findAllByTestId('dashboard-notification-alert').should(
         'have.length',
         1,
