@@ -9,10 +9,6 @@ import { mockUser } from '@@profile/tests/fixtures/users/user';
 import serviceHistory from '@@profile/tests/fixtures/service-history-success.json';
 import fullName from '@@profile/tests/fixtures/full-name-success.json';
 import featureFlagNames from 'platform/utilities/feature-toggles/featureFlagNames';
-import claimsSuccess from '@@profile/tests/fixtures/claims-success';
-import appealsSuccess from '@@profile/tests/fixtures/appeals-success';
-import disabilityRating from '@@profile/tests/fixtures/disability-rating-success.json';
-import { paymentsSuccessEmpty } from '../fixtures/test-payments-response';
 import {
   notificationsError,
   notificationSuccessDismissed,
@@ -31,10 +27,10 @@ describe('The My VA Dashboard - Notifications', () => {
           features: [],
         },
       }).as('featuresA');
-      cy.intercept('/v0/profile/service_history', serviceHistory).as(
+      cy.intercept('GET', '/v0/profile/service_history', serviceHistory).as(
         'serviceA',
       );
-      cy.intercept('/v0/profile/full_name', fullName).as('nameA');
+      cy.intercept('GET', '/v0/profile/full_name', fullName).as('nameA');
       mockLocalStorage();
       cy.login(mockUser);
       cy.visit('my-va/');
@@ -49,15 +45,6 @@ describe('The My VA Dashboard - Notifications', () => {
     });
   });
   describe('when the feature is not hidden', () => {
-    const beforeEachAliases = [
-      '@featuresB',
-      '@nameB',
-      '@serviceB',
-      '@paymentsB',
-      '@claimsB',
-      '@appealsB',
-      '@ratingB',
-    ];
     Cypress.config({ defaultCommandTimeout: 12000 });
     beforeEach(() => {
       cy.intercept('GET', '/v0/feature_toggles*', {
@@ -71,28 +58,21 @@ describe('The My VA Dashboard - Notifications', () => {
           ],
         },
       }).as('featuresB');
-      cy.intercept('/v0/profile/service_history', serviceHistory).as(
+      cy.intercept('GET', '/v0/profile/service_history', serviceHistory).as(
         'serviceB',
       );
-      cy.intercept('/v0/profile/payment_history', paymentsSuccessEmpty()).as(
-        'paymentsB',
-      );
-      cy.intercept('/v0/profile/full_name', fullName).as('nameB');
-      cy.intercept('/v0/evss_claims_async', claimsSuccess()).as('claimsB');
-      cy.intercept('/v0/appeals', appealsSuccess()).as('appealsB');
-      cy.intercept(
-        '/v0/disability_compensation_form/rating_info',
-        disabilityRating,
-      ).as('ratingB');
+      cy.intercept('GET', '/v0/profile/full_name', fullName).as('nameB');
       mockLocalStorage();
     });
     it('and they have no notifications - C13979', () => {
-      cy.intercept('/v0/onsite_notifications', notificationsSuccessEmpty()).as(
-        'notifications1',
-      );
+      cy.intercept(
+        'GET',
+        '/v0/onsite_notifications',
+        notificationsSuccessEmpty(),
+      ).as('notifications1');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait([...beforeEachAliases, '@notifications1']);
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
       cy.findByTestId('dashboard-notifications').should('not.exist');
 
       // make the a11y check
@@ -100,16 +80,18 @@ describe('The My VA Dashboard - Notifications', () => {
     });
     it('and they have a notification - C13025', () => {
       cy.intercept(
+        'GET',
         '/v0/onsite_notifications',
         notificationSuccessNotDismissed(),
       ).as('notifications2');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait([...beforeEachAliases, '@notifications2']);
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications2']);
       // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert')
-        .its('length')
-        .should('eq', 1);
+      cy.findAllByTestId('dashboard-notification-alert').should(
+        'have.length',
+        1,
+      );
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
     });
@@ -120,11 +102,12 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications3');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait([...beforeEachAliases, '@notifications3']);
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications3']);
       // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert')
-        .its('length')
-        .should('eq', 2);
+      cy.findAllByTestId('dashboard-notification-alert').should(
+        'have.length',
+        2,
+      );
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root'); // First AXE-check already checked the whole
     });
@@ -135,19 +118,19 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications4');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait([...beforeEachAliases, '@notifications4']);
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
       cy.findByTestId('dashboard-notifications').should('not.exist');
 
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
     });
     it('and they have a notification error - C16722', () => {
-      cy.intercept('/v0/onsite_notifications', notificationsError()).as(
+      cy.intercept('GET', '/v0/onsite_notifications', notificationsError()).as(
         'notifications5',
       );
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait([...beforeEachAliases, '@notifications5']);
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
       cy.findByTestId('dashboard-notifications-error').should('exist');
 
       // make the a11y check
@@ -170,11 +153,12 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('patch');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait([...beforeEachAliases, '@notifications6']);
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
       // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert')
-        .its('length')
-        .should('eq', 1);
+      cy.findAllByTestId('dashboard-notification-alert').should(
+        'have.length',
+        1,
+      );
       cy.get('va-alert')
         .shadow()
         .find('button.va-alert-close')
