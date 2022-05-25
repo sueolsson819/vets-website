@@ -1,5 +1,5 @@
 {
-  "name": "@vets-website-applications/lgy-coe",
+  "name": "@department-of-veterans-affairs/applications-lgy-coe",
   "version": "0.0.1",
   "scripts": {
     "build": "echo Build script goes here",

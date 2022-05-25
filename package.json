@@ -381,8 +381,8 @@
     "src/applications/lgy/coe"
     ],
     "nohoist": [
-      "**/vaos/docdash", 
-      "**/vaos/@barebones/keycodes" 
+      "**/applications-vaos/docdash", 
+      "**/applications-vaos/@barebones/keycodes" 
     ]
   }
 
