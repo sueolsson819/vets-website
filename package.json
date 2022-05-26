@@ -380,11 +380,13 @@
     "src/applications/burials",
     "src/applications/lgy/coe",
 
-    "src/platform"
+    "src/platform",
+    "src/platform/startup"
+
     ],
     "nohoist": [
-      "**/applications-vaos/docdash", 
-      "**/applications-vaos/@barebones/keycodes" 
+      "**/applications-vaos/docdash",
+      "**/applications-vaos/@barebones/keycodes"
     ]
   }
 
