@@ -379,6 +379,7 @@
     "src/applications/vaos",
     "src/applications/burials",
     "src/applications/lgy/coe"
+    
     ],
     "nohoist": [
       "**/applications-vaos/docdash", 
