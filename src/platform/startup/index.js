@@ -86,6 +86,7 @@ const showLocalNotification = (title, body, swRegistration) => {
   const options = {
     body,
     // here you can add more properties like icon, image, vibrate, etc.
+    icon: '/img/vic-va-seal.png',
   };
   swRegistration.showNotification(title, options);
 };

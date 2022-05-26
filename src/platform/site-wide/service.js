@@ -14,6 +14,7 @@ self.addEventListener('push', event => {
   event.waitUntil(
     self.registration.showNotification(notificationData.title, {
       body: notificationData.body,
+      icon: '/img/vic-va-seal.png',
     }),
   );
 });
