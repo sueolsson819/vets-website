@@ -1,5 +1,5 @@
 {
-  "name": "@vets-website-applications/vaos",
+  "name": "@department-of-veterans-affairs/applications-vaos",
   "version": "0.0.1",
   "scripts": {
     "build": "echo Build script goes here",
@@ -14,4 +14,4 @@
     "cross-env": "^7.0.3"
   },
   "private": true
-}
+} 
