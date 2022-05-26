@@ -22,29 +22,14 @@ import {
 } from '../utilities/file';
 
 class FileField extends React.Component {
+  fileInputRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
       progress: 0,
     };
     this.uploadRequest = null;
-  }
-
-  fileInputRef = React.createRef();
-
-  /* eslint-disable-next-line camelcase */
-  UNSAFE_componentWillReceiveProps(newProps) {
-    const newFiles = newProps.formData || [];
-    const files = this.props.formData || [];
-    if (newFiles.length !== files.length) {
-      this.focusAddAnotherButton();
-    }
-
-    const isUploading = newFiles.some(file => file.uploading);
-    const wasUploading = files.some(file => file.uploading);
-    if (isUploading && !wasUploading) {
-      this.setState({ progress: 0 });
-    }
   }
 
   componentDidMount() {
@@ -60,6 +45,21 @@ class FileField extends React.Component {
     );
     if (formData.length !== (this.props.formData || []).length) {
       this.props.onChange(formData);
+    }
+  }
+
+  /* eslint-disable-next-line camelcase */
+  UNSAFE_componentWillReceiveProps(newProps) {
+    const newFiles = newProps.formData || [];
+    const files = this.props.formData || [];
+    if (newFiles.length !== files.length) {
+      this.focusAddAnotherButton();
+    }
+
+    const isUploading = newFiles.some(file => file.uploading);
+    const wasUploading = files.some(file => file.uploading);
+    if (isUploading && !wasUploading) {
+      this.setState({ progress: 0 });
     }
   }
 
@@ -545,15 +545,24 @@ class FileField extends React.Component {
 
 FileField.propTypes = {
   schema: PropTypes.object.isRequired,
-  uiSchema: PropTypes.object,
-  errorSchema: PropTypes.object,
-  requiredSchema: PropTypes.object,
-  idSchema: PropTypes.object,
   onChange: PropTypes.func.isRequired,
-  onBlur: PropTypes.func,
-  formData: PropTypes.array,
   disabled: PropTypes.bool,
+  enableShortWorkflow: PropTypes.bool,
+  errorSchema: PropTypes.object,
+  formContext: PropTypes.bool,
+  formData: PropTypes.array,
+  idSchema: PropTypes.object,
   readonly: PropTypes.bool,
+  registry: PropTypes.shape({
+    fields: PropTypes.shape({
+      SchemaField: PropTypes.elementType,
+    }),
+    formContext: PropTypes.shape({}),
+  }),
+  requestLockedPdfPassword: PropTypes.bool,
+  requiredSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  onBlur: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
