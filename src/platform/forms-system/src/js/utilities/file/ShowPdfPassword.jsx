@@ -1,46 +1,47 @@
 import React, { useState } from 'react';
-import TextInput from '@department-of-veterans-affairs/component-library/TextInput';
+import PropTypes from 'prop-types';
+import { VaTextInput } from '@department-of-veterans-affairs/component-library/dist/react-bindings';
+
+const pdfLabel = 'PDF passsword';
 
 const ShowPdfPassword = ({
   file,
   index,
   onSubmitPassword,
   ariaDescribedby = null,
+  hasSubmitted,
 }) => {
-  const [fieldObj, setFieldObj] = useState({
-    dirty: false,
-    charMax: 255,
-    value: '',
-  });
+  const [password, setPassword] = useState('');
+  const [dirty, setDirty] = useState(hasSubmitted);
 
-  const showError = fieldObj.dirty && !fieldObj.value;
+  const showError = (hasSubmitted || dirty) && !password;
   return (
     <div className="vads-u-margin-bottom--2">
-      <TextInput
-        label={'PDF password'}
+      <VaTextInput
+        label={pdfLabel}
         errorMessage={
           showError && 'Please provide a password to decrypt this file'
         }
         name={`get_password_${index}`}
         required
-        field={fieldObj}
-        onValueChange={updatedField => {
-          setFieldObj(updatedField);
+        value={password}
+        onInput={event => {
+          console.log(event, event.target.value)
+          setPassword(event.target.value);
         }}
+        onBlur={() => {
+          setDirty(true);
+        }}
+        maxlength={255}
         ariaDescribedBy={ariaDescribedby}
       />
       <button
         type="button"
         className="usa-button-primary va-button-primary vads-u-width--auto"
         onClick={() => {
-          if (fieldObj.value) {
-            onSubmitPassword(file, index, fieldObj.value);
-          } else {
-            setFieldObj({
-              dirty: true,
-              charMax: 255,
-              value: '',
-            });
+          setDirty(true);
+          if (password) {
+            onSubmitPassword(file, index, password);
           }
         }}
         aria-describedby={ariaDescribedby}
@@ -49,6 +50,14 @@ const ShowPdfPassword = ({
       </button>
     </div>
   );
+};
+
+ShowPdfPassword.propTypes = {
+  ariaDescribedby: PropTypes.string,
+  file: PropTypes.shape({}),
+  hasSubmitted: PropTypes.bool,
+  index: PropTypes.number,
+  onSubmitPassword: PropTypes.func,
 };
 
 const PasswordLabel = () => (
@@ -60,7 +69,7 @@ const PasswordLabel = () => (
 
 const PasswordSuccess = () => (
   <>
-    <p>PDF password</p>
+    <p className="vads-u-margin-top--2">{pdfLabel}</p>
     <strong>The PDF password has been added.</strong>
   </>
 );

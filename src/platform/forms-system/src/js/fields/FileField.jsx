@@ -65,7 +65,7 @@ class FileField extends React.Component {
 
   focusAddAnotherButton = () => {
     // focus on span pseudo-button, not the label
-    focusElement(`#${this.props.idSchema.$id}_add_label span`);
+    focusElement(`#${this.props.idSchema.$id}_add_label button`);
   };
 
   onSubmitPassword = (file, index, password) => {
@@ -229,6 +229,11 @@ class FileField extends React.Component {
     allowRetry
       ? () => this.retryLastUpload(index, file)
       : () => this.deleteThenAddFile(index);
+
+  handleUpload = event => {
+    event.preventDefault();
+    this.fileInputRef.current.click();
+  };
 
   /**
    * FormData of supported files
@@ -511,27 +516,21 @@ class FileField extends React.Component {
                   htmlFor={idSchema.$id}
                   className="vads-u-display--inline-block"
                 >
-                  <span
-                    role="button"
+                  <button
+                    type="button"
                     className="usa-button usa-button-secondary vads-u-padding-x--2 vads-u-padding-y--1"
-                    onKeyPress={e => {
-                      e.preventDefault();
-                      if (['Enter', ' ', 'Spacebar'].indexOf(e.key) !== -1) {
-                        this.fileInputRef.current.click();
-                      }
-                    }}
-                    tabIndex="0"
+                    onClick={this.handleUpload}
                     aria-label={`${buttonText} ${titleString}`}
                   >
                     {buttonText}
-                  </span>
+                  </button>
                 </label>
               )}
             <input
               type="file"
               ref={this.fileInputRef}
               accept={uiOptions.fileTypes.map(item => `.${item}`).join(',')}
-              style={{ display: 'none' }}
+              className="vads-u-display--none"
               id={idSchema.$id}
               name={idSchema.$id}
               onChange={this.onAddFile}
@@ -549,15 +548,36 @@ FileField.propTypes = {
   disabled: PropTypes.bool,
   enableShortWorkflow: PropTypes.bool,
   errorSchema: PropTypes.object,
-  formContext: PropTypes.bool,
-  formData: PropTypes.array,
+  formContext: PropTypes.shape({
+    reviewMode: PropTypes.bool,
+    onReviewPage: PropTypes.bool,
+    uploadFile: PropTypes.func,
+    trackingPrefix: PropTypes.string,
+  }),
+  formData: PropTypes.arrayOf(
+    PropTypes.shape({
+      file: PropTypes.shape({
+        name: PropTypes.string,
+        size: PropTypes.number,
+        type: PropTypes.string,
+      }),
+      name: PropTypes.string,
+      size: PropTypes.number,
+      uploading: PropTypes.bool,
+      confirmationCode: PropTypes.string,
+      isEncrypted: PropTypes.bool,
+      attachmentId: PropTypes.string,
+    }),
+  ),
   idSchema: PropTypes.object,
   readonly: PropTypes.bool,
   registry: PropTypes.shape({
     fields: PropTypes.shape({
       SchemaField: PropTypes.elementType,
     }),
-    formContext: PropTypes.shape({}),
+    formContext: PropTypes.shape({
+      pagePerItemIndex: PropTypes.number,
+    }),
   }),
   requestLockedPdfPassword: PropTypes.bool,
   requiredSchema: PropTypes.object,
