@@ -19,6 +19,8 @@ import {
 import { mockLocalStorage } from '~/applications/personalization/dashboard/tests/e2e/dashboard-e2e-helpers';
 
 describe('The My VA Dashboard - Notifications', () => {
+  const notificationsDivSelector = '[data-testid="dashboard-notifications"]';
+
   describe('when the feature is hidden', () => {
     beforeEach(() => {
       cy.intercept('GET', '/v0/feature_toggles*', {
@@ -37,7 +39,7 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.wait(['@featuresA', '@nameA', '@serviceA']);
     });
     it('the notifications does not show up - C13978', () => {
-      cy.findByTestId('dashboard-notifications').should('not.exist');
+      cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
       cy.injectAxeThenAxeCheck();
@@ -72,7 +74,7 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
-      cy.findByTestId('dashboard-notifications').should('not.exist');
+      cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
       cy.injectAxeThenAxeCheck();
@@ -86,10 +88,10 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications2']);
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        1,
-      );
+      cy.get(notificationsDivSelector)
+        .should('exist')
+        .findAllByTestId('dashboard-notification-alert')
+        .should('have.length', 1);
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
     });
@@ -101,10 +103,10 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications3']);
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        2,
-      );
+      cy.get(notificationsDivSelector)
+        .should('exist')
+        .findAllByTestId('dashboard-notification-alert')
+        .should('have.length', 2);
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root'); // First AXE-check already checked the whole
     });
@@ -116,7 +118,7 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
-      cy.findByTestId('dashboard-notifications').should('not.exist');
+      cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
@@ -128,7 +130,10 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
-      cy.findByTestId('dashboard-notifications-error').should('exist');
+      cy.get(notificationsDivSelector)
+        .should('exist')
+        .findByTestId('dashboard-notifications-error')
+        .should('exist');
 
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
@@ -151,16 +156,16 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.login(mockUser);
       cy.visit('my-va/');
       cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        1,
-      );
+      cy.get(notificationsDivSelector)
+        .should('exist')
+        .findAllByTestId('dashboard-notification-alert')
+        .should('have.length', 1);
       cy.get('va-alert')
         .shadow()
         .find('button.va-alert-close')
         .click({ waitForAnimations: true });
       cy.wait('@patch');
-      cy.findByTestId('dashboard-notifications').should('not.exist');
+      cy.get(notificationsDivSelector).should('not.exist');
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
     });
