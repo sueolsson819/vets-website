@@ -36,7 +36,7 @@ describe('The My VA Dashboard - Notifications', () => {
       mockLocalStorage();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresA', '@nameA', '@serviceA']);
+      cy.waitFor200s(['@featuresA', '@nameA', '@serviceA']);
     });
     it('the notifications does not show up - C13978', () => {
       cy.get(notificationsDivSelector).should('not.exist');
@@ -73,7 +73,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications1');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
       cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
@@ -87,7 +87,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications2');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications2']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications2']);
       cy.get(notificationsDivSelector)
         .should('exist')
         .findAllByTestId('dashboard-notification-alert')
@@ -102,7 +102,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications3');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications3']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications3']);
       cy.get(notificationsDivSelector)
         .should('exist')
         .findAllByTestId('dashboard-notification-alert')
@@ -117,7 +117,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications4');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
       cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
@@ -129,7 +129,7 @@ describe('The My VA Dashboard - Notifications', () => {
       );
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
       cy.get(notificationsDivSelector)
         .should('exist')
         .findByTestId('dashboard-notifications-error')
@@ -155,7 +155,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('patch');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
       cy.get(notificationsDivSelector)
         .should('exist')
         .findAllByTestId('dashboard-notification-alert')
@@ -164,7 +164,7 @@ describe('The My VA Dashboard - Notifications', () => {
         .shadow()
         .find('button.va-alert-close')
         .click({ waitForAnimations: true });
-      cy.wait('@patch');
+      cy.waitFor200s('@patch');
       cy.get(notificationsDivSelector).should('not.exist');
       // make the a11y check
       cy.injectAxeThenAxeCheck('#react-root');
