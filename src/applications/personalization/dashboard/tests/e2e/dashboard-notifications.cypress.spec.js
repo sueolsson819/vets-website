@@ -36,7 +36,7 @@ describe('The My VA Dashboard - Notifications', () => {
       mockLocalStorage();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.waitFor200s(['@featuresA', '@nameA', '@serviceA']);
+      // cy.waitFor200s(['@featuresA', '@nameA', '@serviceA']);
     });
     it('the notifications does not show up - C13978', () => {
       cy.get(notificationsDivSelector).should('not.exist');
@@ -73,7 +73,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications1');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
+      // cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
       cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
@@ -117,7 +117,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('notifications4');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
+      // cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
       cy.get(notificationsDivSelector).should('not.exist');
 
       // make the a11y check
@@ -129,7 +129,7 @@ describe('The My VA Dashboard - Notifications', () => {
       );
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
+      // cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
       cy.get(notificationsDivSelector)
         .should('exist')
         .findByTestId('dashboard-notifications-error')
@@ -155,7 +155,7 @@ describe('The My VA Dashboard - Notifications', () => {
       ).as('patch');
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
+      // cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
       cy.get(notificationsDivSelector)
         .should('exist')
         .findAllByTestId('dashboard-notification-alert')
