@@ -98,7 +98,7 @@ async function getScaffoldAssets() {
   const LOCAL_CONTENT_BUILD_ROOT = '../content-build';
 
   const REMOTE_CONTENT_BUILD_ROOT =
-    'https://raw.githubusercontent.com/department-of-veterans-affairs/content-build/master';
+    'https://raw.githubusercontent.com/department-of-veterans-affairs/content-build/main';
 
   const loadAsset = async contentBuildPath => {
     const filename = path.basename(contentBuildPath);
@@ -374,7 +374,10 @@ module.exports = async (env = {}) => {
       symlinks: false,
     },
     optimization: {
+      // 'chunkIds' and 'moduleIds' are set to 'named' for preserving
+      // consistency between full and single app builds
       chunkIds: 'named',
+      moduleIds: 'named',
       minimizer: [
         new TerserPlugin({
           terserOptions: {

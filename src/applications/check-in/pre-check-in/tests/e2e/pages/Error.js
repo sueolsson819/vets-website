@@ -7,10 +7,21 @@ class Error {
       : 'We’re sorry. Something went wrong on our end. Please try again.';
     cy.get('h1', { timeout: Timeouts.slow })
       .should('be.visible')
-      .and('have.text', "We couldn't complete pre-check-in");
+      .and('have.text', 'Sorry, we can’t complete pre-check-in');
     cy.get('[data-testid="error-message"]', { timeout: Timeouts.slow })
       .should('be.visible')
       .contains(messageText);
+  };
+
+  validateExpiredPageLoaded = () => {
+    cy.get('h1', { timeout: Timeouts.slow })
+      .should('be.visible')
+      .and('have.text', 'Sorry, pre-check-in is no longer available');
+    cy.get('[data-testid="error-message"]', { timeout: Timeouts.slow })
+      .should('be.visible')
+      .contains(
+        'You can still check-in with your phone once you arrive at your appointment.',
+      );
   };
 
   validateDatePreCheckInDateShows = () => {
@@ -21,6 +32,24 @@ class Error {
 
   validateURL = () => {
     cy.url().should('match', /error/);
+  };
+
+  validateAccordionBlocks = () => {
+    cy.get("[header='What is pre-check-in?']")
+      .shadow()
+      .find('button')
+      .contains('What is pre-check-in?')
+      .should('be.visible');
+    cy.get("[header='How can I update my information?'][open='true']")
+      .shadow()
+      .find('button')
+      .contains('How can I update my information?')
+      .should('be.visible');
+    cy.get('[header="Why can\'t I pre-check-in?"]')
+      .shadow()
+      .find('button')
+      .contains("Why can't I pre-check-in?")
+      .should('be.visible');
   };
 }
 

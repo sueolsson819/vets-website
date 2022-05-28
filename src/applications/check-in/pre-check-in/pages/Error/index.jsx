@@ -1,14 +1,20 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 import { subDays } from 'date-fns';
 
 import ErrorMessage from '../../../components/ErrorMessage';
 import BackToHome from '../../../components/BackToHome';
 import Footer from '../../../components/Footer';
+import PreCheckInAccordionBlock from '../../../components/PreCheckInAccordionBlock';
 
 import { makeSelectVeteranData } from '../../../selectors';
+import {
+  preCheckinExpired,
+  appointmentStartTimePast15,
+} from '../../../utils/appointment';
 
 import { useSessionStorage } from '../../../hooks/useSessionStorage';
 
@@ -43,24 +49,50 @@ const Error = () => {
     <>
       {messages.map((message, index) => {
         return (
-          <p key={index} data-testid={message.testId}>
+          <div key={index} data-testid={message.testId}>
             {message.text}
-          </p>
+          </div>
         );
       })}
     </>
   );
 
+  const getErrorMessages = () => {
+    const accordions = <PreCheckInAccordionBlock key="accordion" errorPage />;
+    if (appointments && appointments.length) {
+      // don't show sub message if we are 15 minutes past appointment start time
+      if (appointmentStartTimePast15(appointments))
+        return [t('sorry-pre-check-in-is-no-longer-available'), '', accordions];
+      if (preCheckinExpired(appointments))
+        return [
+          t('sorry-pre-check-in-is-no-longer-available'),
+          t('you-can-still-check-in-once-you-arrive'),
+          accordions,
+        ];
+    }
+    return [t('sorry-we-cant-complete-pre-check-in'), combinedMessage, null];
+  };
+  const [header, message, additionalDetails] = getErrorMessages();
+
   return (
     <div className="vads-l-grid-container vads-u-padding-y--5 ">
       <ErrorMessage
-        header={t('we-couldnt-complete-pre-check-in')}
-        message={combinedMessage}
+        header={header}
+        message={message}
+        additionalDetails={additionalDetails}
       />
       <Footer />
       <BackToHome />
     </div>
   );
+};
+
+Error.propTypes = {
+  location: PropTypes.shape({
+    query: PropTypes.shape({
+      type: PropTypes.string,
+    }),
+  }),
 };
 
 export default Error;

@@ -1,4 +1,12 @@
+const add = require('date-fns/add');
+const format = require('date-fns/format');
+
 const defaultUUID = '0429dda5-4165-46be-9ed1-1e652a8dfd83';
+const alreadyPreCheckedInUUID = '4d523464-c450-49dc-9a18-c04b3f1642ee';
+const canceledAppointmentUUID = '9d7b7c15-d539-4624-8d15-b740b84e8548';
+const expiredUUID = '354d5b3a-b7b7-4e5c-99e4-8d563f15c521';
+
+const isoDateWithoutTimezoneFormat = "yyyy-LL-dd'T'HH:mm:ss";
 
 const createMockSuccessResponse = (
   token,
@@ -9,7 +17,40 @@ const createMockSuccessResponse = (
   emergencyContactNeedsUpdate = false,
   emergencyContactConfirmedAt = null,
 ) => {
-  const mockTime = new Date();
+  const mockTime =
+    token === expiredUUID ? new Date() : add(new Date(), { days: 1 });
+
+  let checkInSteps = [];
+  let status = '';
+
+  if (token === alreadyPreCheckedInUUID) {
+    // 35 minutes ago.
+    const preCheckinStarted = format(
+      new Date(mockTime.getTime() - 2100000),
+      isoDateWithoutTimezoneFormat,
+    );
+    // 30 minutes ago.
+    const preCheckinCompleted = format(
+      new Date(mockTime.getTime() - 1800000),
+      isoDateWithoutTimezoneFormat,
+    );
+
+    checkInSteps = [
+      {
+        status: 'PRE-CHECK-IN STARTED',
+        dateTime: preCheckinStarted,
+        ien: 1,
+      },
+      {
+        status: 'PRE-CHECK-IN COMPLETE',
+        dateTime: preCheckinCompleted,
+        ien: 2,
+      },
+    ];
+  } else if (token === canceledAppointmentUUID) {
+    status = 'CANCELLED BY CLINIC';
+  }
+
   return {
     id: token || defaultUUID,
     payload: {
@@ -71,6 +112,7 @@ const createMockSuccessResponse = (
       appointments: [
         {
           facility: 'LOMA LINDA VA CLINIC',
+          checkInSteps,
           clinicPhoneNumber: '5551234567',
           clinicFriendlyName: 'TEST CLINIC',
           clinicName: 'LOM ACC CLINIC TEST',
@@ -79,11 +121,13 @@ const createMockSuccessResponse = (
           eligibility: 'ELIGIBLE',
           facilityId: 'some-facility',
           checkInWindowStart: mockTime,
-          checkInWindowEnd: mockTime,
+          checkInWindowEnd: add(new Date(mockTime), { minutes: 15 }),
           checkedInTime: '',
+          status,
         },
         {
           facility: 'LOMA LINDA VA CLINIC',
+          checkInSteps,
           clinicPhoneNumber: '5551234567',
           clinicFriendlyName: 'TEST CLINIC',
           clinicName: 'LOM ACC CLINIC TEST',
@@ -92,8 +136,9 @@ const createMockSuccessResponse = (
           eligibility: 'ELIGIBLE',
           facilityId: 'some-facility',
           checkInWindowStart: mockTime,
-          checkInWindowEnd: mockTime,
+          checkInWindowEnd: add(new Date(mockTime), { minutes: 15 }),
           checkedInTime: '',
+          status,
         },
       ],
       patientDemographicsStatus: {
@@ -115,7 +160,10 @@ const createMockFailedResponse = _data => {
 };
 
 module.exports = {
+  alreadyPreCheckedInUUID,
+  canceledAppointmentUUID,
   createMockSuccessResponse,
   createMockFailedResponse,
   defaultUUID,
+  expiredUUID,
 };

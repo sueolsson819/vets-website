@@ -1,4 +1,10 @@
+const dateFns = require('date-fns');
+
 const defaultUUID = '46bebc0a-b99c-464f-a5c5-560bc9eae287';
+const aboutToExpireUUID = '25165847-2c16-4c8b-8790-5de37a7f427f';
+
+const isoDateWithoutTimezoneFormat = "yyyy-LL-dd'T'HH:mm:ss";
+const isoDateWithOffsetFormat = "yyyy-LL-dd'T'HH:mm:ssxxx";
 
 const createMockSuccessResponse = (
   data,
@@ -64,31 +70,50 @@ const createAppointment = (
   facilityId = 'some-facility',
   appointmentIen = 'some-ien',
   clinicFriendlyName = 'TEST CLINIC',
+  preCheckInValid = false,
+  uuid = defaultUUID,
 ) => {
-  const startTime = new Date();
-  const checkInWindowStart = new Date();
-  const checkInWindowEnd = new Date();
-
+  let startTime = preCheckInValid ? dateFns.addDays(new Date(), 1) : new Date();
   if (eligibility === 'INELIGIBLE_TOO_LATE') {
-    startTime.setHours(startTime.getHours() - 1);
+    startTime = dateFns.subHours(startTime, 1);
   } else if (eligibility === 'INELIGIBLE_TOO_EARLY') {
-    startTime.setHours(startTime.getHours() + 1);
+    startTime = dateFns.addHours(startTime, 1);
+  } else if (uuid === aboutToExpireUUID) {
+    startTime = dateFns.subMinutes(startTime, 14);
   } else {
-    startTime.setMinutes(startTime.getMinutes() + 15);
+    startTime = dateFns.addMinutes(startTime, 15);
   }
-  checkInWindowStart.setHours(startTime.getHours() - 1);
-  checkInWindowEnd.getMinutes(startTime.getMinutes() + 10);
+  const formattedStartTime = dateFns.format(
+    startTime,
+    isoDateWithoutTimezoneFormat,
+  );
+
+  // C.f. CHECKIN_MINUTES_BEFORE in {chip repo}/infra/template.yml
+  const checkInWindowStart = dateFns.subMinutes(new Date(startTime), 30);
+  const formattedCheckInWindowStart = dateFns.format(
+    checkInWindowStart,
+    isoDateWithOffsetFormat,
+  );
+
+  // C.f. CHECKIN_MINUTES_AFTER in {chip repo}/infra/template.yml
+  const checkInWindowEnd = dateFns.addMinutes(new Date(startTime), 15);
+  const formattedCheckInWindowEnd = dateFns.format(
+    checkInWindowEnd,
+    isoDateWithOffsetFormat,
+  );
+
   return {
     facility: 'LOMA LINDA VA CLINIC',
+    checkInSteps: [],
     clinicPhoneNumber: '5551234567',
     clinicFriendlyName,
     clinicName: 'LOM ACC CLINIC TEST',
     appointmentIen,
-    startTime,
+    startTime: formattedStartTime,
     eligibility,
     facilityId,
-    checkInWindowStart,
-    checkInWindowEnd,
+    checkInWindowStart: formattedCheckInWindowStart,
+    checkInWindowEnd: formattedCheckInWindowEnd,
     checkedInTime: '',
   };
 };
@@ -186,6 +211,8 @@ const createMultipleAppointments = (
         'ABC_123',
         `some-ien-${i}`,
         `TEST CLINIC-${i}`,
+        false,
+        token,
       ),
     );
   }
@@ -208,6 +235,7 @@ const createMockFailedResponse = _data => {
 };
 
 module.exports = {
+  aboutToExpireUUID,
   createMockSuccessResponse,
   createMockFailedResponse,
   createMultipleAppointments,

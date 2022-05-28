@@ -7,7 +7,7 @@ import 'platform/polyfills';
 import startSitewideComponents from 'platform/site-wide';
 import { VA_FORM_IDS } from 'platform/forms/constants';
 import createCommonStore from 'platform/startup/store';
-import createHigherLevelReviewApplicationStatus from 'applications/disability-benefits/996/components/createHLRApplicationStatus';
+import showVaAlertExpandable from 'platform/site-wide/alerts/showVaAlertExpandable';
 import alertsBuildShow from './widget-creators/alerts-dismiss-view';
 import form686CTA from './view-modify-dependent/686-cta/form686CTA';
 import icsCreate from './widget-creators/ics-generator';
@@ -52,11 +52,13 @@ import createFindVaForms, {
   findVaFormsWidgetReducer,
 } from '../find-forms/createFindVaForms';
 import createFindVaFormsPDFDownloadHelper from '../find-forms/widgets/createFindVaFormsPDFDownloadHelper';
+import createHigherLevelReviewApplicationStatus from '../appeals/996/components/createHLRApplicationStatus';
 import createLettersMobileCTA from './letters-mobile-cta';
 import createManageVADebtCTA from './manage-va-debt/createManageVADebtCTA';
 import createMedicalCopaysCTA from './medical-copays-cta';
 import createMyVALoginWidget from './widget-creators/createMyVALoginWidget';
 import createNearByVetCenters from './facilities/vet-center/createNearByVetCenters';
+import createNodCTA from './nod-cta';
 import createOptOutApplicationStatus from '../edu-benefits/components/createOptOutApplicationStatus';
 import createPost911GiBillStatusWidget, {
   post911GIBillStatusReducer,
@@ -102,6 +104,7 @@ subscribeAccordionEvents();
 alertsBuildShow();
 icsCreate();
 openShareLink();
+showVaAlertExpandable(store);
 
 // Create widgets.
 createApplicationStatus(store, {
@@ -197,6 +200,7 @@ createLettersMobileCTA(store, widgetTypes.LETTERS_MOBILE_CTA);
 createManageVADebtCTA(store, widgetTypes.MANAGE_VA_DEBT_CTA);
 create1095BDownloadCTA(store, widgetTypes.DOWNLOAD_1095B_CTA);
 createShiftedVetsBanner(store, widgetTypes.SHIFTED_VETS_BANNER);
+createNodCTA(store, widgetTypes.FORM_10182_CTA);
 
 // Create the My VA Login widget only on the homepage.
 if (location.pathname === '/') {
