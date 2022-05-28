@@ -129,7 +129,10 @@ describe('The My VA Dashboard - Notifications', () => {
       );
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
+      cy.waitFor200s(['@featuresB', '@nameB', '@serviceB']);
+      cy.wait('@notifications5').then(intercept => {
+        expect(intercept.response.body.errors).to.have.length.gte(1);
+      });
       cy.get(notificationsDivSelector)
         .should('exist')
         .findByTestId('dashboard-notifications-error')
