@@ -1,151 +1,177 @@
 /**
- * [TestRail-integrated] Spec for My VA - Appointments - error states
+ * [TestRail-integrated] Spec for My VA - On-Site-Notification
  * @testrailinfo projectId 4
  * @testrailinfo suiteId 5
- * @testrailinfo groupId 4034
- * @testrailinfo runName MyVA-e2e-Appts-Errors
+ * @testrailinfo groupId 3376
+ * @testrailinfo runName MyVA On-site Notification - Debt
  */
-import moment from 'moment';
 import { mockUser } from '@@profile/tests/fixtures/users/user';
-
-import ERROR_500 from '@@profile/tests/fixtures/500.json';
-import ERROR_400 from '~/applications/personalization/dashboard/utils/mocks/ERROR_400';
-import PARTIAL_ERROR from '~/applications/personalization/dashboard/utils/mocks/appointments/MOCK_VA_APPOINTMENTS_PARTIAL_ERROR';
-
-import { mockLocalStorage } from '~/applications/personalization/dashboard/tests/e2e/dashboard-e2e-helpers';
+import serviceHistory from '@@profile/tests/fixtures/service-history-success.json';
+import fullName from '@@profile/tests/fixtures/full-name-success.json';
+import featureFlagNames from 'platform/utilities/feature-toggles/featureFlagNames';
 import {
-  upcomingCCAppointment,
-  upcomingVAAppointment,
-} from '~/applications/personalization/dashboard/utils/appointments';
+  notificationsError,
+  notificationSuccessDismissed,
+  notificationsSuccessEmpty,
+  notificationSuccessNotDismissed,
+  multipleNotificationSuccess,
+} from '../fixtures/test-notifications-response';
+import { mockLocalStorage } from '~/applications/personalization/dashboard/tests/e2e/dashboard-e2e-helpers';
 
-const alertText = /Something went wrong on our end, and we can’t access your appointment information/i;
-const startOfToday = () =>
-  moment()
-    .startOf('day')
-    .toISOString();
-
-// Maximum number of days you can schedule an appointment in advance in VAOS
-const endDate = () =>
-  moment()
-    .add(395, 'days')
-    .startOf('day')
-    .toISOString();
-
-const VA_APPOINTMENTS_ENDPOINT = `vaos/v0/appointments?start_date=${startOfToday()}&end_date=${endDate()}&type=va`;
-const CC_APPOINTMENTS_ENDPOINT = `vaos/v0/appointments?start_date=${startOfToday()}&end_date=${endDate()}&type=cc`;
-const FACILITIES_ENDPOINT = `v1/facilities/va?ids=*`;
-
-const mockVAAppointmentsSuccess = () => {
-  cy.intercept('GET', VA_APPOINTMENTS_ENDPOINT, upcomingVAAppointment);
-};
-const mockCCAppointmentsSuccess = () => {
-  cy.intercept('GET', CC_APPOINTMENTS_ENDPOINT, upcomingCCAppointment);
-};
-
-const spyOnFacilitiesEndpoint = stub => {
-  cy.intercept('GET', FACILITIES_ENDPOINT, () => {
-    stub();
-  });
-};
-
-describe('MyVA Dashboard - Appointments', () => {
-  let getFacilitiesStub;
-  beforeEach(() => {
-    mockLocalStorage();
-    cy.login(mockUser);
-    getFacilitiesStub = cy.stub();
-  });
-  context('when there is a 500 error fetching VA appointments', () => {
-    it('should show the appointments error alert and never call the facilities API - C15725', () => {
-      cy.intercept('GET', VA_APPOINTMENTS_ENDPOINT, {
-        statusCode: 500,
-        body: ERROR_500,
-      });
-      mockCCAppointmentsSuccess();
-      spyOnFacilitiesEndpoint(getFacilitiesStub);
-
-      cy.visit('my-va/');
-      cy.findByText(alertText).should('exist');
-      cy.should(() => {
-        expect(getFacilitiesStub).not.to.be.called;
+describe(
+  'The My VA Dashboard - Notifications',
+  { includeShadowDom: true, defaultCommandTimeout: 12000 },
+  () => {
+    describe('when the feature is hidden', () => {
+      beforeEach(() => {
+        cy.intercept('GET', '/v0/feature_toggles*', {
+          data: {
+            type: 'feature_toggles',
+            features: [],
+          },
+        }).as('featuresA');
+        cy.intercept('GET', '/v0/profile/service_history', serviceHistory).as(
+          'svcHistoryA',
+        );
+        cy.intercept('GET', '/v0/profile/full_name', fullName).as('fullNameA');
+        mockLocalStorage();
+        cy.login(mockUser);
       });
 
-      // make the a11y check
-      cy.injectAxeThenAxeCheck();
+      it('should not display Notifications section - C13978', () => {
+        cy.visit('my-va/');
+        cy.findByTestId('dashboard-notifications').should('not.exist');
+        // make the a11y check
+        cy.injectAxeThenAxeCheck();
+      });
     });
-  });
 
-  context('when there is a 400 error fetching VA appointments', () => {
-    it('should show the appointments error alert and never call the facilities API - C15726', () => {
-      cy.intercept('GET', VA_APPOINTMENTS_ENDPOINT, {
-        statusCode: 400,
-        body: ERROR_400,
+    describe('when the feature is not hidden', () => {
+      beforeEach(() => {
+        cy.intercept('GET', '/v0/feature_toggles*', {
+          data: {
+            type: 'feature_toggles',
+            features: [
+              {
+                name: featureFlagNames.showDashboardNotifications,
+                value: true,
+              },
+            ],
+          },
+        }).as('featuresB');
+        cy.intercept('GET', '/v0/profile/service_history', serviceHistory).as(
+          'svcHistoryB',
+        );
+        cy.intercept('GET', '/v0/profile/full_name', fullName).as('fullNameB');
+        mockLocalStorage();
+        cy.login(mockUser);
       });
-      mockCCAppointmentsSuccess();
-      spyOnFacilitiesEndpoint(getFacilitiesStub);
 
-      cy.visit('my-va/');
-      cy.findByText(alertText).should('exist');
-      cy.should(() => {
-        expect(getFacilitiesStub).not.to.be.called;
+      /* eslint-disable va/axe-check-required */
+      // Same display-state as previous test already AXE-checked.
+      it('and they have no notifications - C13979', () => {
+        cy.intercept(
+          'GET',
+          '/v0/onsite_notifications',
+          notificationsSuccessEmpty(),
+        ).as('notifications1');
+        cy.visit('my-va/');
+        cy.wait('@notifications1');
+        cy.findByTestId('dashboard-notifications').should('not.exist');
+      });
+      /* eslint-enable va/axe-check-required */
+
+      it('and they have a notification - C13025', () => {
+        cy.intercept(
+          'GET',
+          '/v0/onsite_notifications',
+          notificationSuccessNotDismissed(),
+        ).as('notifications2');
+        cy.visit('my-va/');
+        cy.wait('@notifications2');
+        cy.findByTestId('dashboard-notifications').should('exist');
+        cy.findAllByTestId('dashboard-notification-alert').should(
+          'have.length',
+          1,
+        );
+        // make the a11y check
+        cy.injectAxeThenAxeCheck('[data-testid="dashboard-notifications"]');
       });
 
-      // make the a11y check
-      cy.injectAxeThenAxeCheck();
+      it('and they have multiple notifications - C16720', () => {
+        cy.intercept(
+          'GET',
+          '/v0/onsite_notifications',
+          multipleNotificationSuccess(),
+        ).as('notifications3');
+        cy.visit('my-va/');
+        cy.wait('@notifications3');
+        cy.findByTestId('dashboard-notifications').should('exist');
+        cy.findAllByTestId('dashboard-notification-alert').should(
+          'have.length',
+          2,
+        );
+        // make the a11y check
+        cy.injectAxeThenAxeCheck('[data-testid="dashboard-notifications"]');
+      });
+
+      it('and they have dismissed notifications - C16721', () => {
+        cy.intercept(
+          'GET',
+          '/v0/onsite_notifications',
+          notificationSuccessDismissed(),
+        ).as('notifications4');
+        cy.visit('my-va/');
+        cy.wait('@notifications4');
+        cy.findByTestId('dashboard-notifications').should('not.exist');
+        cy.injectAxeThenAxeCheck('#react-root');
+      });
+
+      it('and they have a notification error - C16722', () => {
+        cy.intercept(
+          'GET',
+          '/v0/onsite_notifications',
+          notificationsError(),
+        ).as('notifications5');
+        cy.visit('my-va/');
+        cy.wait('@notifications5');
+        cy.findByTestId('dashboard-notifications').should('exist');
+        cy.findByTestId('dashboard-notifications-error').should('exist');
+        // make the a11y check
+        cy.injectAxeThenAxeCheck('[data-testid="dashboard-notifications"]');
+      });
+
+      /* eslint-disable va/axe-check-required */
+      // Same display-state as previous test already AXE-checked.
+      it('and they dismiss a notification - C16723', () => {
+        cy.intercept(
+          'GET',
+          '/v0/onsite_notifications',
+          notificationSuccessNotDismissed(),
+        ).as('notifications6');
+        cy.intercept(
+          'PATCH',
+          `v0/onsite_notifications/e4213b12-eb44-4b2f-bac5-3384fbde0b7a`,
+          {
+            statusCode: 200,
+            body: notificationSuccessDismissed(),
+            delay: 100,
+          },
+        ).as('patch');
+        cy.visit('my-va/');
+        cy.wait('@notifications6');
+        cy.findByTestId('dashboard-notifications').should('exist');
+        cy.findAllByTestId('dashboard-notification-alert').should(
+          'have.length',
+          1,
+        );
+        cy.get('va-alert')
+          .find('button.va-alert-close')
+          .click({ waitForAnimations: true });
+        cy.wait('@patch');
+        cy.findByTestId('dashboard-notifications').should('not.exist');
+      });
+      /* eslint-enable va/axe-check-required */
     });
-  });
-
-  context('when there is a 400 error fetching CC appointments', () => {
-    it('should show the appointments error alert and never call the facilities API - C15727', () => {
-      mockVAAppointmentsSuccess();
-      cy.intercept('GET', CC_APPOINTMENTS_ENDPOINT, {
-        statusCode: 400,
-        body: ERROR_400,
-      });
-      spyOnFacilitiesEndpoint(getFacilitiesStub);
-
-      cy.visit('my-va/');
-      cy.findByText(alertText).should('exist');
-      cy.should(() => {
-        expect(getFacilitiesStub).not.to.be.called;
-      });
-
-      // make the a11y check
-      cy.injectAxeThenAxeCheck();
-    });
-  });
-
-  context('when there is a partial error fetching VA appointments', () => {
-    it('should show the appointments error alert and never call the facilities API - C15728', () => {
-      cy.intercept('GET', VA_APPOINTMENTS_ENDPOINT, PARTIAL_ERROR);
-      mockCCAppointmentsSuccess();
-      spyOnFacilitiesEndpoint(getFacilitiesStub);
-
-      cy.visit('my-va/');
-      cy.findByText(alertText).should('exist');
-      cy.should(() => {
-        expect(getFacilitiesStub).not.to.be.called;
-      });
-
-      // make the a11y check
-      cy.injectAxeThenAxeCheck();
-    });
-  });
-
-  context('when there is an error fetching facilities', () => {
-    it('should show the appointments error alert - C15729', () => {
-      mockVAAppointmentsSuccess();
-      mockCCAppointmentsSuccess();
-      cy.intercept('GET', FACILITIES_ENDPOINT, {
-        statusCode: 400,
-        body: ERROR_400,
-      });
-
-      cy.visit('my-va/');
-      cy.findByText(alertText).should('exist');
-
-      // make the a11y check
-      cy.injectAxeThenAxeCheck();
-    });
-  });
-});
+  },
+);
