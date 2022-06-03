@@ -23,6 +23,7 @@ import {
   selectVAPServiceTransaction,
   selectEditViewData,
   selectMostRecentlyUpdatedField,
+  selectUseInformationEditViewNext,
 } from '@@vap-svc/selectors';
 
 import { selectVAProfilePersonalInformation } from '@@profile/selectors';
@@ -35,6 +36,7 @@ import ProfileInformationEditView from '@@profile/components/ProfileInformationE
 import ProfileInformationView from '@@profile/components/ProfileInformationView';
 
 import { getInitialFormValues } from '@@profile/util/contact-information/formValues';
+import ProfileInformationEditViewNext from '@@profile/components/profile-information-next/ProfileInformationEditViewNext';
 import { isVAPatient } from '~/platform/user/selectors';
 import prefixUtilityClasses from '~/platform/utilities/prefix-utility-classes';
 import recordEvent from '~/platform/monitoring/record-event';
@@ -300,6 +302,7 @@ class ProfileInformationFieldController extends React.Component {
       transactionRequest,
       data,
       isEnrolledInVAHealthCare,
+      shouldUseInformationEditViewNext,
     } = this.props;
 
     const activeSection = VAP_SERVICE.FIELD_TITLES[
@@ -378,7 +381,26 @@ class ProfileInformationFieldController extends React.Component {
     );
 
     if (showEditView || forceEditView) {
-      content = (
+      content = shouldUseInformationEditViewNext ? (
+        <ProfileInformationEditViewNext
+          getInitialFormValues={() =>
+            getInitialFormValues({
+              fieldName,
+              data: this.props.data,
+              modalData: this.props.editViewData,
+            })
+          }
+          onCancel={this.onCancel}
+          fieldName={this.props.fieldName}
+          apiRoute={this.props.apiRoute}
+          convertCleanDataToPayload={this.props.convertCleanDataToPayload}
+          uiSchema={this.props.uiSchema}
+          formSchema={this.requirePersonalInfoFieldBasedOnInitialValue(
+            this.props.formSchema,
+          )}
+          title={title}
+        />
+      ) : (
         <ProfileInformationEditView
           getInitialFormValues={() =>
             getInitialFormValues({
@@ -556,6 +578,10 @@ export const mapStateToProps = (state, ownProps) => {
     formSchema,
     isEnrolledInVAHealthCare,
     showUpdateSuccessAlert: shouldShowUpdateSuccessAlert(state, fieldName),
+    shouldUseInformationEditViewNext: selectUseInformationEditViewNext(
+      state,
+      fieldName,
+    ),
   };
 };
 
