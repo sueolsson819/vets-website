@@ -89,6 +89,7 @@ describe(
         ).as('notifications2');
         cy.visit('my-va/');
         cy.wait('@notifications2');
+        cy.wait(100);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findAllByTestId('dashboard-notification-alert').should(
           'have.length',
@@ -106,6 +107,7 @@ describe(
         ).as('notifications3');
         cy.visit('my-va/');
         cy.wait('@notifications3');
+        cy.wait(100);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findAllByTestId('dashboard-notification-alert').should(
           'have.length',
@@ -158,6 +160,7 @@ describe(
         ).as('patch');
         cy.visit('my-va/');
         cy.wait('@notifications6');
+        cy.wait(100);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findAllByTestId('dashboard-notification-alert').should(
           'have.length',
