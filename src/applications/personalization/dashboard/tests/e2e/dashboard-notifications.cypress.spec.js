@@ -67,7 +67,7 @@ describe(
         cy.login(mockUser);
       });
 
-      /* eslint-disable va/axe-check-required */
+      /* eslint-disable @department-of-veterans-affairs/axe-check-required */
       // Same display-state as previous test already AXE-checked.
       it('and they have no notifications - C13979', () => {
         cy.intercept(
@@ -76,10 +76,10 @@ describe(
           notificationsSuccessEmpty(),
         ).as('notifications1');
         cy.visit('my-va/');
-        cy.wait('@notifications1');
+        cy.wait(['@featuresB', '@notifications1']);
         cy.findByTestId('dashboard-notifications').should('not.exist');
       });
-      /* eslint-enable va/axe-check-required */
+      /* eslint-enable @department-of-veterans-affairs/axe-check-required */
 
       it('and they have a notification - C13025', () => {
         cy.intercept(
@@ -88,7 +88,7 @@ describe(
           notificationSuccessNotDismissed(),
         ).as('notifications2');
         cy.visit('my-va/');
-        cy.wait('@notifications2');
+        cy.wait(['@featuresB', '@notifications2']);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findAllByTestId('dashboard-notification-alert').should(
           'have.length',
@@ -105,7 +105,7 @@ describe(
           multipleNotificationSuccess(),
         ).as('notifications3');
         cy.visit('my-va/');
-        cy.wait('@notifications3');
+        cy.wait(['@featuresB', '@notifications3']);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findAllByTestId('dashboard-notification-alert').should(
           'have.length',
@@ -121,7 +121,7 @@ describe(
           notificationSuccessDismissed(),
         ).as('notifications4');
         cy.visit('my-va/');
-        cy.wait('@notifications4');
+        cy.wait(['@featuresB', '@notifications4']);
         cy.findByTestId('dashboard-notifications').should('not.exist');
         cy.injectAxeThenAxeCheck('#react-root');
       });
@@ -133,13 +133,13 @@ describe(
           notificationsError(),
         ).as('notifications5');
         cy.visit('my-va/');
-        cy.wait('@notifications5');
+        cy.wait(['@featuresB', '@notifications5']);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findByTestId('dashboard-notifications-error').should('exist');
         cy.injectAxeThenAxeCheck('[data-testid="dashboard-notifications"]');
       });
 
-      /* eslint-disable va/axe-check-required */
+      /* eslint-disable @department-of-veterans-affairs/axe-check-required */
       // Same display-state as previous test already AXE-checked.
       it('and they dismiss a notification - C16723', () => {
         cy.intercept(
@@ -157,7 +157,7 @@ describe(
           },
         ).as('patch');
         cy.visit('my-va/');
-        cy.wait('@notifications6');
+        cy.wait(['@featuresB', '@notifications6']);
         cy.findByTestId('dashboard-notifications').should('exist');
         cy.findAllByTestId('dashboard-notification-alert').should(
           'have.length',
@@ -169,7 +169,7 @@ describe(
         cy.wait('@patch');
         cy.findByTestId('dashboard-notifications').should('not.exist');
       });
-      /* eslint-enable va/axe-check-required */
+      /* eslint-enable @department-of-veterans-affairs/axe-check-required */
     });
   },
 );
