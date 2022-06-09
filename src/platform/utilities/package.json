@@ -2,7 +2,54 @@
     "name": "@department-of-veterans-affairs/utilities",
     "version": "1.0.0",
     "exports": {
-        "." : "./exportsFile.js"
+        "." : "./exportsFile.js",
+        "./constants" : "./constants.js",
+        "./fuzzy-matching" : "./fuzzy-matching.js",
+        "./prefix-utility-classes" : "./prefix-utility-classes.js",
+        "./react-hooks" : "./react-hooks.js",
+        "./registry-helpers" : "./registry-helpers.js",
+
+        "./accessibility" : "./accessibility/index.js",
+
+        "./api" : "./accessibility/index.js",
+
+        "./cerner" : "./cerner/index.js",
+
+        "./data/camelCaseObjectKeys" : "./data/camelCaseObjectKeys.js",
+        "./data/checkValidPath" : "./data/checkValidPath.js",
+        "./data/deconstructPath" : "./data/deconstructPath.js",
+        "./data/deduplicate" : "./data/deduplicate.js",
+        "./data" : "./data/index.js",
+        "./data/removeDeeplyEmptyObjects" : "./data/removeDeeplyEmptyObjects.js",
+        "./titleCase" : "./data/titleCase.js",
+
+        "./date" : "./date/index.js",
+
+        "./environment" : "./environment/index.js",
+        "./environment/stagingDomains" : "./environment/stagingDomains.js",
+        "./environment/va-subdomain" : "./environment/va-subdomain.js",
+
+        "./feature-toggles" : "./feature-toggles/index.jsx",
+        "./feature-toggles/helpers" : "./feature-toggles/helpers.js",
+        "./feature-toggles/flipper-client" : "./feature-toggles/flipper-client.js",
+        "./feature-toggles/featureFlagNames" : "./feature-toggles/featureFlagNames.js",
+
+        "./medical-centers/medical-centers" : "./medical-centers/medical-centers.js",
+
+        "./sso/constants" : "./sso/constants.js",
+        "./sso" : "./sso/index.js",
+        "./sso/keepAliveSSO" : "./sso/keepAliveSSO.js",
+        "./sso/loginAttempted" : "./sso/loginAttempted.js",
+        "./sso/mockKeepAliveSSO" : "./sso/mockKeepAliveSSO.js",
+
+        "./storage/localStorage" : "./storage/localStorage.js",
+
+        "./ui/asyncLoader" : "./ui/asyncLoader.jsx",
+        "./ui/DelayedRender" : "./ui/DelayedRender.jsx",
+        "./ui" : "./ui/index.js",
+        "./ui/scrollTo" : "./ui/scrollTo.js",
+        "./ui/scrollToTop" : "./ui/scrollToTop.js"
+
     },
 
     "dependencies": {
@@ -17,7 +64,7 @@
         "react-scroll": "^1.8.4",
         "react-is": "^17.0.2",
         "date-fns": "^2.24.0",
-        "@department-of-veterans-affairs/react-components/LoadingIndicator":"^0.0.1"
+        "@department-of-veterans-affairs/react-components":"6.1.3"
     },
 
     "devDependencies": { 
