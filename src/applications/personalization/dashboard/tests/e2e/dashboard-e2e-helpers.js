@@ -9,3 +9,18 @@ export function mockLocalStorage() {
     JSON.stringify(['single-sign-on-intro', 'find-benefits-intro']),
   );
 }
+
+export function mock404s() {
+  // a "catch-all" for unstubbed API calls in a test -- ensure this is the LAST intercept
+  // returns 404s for all Ajax application/json requests
+  cy.intercept(
+    {
+      headers: {
+        accept: 'application/json',
+      },
+    },
+    {
+      statusCode: 404,
+    },
+  ).as('mock404');
+}

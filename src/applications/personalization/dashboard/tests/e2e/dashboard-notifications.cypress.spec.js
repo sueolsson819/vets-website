@@ -16,7 +16,10 @@ import {
   notificationSuccessNotDismissed,
   multipleNotificationSuccess,
 } from '../fixtures/test-notifications-response';
-import { mockLocalStorage } from '~/applications/personalization/dashboard/tests/e2e/dashboard-e2e-helpers';
+import {
+  mockLocalStorage,
+  mock404s,
+} from '~/applications/personalization/dashboard/tests/e2e/dashboard-e2e-helpers';
 
 describe(
   'The My VA Dashboard - Notifications',
@@ -39,6 +42,7 @@ describe(
       });
 
       it('the notifications does not show up - C13978', () => {
+        mock404s();
         cy.visit('my-va/');
         cy.wait('@featuresA');
         cy.findByTestId('dashboard-notifications').should('not.exist');
@@ -75,6 +79,7 @@ describe(
           '/v0/onsite_notifications',
           notificationsSuccessEmpty(),
         ).as('notifications1');
+        mock404s();
         cy.visit('my-va/');
         cy.wait(['@featuresB', '@notifications1']);
         cy.findByTestId('dashboard-notifications').should('not.exist');
@@ -87,6 +92,7 @@ describe(
           '/v0/onsite_notifications',
           notificationSuccessNotDismissed(),
         ).as('notifications2');
+        mock404s();
         cy.visit('my-va/');
         cy.wait(['@featuresB', '@notifications2']);
         cy.findByTestId('dashboard-notifications').should('exist');
@@ -104,6 +110,7 @@ describe(
           '/v0/onsite_notifications',
           multipleNotificationSuccess(),
         ).as('notifications3');
+        mock404s();
         cy.visit('my-va/');
         cy.wait(['@featuresB', '@notifications3']);
         cy.findByTestId('dashboard-notifications').should('exist');
@@ -120,6 +127,7 @@ describe(
           '/v0/onsite_notifications',
           notificationSuccessDismissed(),
         ).as('notifications4');
+        mock404s();
         cy.visit('my-va/');
         cy.wait(['@featuresB', '@notifications4']);
         cy.findByTestId('dashboard-notifications').should('not.exist');
@@ -132,6 +140,7 @@ describe(
           '/v0/onsite_notifications',
           notificationsError(),
         ).as('notifications5');
+        mock404s();
         cy.visit('my-va/');
         cy.wait(['@featuresB', '@notifications5']);
         cy.findByTestId('dashboard-notifications').should('exist');
@@ -156,6 +165,7 @@ describe(
             delay: 100,
           },
         ).as('patch');
+        mock404s();
         cy.visit('my-va/');
         cy.wait(['@featuresB', '@notifications6']);
         cy.findByTestId('dashboard-notifications').should('exist');
