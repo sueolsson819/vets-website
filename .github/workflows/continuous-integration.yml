@@ -530,7 +530,7 @@ jobs:
     #   needs.cypress-tests-prep.result == 'success' &&
     #   needs.cypress-tests-prep.outputs.tests != '[]'
     container:
-      image: public.ecr.aws/cypress-io/cypress/browsers:node16.13.2-chrome100-ff98
+      image: public.ecr.aws/cypress-io/cypress/browsers:node14.19.0-chrome100-ff99-edge
       options: -u 1001:1001 -v /usr/local/share:/share
 
     strategy:
