@@ -164,10 +164,7 @@ export const selectCopyAddressModal = state => {
 export const selectUseInformationEditViewNext = (state, fieldName) => {
   const fieldsToUseNextFeature = [FIELD_NAMES.PREFERRED_NAME];
   return (
-    (toggleValues(state)?.[
-      FEATURE_FLAG_NAMES.profileUseInformationEditViewNext
-    ] &&
-      fieldsToUseNextFeature.includes(fieldName)) ||
-    false
+    toggleValues(state)?.[FEATURE_FLAG_NAMES.profileNext] &&
+    fieldsToUseNextFeature.includes(fieldName)
   );
 };

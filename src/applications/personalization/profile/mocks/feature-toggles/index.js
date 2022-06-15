@@ -13,7 +13,7 @@ const generateFeatureToggles = (toggles = {}) => {
     profileShowPronounsAndSexualOrientation = false,
     profileShowReceiveTextNotifications = true,
     profileAlwaysShowDirectDepositDisplay = false,
-    profileUseInformationEditViewNext = true,
+    profileNext = true,
   } = toggles;
 
   return {
@@ -55,8 +55,8 @@ const generateFeatureToggles = (toggles = {}) => {
           value: profileShowReceiveTextNotifications,
         },
         {
-          name: 'profile_use_information_edit_view_next',
-          value: profileUseInformationEditViewNext,
+          name: 'profile_next',
+          value: profileNext,
         },
       ],
     },

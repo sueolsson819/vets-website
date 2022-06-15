@@ -33,10 +33,11 @@ import VAPServiceTransaction from '@@vap-svc/components/base/VAPServiceTransacti
 import AddressValidationView from '@@vap-svc/containers/AddressValidationView';
 
 import ProfileInformationEditView from '@@profile/components/ProfileInformationEditView';
+import ProfileInformationEditViewFormik from '@@profile/components/profile-next/ProfileInformationEditViewNext';
+
 import ProfileInformationView from '@@profile/components/ProfileInformationView';
 
 import { getInitialFormValues } from '@@profile/util/contact-information/formValues';
-import ProfileInformationEditViewNext from '@@profile/components/profile-information-next/ProfileInformationEditViewNext';
 import { isVAPatient } from '~/platform/user/selectors';
 import prefixUtilityClasses from '~/platform/utilities/prefix-utility-classes';
 import recordEvent from '~/platform/monitoring/record-event';
@@ -382,24 +383,45 @@ class ProfileInformationFieldController extends React.Component {
 
     if (showEditView || forceEditView) {
       content = shouldUseInformationEditViewNext ? (
-        <ProfileInformationEditViewNext
-          getInitialFormValues={() =>
-            getInitialFormValues({
-              fieldName,
-              data: this.props.data,
-              modalData: this.props.editViewData,
-            })
-          }
-          onCancel={this.onCancel}
-          fieldName={this.props.fieldName}
-          apiRoute={this.props.apiRoute}
-          convertCleanDataToPayload={this.props.convertCleanDataToPayload}
-          uiSchema={this.props.uiSchema}
-          formSchema={this.requirePersonalInfoFieldBasedOnInitialValue(
-            this.props.formSchema,
-          )}
-          title={title}
-        />
+        <>
+          {/* <ProfileInformationEditViewNext
+            getInitialFormValues={() =>
+              getInitialFormValues({
+                fieldName,
+                data: this.props.data,
+                modalData: this.props.editViewData,
+              })
+            }
+            onCancel={this.onCancel}
+            fieldName={this.props.fieldName}
+            apiRoute={this.props.apiRoute}
+            convertCleanDataToPayload={this.props.convertCleanDataToPayload}
+            uiSchema={this.props.uiSchema}
+            formSchema={this.requirePersonalInfoFieldBasedOnInitialValue(
+              this.props.formSchema,
+            )}
+            title={title}
+          /> */}
+
+          <ProfileInformationEditViewFormik
+            getInitialFormValues={() =>
+              getInitialFormValues({
+                fieldName,
+                data: this.props.data,
+                modalData: this.props.editViewData,
+              })
+            }
+            onCancel={this.onCancel}
+            fieldName={this.props.fieldName}
+            apiRoute={this.props.apiRoute}
+            convertCleanDataToPayload={this.props.convertCleanDataToPayload}
+            uiSchema={this.props.uiSchema}
+            formSchema={this.requirePersonalInfoFieldBasedOnInitialValue(
+              this.props.formSchema,
+            )}
+            title={title}
+          />
+        </>
       ) : (
         <ProfileInformationEditView
           getInitialFormValues={() =>
@@ -512,6 +534,7 @@ ProfileInformationFieldController.propTypes = {
   isDeleteDisabled: PropTypes.bool,
   refreshTransaction: PropTypes.func,
   refreshTransactionRequest: PropTypes.func,
+  shouldUseInformationEditViewNext: PropTypes.bool,
   showRemoveModal: PropTypes.bool,
   showUpdateSuccessAlert: PropTypes.bool,
   successCallback: PropTypes.func,

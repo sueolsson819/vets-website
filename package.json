@@ -336,7 +336,8 @@
     "uswds": "1.6.10",
     "vanilla-lazyload": "^16.1.0",
     "vets-json-schema": "https://github.com/department-of-veterans-affairs/vets-json-schema.git#ecdb84139a36c0e698fe8e090361cf1fd08b3fa6",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "yup": "^0.32.11"
   },
   "resolutions": {
     "**/lodash": "4.17.21",
