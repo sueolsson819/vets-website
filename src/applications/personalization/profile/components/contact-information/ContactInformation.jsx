@@ -160,7 +160,7 @@ const ContactInformation = () => {
         message="Are you sure you want to leave? If you leave, your in-progress work won’t be saved."
         when={hasUnsavedEdits}
       />
-      <Headline>Contact information</Headline>
+      <Headline>My Super Cool Contact information</Headline>
       {showHeroBadAddressAlert && (
         <>
           <BadAddressAlert />
