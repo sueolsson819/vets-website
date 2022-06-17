@@ -19,7 +19,7 @@ function FlipperClient({
 
   const _fetchToggleValues = async () => {
     const response = await fetch(`${host}${toggleValuesPath}`, {
-      credentials: 'include',
+      // credentials: 'include',
       headers: {
         'X-CSRF-Token': csrfTokenStored,
       },

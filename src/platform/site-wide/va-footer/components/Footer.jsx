@@ -10,7 +10,7 @@ import LanguageSupport from './LanguageSupport';
 import MobileLinks from './MobileLinks';
 import { createLinkGroups } from '../helpers';
 import { isWideScreen } from '../../../utilities/accessibility/index';
-import { replaceWithStagingDomain } from '../../../utilities/environment/stagingDomains';
+// import { replaceWithStagingDomain } from '../../../utilities/environment/stagingDomains';
 
 class Footer extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class Footer extends Component {
           )}
 
           <div className="usa-grid usa-grid-full footer-banner">
-            <a href="/" title="Go to VA.gov">
+            {/* <a href="/" title="Go to VA.gov">
               <img
                 src={replaceWithStagingDomain(
                   'https://www.va.gov/img/homepage/va-logo-white.png',
@@ -68,7 +68,7 @@ class Footer extends Component {
                 width="200"
                 className="vads-u-height--auto"
               />
-            </a>
+            </a> */}
           </div>
           <div className="usa-grid usa-grid-full va-footer-links-bottom">
             {this.linkObj.bottomLinks}

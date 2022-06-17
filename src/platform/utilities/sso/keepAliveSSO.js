@@ -85,7 +85,7 @@ export default async function keepAlive() {
   try {
     const resp = await fetch(SSO_KEEP_ALIVE_ENDPOINT, {
       method: 'HEAD',
-      credentials: 'include',
+      //      credentials: 'include',
       cache: 'no-store',
     });
 

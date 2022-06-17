@@ -58,6 +58,7 @@ import ProfileWrapper from './ProfileWrapper';
 
 class Profile extends Component {
   componentDidMount() {
+    window.localStorage.setItem('hasSession', 'true');
     const {
       fetchCNPPaymentInformation,
       fetchEDUPaymentInformation,

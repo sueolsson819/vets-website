@@ -68,7 +68,7 @@ export function apiRequest(resource, optionalSettings = {}, success, error) {
 
   const defaultSettings = {
     method: 'GET',
-    credentials: 'include',
+    // credentials: 'include',
     headers: {
       'X-Key-Inflection': 'camel',
       'Source-App-Name': window.appName,
@@ -76,13 +76,12 @@ export function apiRequest(resource, optionalSettings = {}, success, error) {
     },
   };
 
-  const newHeaders = Object.assign(
-    {},
-    defaultSettings.headers,
-    optionalSettings ? optionalSettings.headers : undefined,
-  );
+  const newHeaders = {
+    ...defaultSettings.headers,
+    ...(optionalSettings ? optionalSettings.headers : undefined),
+  };
 
-  const settings = Object.assign({}, defaultSettings, optionalSettings);
+  const settings = { ...defaultSettings, ...optionalSettings };
   settings.headers = newHeaders;
 
   return fetchAndUpdateSessionExpiration(url, settings)
