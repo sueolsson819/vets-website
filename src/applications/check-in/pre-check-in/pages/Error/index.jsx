@@ -63,8 +63,14 @@ const Error = () => {
   );
 
   const getErrorMessages = () => {
-    const accordions = <PreCheckInAccordionBlock key="accordion" errorPage />;
     if (appointments && appointments.length) {
+      const accordions = (
+        <PreCheckInAccordionBlock
+          key="accordion"
+          errorPage
+          appointments={appointments}
+        />
+      );
       // don't show sub message if we are 15 minutes past appointment start time
       if (appointmentStartTimePast15(appointments))
         return [t('sorry-pre-check-in-is-no-longer-available'), '', accordions];
@@ -80,7 +86,7 @@ const Error = () => {
         return [
           t('sorry-pre-check-in-is-no-longer-available'),
           apptType === 'phone'
-            ? t('your-provider-will-call-you')
+            ? `${t('your-provider-will-call-you')} ${t('you-may-need-to-wait')}`
             : t('you-can-still-check-in-once-you-arrive'),
           accordions,
         ];
@@ -92,7 +98,11 @@ const Error = () => {
 
   return (
     <Wrapper pageTitle={header}>
-      <ErrorMessage message={message} additionalDetails={additionalDetails} />
+      <ErrorMessage
+        message={message}
+        additionalDetails={additionalDetails}
+        validationError={isMaxValidateAttempts}
+      />
       <Footer />
       <BackToHome />
     </Wrapper>
