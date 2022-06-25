@@ -21,9 +21,9 @@ import { mockLocalStorage } from '~/applications/personalization/dashboard/tests
 
 describe('The My VA Dashboard - Notifications', () => {
   // Skipping in CI due to flakes; passes fine locally.
-  before(function() {
-    if (Cypress.env('CI')) this.skip();
-  });
+  // before(function() {
+  //   if (Cypress.env('CI')) this.skip();
+  // });
   // TODO: Fix for CI (try local headless)
   describe('when the feature is hidden', () => {
     beforeEach(() => {
@@ -37,21 +37,23 @@ describe('The My VA Dashboard - Notifications', () => {
         'serviceA',
       );
       cy.intercept('/v0/profile/full_name', fullName).as('nameA');
+      cy.interceptUnstubbed();
       mockLocalStorage();
       cy.login(mockUser);
-      cy.visit('my-va/');
-      cy.wait(['@featuresA', '@nameA', '@serviceA']);
     });
     it('the notifications does not show up - C13978', () => {
-      // make sure that the Notification section is not shown
-      cy.findByTestId('dashboard-notifications').should('not.exist');
-
-      // make the a11y check
-      cy.injectAxeThenAxeCheck();
+      cy.visit('my-va/');
+      cy.wait(['@featuresA', '@nameA', '@serviceA']).then(() => {
+        cy.findByTestId('dashboard-notifications').should('not.exist');
+        cy.injectAxeThenAxeCheck();
+      });
     });
   });
   describe('when the feature is not hidden', () => {
-    Cypress.config({ defaultCommandTimeout: 12000 });
+    Cypress.config({
+      defaultCommandTimeout: 12000,
+      includeShadowDom: true,
+    });
     beforeEach(() => {
       cy.intercept('GET', '/v0/feature_toggles*', {
         data: {
@@ -74,10 +76,14 @@ describe('The My VA Dashboard - Notifications', () => {
       cy.intercept('/v0/onsite_notifications', notificationsSuccessEmpty()).as(
         'notifications1',
       );
+      cy.interceptUnstubbed();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications1']);
-      cy.findByTestId('dashboard-notifications').should('not.exist');
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications1']).then(
+        () => {
+          cy.findByTestId('dashboard-notifications').should('not.exist');
+        },
+      );
 
       // make the a11y check
       cy.injectAxeThenAxeCheck();
@@ -87,57 +93,67 @@ describe('The My VA Dashboard - Notifications', () => {
         '/v0/onsite_notifications',
         notificationSuccessNotDismissed(),
       ).as('notifications2');
+      cy.interceptUnstubbed();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications2']);
-      // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        1,
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications2']).then(
+        () => {
+          // cy.findByTestId('dashboard-notifications').should('exist');
+          cy.findAllByTestId('dashboard-notification-alert').should(
+            'have.length',
+            1,
+          );
+          cy.injectAxeThenAxeCheck('#react-root');
+        },
       );
-      // make the a11y check
-      cy.injectAxeThenAxeCheck('#react-root');
     });
     it('and they have multiple notifications - C16720', () => {
       cy.intercept(
         '/v0/onsite_notifications',
         multipleNotificationSuccess(),
       ).as('notifications3');
+      cy.interceptUnstubbed();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications3']);
-      // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        2,
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications3']).then(
+        () => {
+          // cy.findByTestId('dashboard-notifications').should('exist');
+          cy.findAllByTestId('dashboard-notification-alert').should(
+            'have.length',
+            2,
+          );
+          cy.injectAxeThenAxeCheck('#react-root'); // First AXE-check already checked the whole
+        },
       );
-      // make the a11y check
-      cy.injectAxeThenAxeCheck('#react-root'); // First AXE-check already checked the whole
     });
     it('and they have dismissed notifications - C16721', () => {
       cy.intercept(
         '/v0/onsite_notifications',
         notificationSuccessDismissed(),
       ).as('notifications4');
+      cy.interceptUnstubbed();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications4']);
-      cy.findByTestId('dashboard-notifications').should('not.exist');
-
-      // make the a11y check
-      cy.injectAxeThenAxeCheck('#react-root');
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications4']).then(
+        () => {
+          cy.findByTestId('dashboard-notifications').should('not.exist');
+          cy.injectAxeThenAxeCheck('#react-root');
+        },
+      );
     });
     it('and they have a notification error - C16722', () => {
       cy.intercept('/v0/onsite_notifications', notificationsError()).as(
         'notifications5',
       );
+      cy.interceptUnstubbed();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications5']);
-      cy.findByTestId('dashboard-notifications-error').should('exist');
-
-      // make the a11y check
-      cy.injectAxeThenAxeCheck('#react-root');
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications5']).then(
+        () => {
+          cy.findByTestId('dashboard-notifications-error').should('exist');
+          cy.injectAxeThenAxeCheck('#react-root');
+        },
+      );
     });
     it('and they dismiss a notification - C16723', () => {
       cy.intercept(
@@ -153,22 +169,26 @@ describe('The My VA Dashboard - Notifications', () => {
           delay: 100,
         },
       ).as('patch');
+      cy.interceptUnstubbed();
       cy.login(mockUser);
       cy.visit('my-va/');
-      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications6']);
-      // cy.findByTestId('dashboard-notifications').should('exist');
-      cy.findAllByTestId('dashboard-notification-alert').should(
-        'have.length',
-        1,
+      cy.wait(['@featuresB', '@nameB', '@serviceB', '@notifications6']).then(
+        () => {
+          // cy.findByTestId('dashboard-notifications').should('exist');
+          cy.findAllByTestId('dashboard-notification-alert').should(
+            'have.length',
+            1,
+          );
+          cy.get('va-alert')
+            .find('button.va-alert-close')
+            .click({ waitForAnimations: true });
+          cy.wait('@patch').then(() => {
+            cy.findByTestId('dashboard-notifications').should('not.exist');
+            // make the a11y check
+            cy.injectAxeThenAxeCheck('#react-root');
+          });
+        },
       );
-      cy.get('va-alert')
-        .shadow()
-        .find('button.va-alert-close')
-        .click({ waitForAnimations: true });
-      cy.wait('@patch');
-      cy.findByTestId('dashboard-notifications').should('not.exist');
-      // make the a11y check
-      cy.injectAxeThenAxeCheck('#react-root');
     });
   });
 });
